@@ -12,3 +12,28 @@
 - Sofia Fedane
 - Christopher Healy
 
+## Installation Guide
+
+After clone the project, open your terminal / cmd:
+> cd server 
+
+> npm install
+
+Open another tab of your terminal / cmd:
+> cd client
+
+> npm install 
+
+Wait the installation to finnish, this will create your `node_modules` folder.
+
+## Running The Project
+
+On your tabs previously opened in `server` and `client` folders type:
+
+### server folder
+>nodemon
+
+### client folder
+>npm start
+
+This will start both your server and client compilers, your webpage should pop up automatically.
