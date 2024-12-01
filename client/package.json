@@ -1,0 +1,42 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "Client side reactjs e-commerce project",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "axios": "^1.7.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.0.1",
+    "react-scripts": "^5.0.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "author": {
+    "name": "Jose Henrique Pinto Joanoni | Sofia Fedane | Christopher Healy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HenriqueJoanoni/fullstack-ecommerce.git"
+  },
+  "private": true
+}
