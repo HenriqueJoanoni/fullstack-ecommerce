@@ -1,6 +1,9 @@
 /** Server-side global */
 require(`dotenv`).config({path: `./config/.env`})
 
+/** Require database */
+require('./config/dbconn')
+
 /** Express */
 const express = require(`express`)
 const app = express()
