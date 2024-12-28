@@ -13,9 +13,10 @@ export default class Home extends Component {
     this.state = {
       searchQuery: '',
       isExpanded: false,
-      isDropdownOpen: false, 
+      isDropdownOpen: false,
     };
     this.searchInputRef = createRef();
+    this.cardSectionRef = createRef();
   }
 
   handleSearchChange = (e) => {
@@ -23,13 +24,16 @@ export default class Home extends Component {
   };
 
   toggleSearch = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isExpanded: !prevState.isExpanded,
     }));
   };
 
   handleClickOutside = (event) => {
-    if (this.searchInputRef.current && !this.searchInputRef.current.contains(event.target)) {
+    if (
+      this.searchInputRef.current &&
+      !this.searchInputRef.current.contains(event.target)
+    ) {
       this.setState({ isExpanded: false });
     }
   };
@@ -39,9 +43,15 @@ export default class Home extends Component {
   };
 
   toggleDropdown = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isDropdownOpen: !prevState.isDropdownOpen,
     }));
+  };
+
+  scrollToCardSection = () => {
+    if (this.cardSectionRef.current) {
+      this.cardSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   componentDidMount() {
@@ -64,7 +74,9 @@ export default class Home extends Component {
               <a href="#contact">Contact</a>
             </div>
 
-            <div id="firestrings-logo" onClick={this.handleLogoClick}>FireStrings</div>
+            <div id="firestrings-logo" onClick={this.handleLogoClick}>
+              FireStrings
+            </div>
 
             <div className="search-container" ref={this.searchInputRef}>
               <input
@@ -73,7 +85,9 @@ export default class Home extends Component {
                 value={this.state.searchQuery}
                 onChange={this.handleSearchChange}
                 onClick={this.toggleSearch}
-                className={`search-input ${this.state.isExpanded ? 'expanded' : ''}`}
+                className={`search-input ${
+                  this.state.isExpanded ? 'expanded' : ''
+                }`}
               />
             </div>
 
@@ -82,7 +96,11 @@ export default class Home extends Component {
                 <img className="header-icon" src={heartIcon} alt="Heart" />
               </div>
               <div className="icon-wrapper">
-                <img className="header-icon" src={shoppingBagIcon} alt="Shopping Bag" />
+                <img
+                  className="header-icon"
+                  src={shoppingBagIcon}
+                  alt="Shopping Bag"
+                />
               </div>
             </div>
           </header>
@@ -90,32 +108,67 @@ export default class Home extends Component {
           <header className="second-header">
             <div className="second-header-links">
               <a href="#" onClick={this.toggleDropdown}>
-                New Arrivals <img className="arrow-down-icon" src={downArrowIcon} alt="Arrow Down" />
+                New Arrivals{' '}
+                <img
+                  className="arrow-down-icon"
+                  src={downArrowIcon}
+                  alt="Arrow Down"
+                />
               </a>
-              <a href="#">Shop All <img className="arrow-down-icon" src={downArrowIcon} alt="Arrow Down" /></a>
-              <a href="#">Best Sellers <img className="arrow-down-icon" src={downArrowIcon} alt="Arrow Down" /></a>
-              <a href="#">Pages <img className="arrow-down-icon" src={downArrowIcon} alt="Arrow Down" /></a>
-              <a href="#">Sale <img className="arrow-down-icon" src={downArrowIcon} alt="Arrow Down" /></a>
+              <a href="#">
+                Shop All{' '}
+                <img
+                  className="arrow-down-icon"
+                  src={downArrowIcon}
+                  alt="Arrow Down"
+                />
+              </a>
+              <a href="#">
+                Best Sellers{' '}
+                <img
+                  className="arrow-down-icon"
+                  src={downArrowIcon}
+                  alt="Arrow Down"
+                />
+              </a>
+              <a href="#">
+                Pages{' '}
+                <img
+                  className="arrow-down-icon"
+                  src={downArrowIcon}
+                  alt="Arrow Down"
+                />
+              </a>
+              <a href="#">
+                Sale{' '}
+                <img
+                  className="arrow-down-icon"
+                  src={downArrowIcon}
+                  alt="Arrow Down"
+                />
+              </a>
             </div>
           </header>
 
           {this.state.isDropdownOpen && (
-          <div className="dropdown-menu">
-            <div className="first-dropdown">
-              <div className="dd-header-links">
-                <a className="newarrivalstxt" href="#">New Arrivals: Hottest Deals</a>
+            <div className="dropdown-menu">
+              <div className="first-dropdown">
+                <div className="dd-header-links">
+                  <a className="newarrivalstxt" href="#">
+                    New Arrivals: Hottest Deals
+                  </a>
+                </div>
+              </div>
+              <div className="second-dropdown">
+                <div className="dd2-header-links">
+                  <a href="#">New Arrivals Option 4</a>
+                  <a href="#">New Arrivals Option 5</a>
+                  <a href="#">New Arrivals Option 6</a>
+                  <a href="#">More Options</a>
+                </div>
               </div>
             </div>
-            <div className="second-dropdown">
-              <div className="dd2-header-links">
-                <a href="#">New Arrivals Option 4</a>
-                <a href="#">New Arrivals Option 5</a>
-                <a href="#">New Arrivals Option 6</a>
-                <a href="#">More Options</a>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
         </div>
 
         <section className="fullscreen-video">
@@ -130,7 +183,12 @@ export default class Home extends Component {
                 <p className="exclusive-text">EXCLUSIVE</p>
                 <h1>NEW SPRING</h1>
                 <h1>COLLECTION</h1>
-                <button className="discover-button">Discover What's New</button>
+                <button
+                  className="discover-button"
+                  onClick={this.scrollToCardSection}
+                >
+                  Discover What's New
+                </button>
               </div>
             </div>
           </div>
@@ -141,83 +199,74 @@ export default class Home extends Component {
           <h1>LATEST DEALS</h1>
         </section>
 
-        <section className="card-section">
+        <section className="card-section" ref={this.cardSectionRef}>
           <div className="card-container">
-            {/* come back to this when we have actual products */}
-            {/* card 1 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 1</h2>
                 <p>Great guitar for beginners!</p>
               </div>
             </div>
-            {/* card 2 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 2</h2>
                 <p>Perfect for intermediate players!</p>
               </div>
             </div>
-            {/* card 3 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 3</h2>
                 <p>Wow</p>
               </div>
             </div>
-            {/* card 4 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 4</h2>
                 <p>Great! Guys idk what to write</p>
               </div>
             </div>
-            {/* card 5 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 5</h2>
                 <p>Affordable!</p>
               </div>
             </div>
-            {/* card 6 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 6</h2>
                 <p>Professional!</p>
               </div>
             </div>
-            {/* card 7 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 7</h2>
                 <p>Great!</p>
               </div>
             </div>
-            {/* card 8 */}
             <div className="card">
               <div className="card-image">
-              <img src={guitarSample} alt="Guitar Sample" />
+                <img src={guitarSample} alt="Guitar Sample" />
               </div>
               <div className="card-content">
                 <h2>Guitar 8</h2>
