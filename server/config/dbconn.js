@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-mongoose.connect(`mongodb://localhost:27017/${process.env.MONGODB_NAME}`, {
+mongoose.connect(`mongodb://192.168.50.33:27017/${process.env.MONGODB_NAME}`, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,
