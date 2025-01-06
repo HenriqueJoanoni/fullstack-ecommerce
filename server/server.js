@@ -10,13 +10,15 @@ const app = express()
 
 /** Import Routes */
 const userRoutes = require('./routes/users')
+const productRoutes = require('./routes/products')
 
 /** Middleware */
 app.use(require(`body-parser`).json())
 app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
 /** Routes */
-app.use('/api', userRoutes)
+app.use(userRoutes)
+app.use(productRoutes)
 
 /** Start the Server */
 app.listen(process.env.SERVER_PORT, () => {
@@ -25,13 +27,15 @@ app.listen(process.env.SERVER_PORT, () => {
 
 /** Error 404 */
 app.use((
-    err,
     req,
     res,
     next) => {
 
-    next(createError(404))
-})
+    const error = new Error("Not Found");
+    error.statusCode = 404;
+    next(error);
+});
+
 
 /** Other Errors */
 app.use(function (

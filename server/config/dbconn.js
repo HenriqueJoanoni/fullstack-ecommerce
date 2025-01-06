@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-mongoose.connect(`mongodb://192.168.50.33:27017/${process.env.MONGODB_NAME}`, {
+
+/** connection URI needs to be set this way to work on localhost */
+mongoose.connect(`mongodb://0.0.0.0:27017/${process.env.MONGODB_NAME}`, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,
@@ -8,4 +10,6 @@ mongoose.connect(`mongodb://192.168.50.33:27017/${process.env.MONGODB_NAME}`, {
 
 const db = mongoose.connection
 db.on('error', console.log.bind(console, 'connection error:'))
-db.once('open', () => {console.log('connected to db', db.client.s.url)})
+db.once('open', () => {
+    console.log('connected to db', db.client.s.url)
+})
