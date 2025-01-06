@@ -1,8 +1,16 @@
-const router = require("express").Router()
+const express = require("express")
+const router = express.Router()
 const User = require("../models/User")
 
-/** Read all records */
-User.find({}, (err, users) => {
-    if (err) throw err;
-    console.log(users)
+router.get("/users", async (req, res) => {
+    try {
+        const users = await User.find({})
+        console.log(users)
+        res.json(users)
+    } catch (err) {
+        console.error(err)
+        res.status(500).send("Internal Server Error")
+    }
 })
+
+module.exports = router

@@ -1,16 +1,15 @@
 const mongoose = require('mongoose')
 
-let userSchema = new mongoose.Schema({
-    customer: {
-        firstName: {type: 'string', required: true},
-        lastName: {type: 'string'},
-        email: {type: 'string', required: true},
-        age: {type: 'number'},
-        phone: {type: 'string'},
-        password: {type: 'string', required: true},
-    },
-    isRegistered: {type: Boolean, default: false},
-    collection: `users`,
+const userSchema = new mongoose.Schema({
+    first_name: {type: String, required: true},
+    last_name: {type: String, required: true},
+    user_email: {type: String, required: true},
+    user_phone: {type: String},
+    user_password: {type: String, required: true},
+    user_profile_picture: {type: String},
+    user_access_level: {type: Number},
+}, {
+    collection: 'users'
 })
 
 module.exports = mongoose.model('User', userSchema)
