@@ -1,5 +1,5 @@
 import React, {Component, createRef} from "react";
-import guitarfootage from './guitarfootage.mp4';
+import guitarfootage from './guitarFootage.mp4';
 import heartIcon from './hearticon.png';
 import shoppingBagIcon from './shoppingbag.png';
 import downArrowIcon from './down-arrow.png';

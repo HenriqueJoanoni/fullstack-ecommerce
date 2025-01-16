@@ -18,7 +18,7 @@ export default class ProductInfoPage extends Component {
             name: "Epiphone Les Paul Special II",
             description: "A light, crisp sounding guitar, ideal for beginners and experienced players alike",
             price: 1500,
-            mainImage: "./guitarsample.jpg",
+            mainImage: "./guitarSample.jpg",
             photos: [guitarsample, gibson],
             brand: "Epiphone Les Paul"
         }
