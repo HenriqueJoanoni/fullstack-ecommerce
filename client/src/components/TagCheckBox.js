@@ -15,9 +15,9 @@ export default class TagCheckBox extends React.Component {
     render() {
         return (
             <div className="tagCheckBox">
-                <label htmlFor={`${this.props.key}_cb`}>{this.props.name}</label>
+                <label htmlFor={`${this.props.tagname}_cb`}>{this.props.name}</label>
                 <input type="checkbox" 
-                        name={`${this.props.key}_cb`}
+                        name={`${this.props.tagname}_cb`}
                         value={this.props.name} 
                         checked={this.state.checked}
                         onChange={(e)=>this.updateCheckBox(e)}

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import axios from "axios"
 import Header from "./Header";
 import SearchTools from './SearchTools';
 import ProductDisplayCard from './ProductDisplayCard';
+import { SERVER_HOST } from "../config/global_constants"
 
 
 export default class ProductsPage extends Component {
     constructor(props){
         super(props);
+        /*
         this.products = [
             {
                 id: 1,
@@ -46,8 +49,11 @@ export default class ProductsPage extends Component {
             }
         ]
 
+    */
+
 
         this.state = {
+            products: [],
             selectedTags: [],
             searchQuery: "",
             sortField: "name",
@@ -56,8 +62,8 @@ export default class ProductsPage extends Component {
     }
 
     determineSelectedProducts = () => {
-        console.log(this.state.selectedTags)
-        let updatedSelectedProducts = [...this.products]
+        //console.log(this.state.selectedTags)
+        let updatedSelectedProducts = [...this.state.products]
         //filter from search
         if (this.state.searchQuery !== ""){
             updatedSelectedProducts = updatedSelectedProducts.filter(product => product.name.toLowerCase().includes(this.state.searchQuery.toLowerCase()))
@@ -67,8 +73,6 @@ export default class ProductsPage extends Component {
         if (this.state.selectedTags.length !== 0){
             updatedSelectedProducts = updatedSelectedProducts.filter(product => product.tags.some(tag => this.state.selectedTags.includes(tag)))
         }
-
-        console.log(updatedSelectedProducts)
         
 
         return updatedSelectedProducts
@@ -83,16 +87,16 @@ export default class ProductsPage extends Component {
     updateSort = val => {
         switch (val){
             case "name_a_z", "default":
-                this.setState({sortField: "name", sortDirection: 1})
+                this.setState({sortField: "product_name", sortDirection: 1})
                 break
             case "name_z_a":
-                this.setState({sortField: "name", sortDirection: -1})
+                this.setState({sortField: "product_name", sortDirection: -1})
                 break
             case "price_l_h":
-                this.setState({sortField: "price", sortDirection: 1})
+                this.setState({sortField: "product_price", sortDirection: 1})
                 break
             case "price_h_l":
-                this.setState({sortField: "price", sortDirection: -1})
+                this.setState({sortField: "product_price", sortDirection: -1})
 
         }
     }
@@ -113,6 +117,21 @@ export default class ProductsPage extends Component {
         return productsList.sort((a, b) => a[this.state.sortField] > b[this.state.sortField] ? this.state.sortDirection : -this.state.sortDirection)
     }
 
+    componentDidMount(){
+        axios.get(`${SERVER_HOST}/products`)
+        .then(res => {
+            if (res.data){
+                if (res.data.errorMessage){
+                    console.log(res.data.errorMessage)
+                } else {
+                    this.setState({products: res.data})
+                }
+            }
+        })
+        .catch(err => {console.log(err)})
+    }
+
+
     render (){
         return (
             <>
@@ -123,7 +142,7 @@ export default class ProductsPage extends Component {
                             updateSort={this.updateSort}
                 />
                 <div id="productsDisplayPanel">
-                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard key={product.id} product={product}/>)}
+                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard key={product._id} product={product}/>)}
                 </div>  
             </>
             

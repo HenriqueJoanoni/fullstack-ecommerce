@@ -36,7 +36,7 @@ export default class SearchTools extends Component {
                 <div id="searchTools">
                     <div id="tagsContainer">
                         <h4>Filter Results</h4>
-                        {this.tags.map(tag => <TagCheckBox toggleTag={this.props.toggleTag} name={tag}/>)}
+                        {this.tags.map(tag => <TagCheckBox key={`${tag}_cb`} tagname={tag} toggleTag={this.props.toggleTag} name={tag}/>)}
                     </div>
                 </div>
             </div>
