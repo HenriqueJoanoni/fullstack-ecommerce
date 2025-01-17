@@ -66,7 +66,7 @@ export default class ProductsPage extends Component {
         let updatedSelectedProducts = [...this.state.products]
         //filter from search
         if (this.state.searchQuery !== ""){
-            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.name.toLowerCase().includes(this.state.searchQuery.toLowerCase()))
+            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.product_name.toLowerCase().includes(this.state.searchQuery.toLowerCase()))
         }
 
         //filter from tags
