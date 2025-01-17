@@ -3,33 +3,45 @@ require(`dotenv`).config({path: `./config/.env`})
 require(`./config/db`)
 
 
+/** Import Routes */
+const userRoutes = require('./routes/users')
+const productRoutes = require('./routes/products')
+
+
+
+
 /** Express */
 const express = require(`express`)
 const app = express()
 
-//const cors = require(`cors`)
 
+
+/** Middleware */
 app.use(require(`body-parser`).json())
 app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
+/** Routes */
+app.use(userRoutes)
+app.use(productRoutes)
+
+/** Start the Server */
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Connected to port ` + process.env.SERVER_PORT)
 })
-
-//routes
-app.use(require(`./routes/products`))
 
 
 
 /** Error 404 */
 app.use((
-    err,
     req,
     res,
     next) => {
 
-    next(createError(404))
-})
+    const error = new Error("Not Found");
+    error.statusCode = 404;
+    next(error);
+});
+
 
 /** Other Errors */
 app.use(function (

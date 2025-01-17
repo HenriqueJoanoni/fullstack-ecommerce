@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import guitarfootage from './guitarfootage.mp4';
+import guitarFootage from './guitarfootage.mp4';
 import heartIcon from './hearticon.png';
 import shoppingBagIcon from './shoppingbag.png';
 import downArrowIcon from './down-arrow.png';
@@ -174,7 +174,7 @@ export default class Home extends Component {
         <section className="fullscreen-video">
           <div className="video-container">
             <video autoPlay loop muted>
-              <source src={guitarfootage} type="video/mp4" />
+              <source src={guitarFootage} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
 
