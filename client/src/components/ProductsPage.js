@@ -86,7 +86,7 @@ export default class ProductsPage extends Component {
 
     updateSort = val => {
         switch (val){
-            case "name_a_z", "default":
+            case "name_a_z":
                 this.setState({sortField: "product_name", sortDirection: 1})
                 break
             case "name_z_a":
@@ -97,6 +97,7 @@ export default class ProductsPage extends Component {
                 break
             case "price_h_l":
                 this.setState({sortField: "product_price", sortDirection: -1})
+                break
 
         }
     }
