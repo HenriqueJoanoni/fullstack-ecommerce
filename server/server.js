@@ -1,16 +1,20 @@
 /** Server-side global */
 require(`dotenv`).config({path: `./config/.env`})
+require(`./config/db`)
 
-/** Require database */
-require('./config/dbconn')
+
+/** Import Routes */
+const userRoutes = require('./routes/users')
+const productRoutes = require('./routes/products')
+
+
+
 
 /** Express */
 const express = require(`express`)
 const app = express()
 
-/** Import Routes */
-const userRoutes = require('./routes/users')
-const productRoutes = require('./routes/products')
+
 
 /** Middleware */
 app.use(require(`body-parser`).json())
@@ -24,6 +28,8 @@ app.use(productRoutes)
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Connected to port ` + process.env.SERVER_PORT)
 })
+
+
 
 /** Error 404 */
 app.use((
