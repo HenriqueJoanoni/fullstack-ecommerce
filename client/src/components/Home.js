@@ -1,8 +1,8 @@
 import React, {Component, createRef} from 'react';
-import MainHeader from "./MainHeader";
-import {guitarFootage, downArrowIcon, guitarSample} from '../images';
+import {guitarFootage, guitarSample} from '../images';
 import '../css/custom.css';
 import '../scss/custom.scss';
+import Header from "./Header";
 
 export default class Home extends Component {
     constructor(props) {
@@ -29,74 +29,7 @@ export default class Home extends Component {
         return (
             <div className="app-container">
                 <div className="header-container">
-
-                    {/** MAIN DARK HEADER */}
-                    <MainHeader/>
-
-                    <header className="second-header">
-                        <div className="second-header-links">
-                            <a href="#" onClick={this.toggleDropdown}>
-                                New Arrivals{' '}
-                                <img
-                                    className="arrow-down-icon"
-                                    src={downArrowIcon}
-                                    alt="Arrow Down"
-                                />
-                            </a>
-                            <a href="#">
-                                Shop All{' '}
-                                <img
-                                    className="arrow-down-icon"
-                                    src={downArrowIcon}
-                                    alt="Arrow Down"
-                                />
-                            </a>
-                            <a href="#">
-                                Best Sellers{' '}
-                                <img
-                                    className="arrow-down-icon"
-                                    src={downArrowIcon}
-                                    alt="Arrow Down"
-                                />
-                            </a>
-                            <a href="#">
-                                Pages{' '}
-                                <img
-                                    className="arrow-down-icon"
-                                    src={downArrowIcon}
-                                    alt="Arrow Down"
-                                />
-                            </a>
-                            <a href="#">
-                                Sale{' '}
-                                <img
-                                    className="arrow-down-icon"
-                                    src={downArrowIcon}
-                                    alt="Arrow Down"
-                                />
-                            </a>
-                        </div>
-                    </header>
-
-                    {this.state.isDropdownOpen && (
-                        <div className="dropdown-menu">
-                            <div className="first-dropdown">
-                                <div className="dd-header-links">
-                                    <a className="newarrivalstxt" href="#">
-                                        New Arrivals: Hottest Deals
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="second-dropdown">
-                                <div className="dd2-header-links">
-                                    <a href="#">New Arrivals Option 4</a>
-                                    <a href="#">New Arrivals Option 5</a>
-                                    <a href="#">New Arrivals Option 6</a>
-                                    <a href="#">More Options</a>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                  <Header />
                 </div>
 
                 <section className="fullscreen-video">

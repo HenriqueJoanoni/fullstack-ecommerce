@@ -2,7 +2,7 @@ import React, {Component, createRef} from 'react';
 import {heartIcon, shoppingBagIcon, userIcon} from '../images';
 import {Navigate} from "react-router-dom";
 
-export default class MainHeader extends Component {
+export default class MainHeader_old extends Component {
     constructor(props) {
         super(props);
         this.state = {
