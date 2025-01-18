@@ -8,441 +8,435 @@ body {
 }
 
 .header-container {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: rgb(31, 31, 31);
-  display: flex;
-  flex-direction: column;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgb(31, 31, 31);
+    display: flex;
+    flex-direction: column;
 }
 
 /* -----------------firstheader*/
 .first-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1em;
-  padding-left: 5vw; 
-  padding-right: 5vw;
-  color: white;
-  font-size: 2.5em;
-  font-family: "League Spartan", sans-serif;
-  font-weight: 700;
-  height: 0.1vh;
-  position: relative;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    color: white;
+    font-size: 2.5em;
+    font-family: "League Spartan", sans-serif;
+    font-weight: 700;
+    height: 0.1vh;
+    position: relative;
+    cursor: pointer;
 }
 
 .header-links-container {
-  display: flex;
-  gap: 0.3em; 
-  justify-content: flex-start; 
-  flex-shrink: 0;
+    display: flex;
+    gap: 0.3em;
+    justify-content: flex-start;
+    flex-shrink: 0;
 }
-
 
 /*-----------------firstheader links*/
 a {
-  color: #bbbbbb;
-  text-decoration: none;
-  font-size: 0.36em;
-  font-weight:600;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease;
+    color: #bbbbbb;
+    text-decoration: none;
+    font-size: 0.36em;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
 }
 
 a:hover {
-  text-decoration: none;
-  color: #e9e9e9;
+    text-decoration: none;
+    color: #e9e9e9;
 }
 
 .arrow-down-icon {
-  width: 8px;
-  height: 8px;
-  margin-left:4px;
+    width: 8px;
+    height: 8px;
+    margin-left: 4px;
 }
 
 /* --------------firestrings*/
 #firestrings-logo {
-  font-family: "Cormorant SC", serif;
-  font-size: 0.8em;
-  font-weight: bolder;
-  color: #d6d6d6;
-  text-align: center;
-  letter-spacing: 2px;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); 
+    font-family: "Cormorant SC", serif;
+    font-size: 0.8em;
+    font-weight: bolder;
+    color: #d6d6d6;
+    text-align: center;
+    letter-spacing: 2px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /*---------------search input*/
 
 .search-container {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  padding-right: 2vw;
-  right: 5vw; 
-  top: 50%; 
-  transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    position: absolute;
+    padding-right: 2vw;
+    right: 5vw;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .search-input {
-  width: 12vw;
-  border-radius: 4px;
-  font-size: 0.34em;
-  background-color: #c4c4c4;
-  height: 3vh;
-  margin-left: 10px;
-  margin-right: 3.5vw;
-  transition: width 0.3s ease; 
-  padding-left: 0.5vw;
-  border: none;
+    width: 12vw;
+    border-radius: 4px;
+    font-size: 0.34em;
+    background-color: #c4c4c4;
+    height: 3vh;
+    margin-left: 10px;
+    margin-right: 3.5vw;
+    transition: width 0.3s ease;
+    padding-left: 0.5vw;
+    border: none;
 }
 
 .search-input::placeholder {
-  color: #1e1e1e;
-  padding-left: 0.3vw;
+    color: #1e1e1e;
+    padding-left: 0.3vw;
 }
 
 .search-input:focus {
-  outline: none;
+    outline: none;
 }
 
 .search-input.expanded {
-  width: 20vw;
+    width: 20vw;
 }
 
 /* -----------heart and shopping bag icons*/
 .icon-container {
-  display: flex;
-  gap: 0.3em;
-  align-items: center;
-  justify-content: flex-end;
+    display: flex;
+    gap: 0.3em;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .icon-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header-icon {
-  width: 1.5vw;
-  height: auto;
-  cursor: pointer;
+    width: 1.5vw;
+    height: auto;
+    cursor: pointer;
 }
 
 /* -----------------2nd sticky header*/
 .second-header {
-  background-color: #bbbbbb;
-  padding: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #333;
-  gap: 1vw;
-  height: 1vh;
+    background-color: #bbbbbb;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #333;
+    gap: 1vw;
+    height: 1vh;
 }
 
 .second-header-links {
-  display: flex;
-  gap: 1.5em;
-  align-items: center;
+    display: flex;
+    gap: 1.5em;
+    align-items: center;
 }
 
 .second-header-links a {
-  color: #333;
-  text-decoration: none;
-  font-size: 1em;
-  font-family: 'Poppins', sans-serif;
+    color: #333;
+    text-decoration: none;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
 }
 
 .second-header-links a:hover {
-  color: #6e6e6e;
+    color: #6e6e6e;
 }
 
 .arrow-down {
-  font-size: 0.8em;
-  margin-left: 0.3em;
+    font-size: 0.8em;
+    margin-left: 0.3em;
 }
 
-
 .fullscreen-video {
-  position: fixed; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; 
-  overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
 }
 
 /* -------------video*/
 .video-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .video-container video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: center center; 
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
 }
 
 /* ----------------the text over the video*/
 .video-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  text-align: center;
-  color: white;
-  z-index: 20; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 20;
 }
 
 .overlay-text {
-  font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .exclusive-text {
-  font-size: 1.5em;
-  font-weight: 600;
-  margin-bottom: 0.5em;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
 }
 
 .overlay-text h1 {
-  font-size: 3.5em;
-  font-weight: 700;
-  margin: 0;
+    font-size: 3.5em;
+    font-weight: 700;
+    margin: 0;
 }
 
 /* --------------discover button*/
 .discover-button {
-  background-color: transparent;
-  color: white; 
-  padding: 1rem 2rem;
-  border: 2px solid white; 
-  font-size: 1.2em;
-  margin-top: 1.5em;
-  cursor: pointer;
-  transition: background-color 0.5s ease, border-color 0.5s ease; 
-  z-index:30;
+    background-color: transparent;
+    color: white;
+    padding: 1rem 2rem;
+    border: 2px solid white;
+    font-size: 1.2em;
+    margin-top: 1.5em;
+    cursor: pointer;
+    transition: background-color 0.5s ease, border-color 0.5s ease;
+    z-index: 30;
 }
 
 .discover-button:hover {
-  background-color: white; 
-  color: #333;
-  border-color: #333; 
-  opacity: 0.8; 
+    background-color: white;
+    color: #333;
+    border-color: #333;
+    opacity: 0.8;
 }
 
 /*-------------content part (div)*/
 .content {
-  padding: 2em;
-  background-color: #f4f4f4;
-  z-index: 999; 
-  position: relative;
-  margin-top: 100vh; 
+    padding: 2em;
+    background-color: #f4f4f4;
+    z-index: 999;
+    position: relative;
+    margin-top: 100vh;
 }
 
 .app-container {
-  z-index: 1; 
-  position: relative;
+    z-index: 1;
+    position: relative;
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2em;
-  background-color: #f4f4f4;
-  z-index: 999;
-  position: relative;
-  margin-top: 100vh;
-  text-align: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    background-color: #f4f4f4;
+    z-index: 999;
+    position: relative;
+    margin-top: 100vh;
+    text-align: center;
 }
 
-
-
 .content h1 {
-  font-size: 2em; 
-  font-weight: bold;
-  margin: 0;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0;
 }
 
 /*----------------------cards*/
 
 .card-section {
-  padding: 2em;
-  background-color: #848484;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; 
+    padding: 2em;
+    background-color: #848484;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card-container {
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 1em; 
-  justify-items: center; 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
+    justify-items: center;
 }
 
 .card {
-  background-color: rgb(44, 44, 44);
-  color: white;
-  width: 100%; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  max-height: 25em;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-height: 25em;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  background-color: rgba(35, 35, 35, 0.603);
-  transform: translateY(-5px);
+    background-color: rgba(35, 35, 35, 0.603);
+    transform: translateY(-5px);
 }
 
 .card-image img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
 .card-content {
-  padding: 1em;
+    padding: 1em;
 }
 
 .card-content h2 {
-  font-size: 1.5em;
-  margin-bottom: 0.5em;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
 }
 
 .card-content p {
-  font-size: 1em;
-  color: #bbbbbb;
+    font-size: 1em;
+    color: #bbbbbb;
 }
-
-
 
 /*-----------------dropdown*/
 .dropdown-menu {
-  position: absolute;
-  top: 100%; 
-  left: 0;
-  right: 0;
-  background-color: #cbcbcb;
-  z-index: 10;
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.5s ease, border-color 0.5s ease;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #333;
-  gap: 1vw;
-  height: auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #cbcbcb;
+    z-index: 10;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.5s ease, border-color 0.5s ease;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #333;
+    gap: 1vw;
+    height: auto;
 }
 
 .first-dropdown,
 .second-dropdown {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8em;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+    width: 100%;
 }
 
 .dd-header-links {
-  display: flex;
-  gap: 1.5em;
-  align-items: center;
+    display: flex;
+    gap: 1.5em;
+    align-items: center;
 }
 
- .dd-header-links a {
-  color: #333;
-  text-decoration: none;
-  font-size: 1em;
-  font-family: 'Poppins', sans-serif;
-  padding: 0.5em;
-  margin: 0.2em 0;
-} 
+.dd-header-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    padding: 0.5em;
+    margin: 0.2em 0;
+}
 
-.newarrivalstxt{
-  padding-right:27vw !important;
-} 
+.newarrivalstxt {
+    padding-right: 27vw !important;
+}
 
 .dd2-header-links a {
-  color: #5a5a5a;
-  text-decoration: none;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: 'Poppins', sans-serif;
-  padding: 0.5em;
-  margin-right: 1.2vw;}
+    color: #5a5a5a;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    padding: 0.5em;
+    margin-right: 1.2vw;
+}
 
 #searchToolsContainer {
-  background-color: rgba(31, 31, 31, 0.8);
-  width: 80%;
-  min-height: 200px;
-  color: #bbbbbb;
-  margin: auto;
-  margin-block: 100px 30px;
-  padding: 20px 50px;
-  border-radius: 10px;
+    background-color: rgba(31, 31, 31, 0.8);
+    width: 80%;
+    min-height: 200px;
+    color: #bbbbbb;
+    margin: auto;
+    margin-block: 100px 30px;
+    padding: 20px 50px;
+    border-radius: 10px;
 
 }
 
 #searchToolsContainer h3 {
-  font-size: 1.8rem;
+    font-size: 1.8rem;
 
 }
 
 #searchBar input {
-  padding: 4px 10px;
-  min-width: 200px;
-  font-size: 0.9rem;
-  border-radius: 4px;
-  background-color: #c4c4c4;
-  outline: none;
-  border: none;
+    padding: 4px 10px;
+    min-width: 200px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    background-color: #c4c4c4;
+    outline: none;
+    border: none;
 }
 
 #searchBar input::placeholder {
-  color: #1e1e1e;
+    color: #1e1e1e;
 }
 
 #productsDisplayPanel {
-  width: 95%;
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+    width: 95%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-
 .productCard {
-  max-width: 400px;
-  margin: 20px;
+    max-width: 400px;
+    margin: 20px;
 }
 
 

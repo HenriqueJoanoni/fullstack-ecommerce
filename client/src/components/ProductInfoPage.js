@@ -1,16 +1,12 @@
 import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import Header from "./Header"
-import guitarsample from "./guitarsample.jpg"
-import gibson from "./gibson.jpg"
+import {guitarSample, gibson, leftArrowIcon, rightArrowIcon, returnArrowIcon} from '../images';
 import axios from "axios"
-import { SERVER_HOST } from "../config/global_constants"
-
-
-
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class ProductInfoPage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.testObject = {
@@ -18,11 +14,10 @@ export default class ProductInfoPage extends Component {
             name: "Epiphone Les Paul Special II",
             description: "A light, crisp sounding guitar, ideal for beginners and experienced players alike",
             price: 1500,
-            mainImage: "./guitarsample.jpg",
-            photos: [guitarsample, gibson],
+            mainImage: "./guitarSample.jpg",
+            photos: [guitarSample, gibson],
             brand: "Epiphone Les Paul"
         }
-        
 
         this.state = {
             slideshowIndex: 0,
@@ -30,42 +25,46 @@ export default class ProductInfoPage extends Component {
         }
     }
 
-
-    componentDidMount(){
+    componentDidMount() {
         axios.get(`${SERVER_HOST}/products/${this.props.match.params._id}`)
-        .then(res => {
-            if (res.data){
-                //console.log("found")
-                this.setState({product: res.data})
-            } else {
-                console.log("not found")
-            }
-        })
+            .then(res => {
+                if (res.data) {
+                    //console.log("found")
+                    this.setState({product: res.data})
+                } else {
+                    console.log("not found")
+                }
+            })
     }
 
-    render(){
+    render() {
         return (
             <>
-                <Header />
+                <Header/>
                 <div className="productInfoContainer">
                     <span>
                         <Link to="/products">
-                            <img className="returnArrow" src="../returnarrow.png" />
+                            <img className="returnArrow" src={returnArrowIcon}/>
                         </Link>
                         <h2>{typeof this.state.product.product_name !== "undefined" ? this.state.product.product_name : "unknown"}</h2>
                     </span>
                     <div className="productInfo">
                         <div className="slideshow">
-                            <button type="button" onClick={()=>{this.setState({slideshowIndex: this.state.slideshowIndex === 0 ? this.testObject.photos.length-1 : this.state.slideshowIndex - 1})}}>
-                            <img className="slideshowArrow" src="../leftarrow.png" />
+                            <button type="button" onClick={() => {
+                                this.setState({slideshowIndex: this.state.slideshowIndex === 0 ? this.testObject.photos.length - 1 : this.state.slideshowIndex - 1})
+                            }}>
+                                <img className="slideshowArrow" src={leftArrowIcon}/>
                             </button>
 
-                            <img className="slideshowImage" src={typeof this.testObject.photos[this.state.slideshowIndex] !== "undefined"
-                                ? this.testObject.photos[this.state.slideshowIndex]
-                                : ""
-                            }/>
-                            <button type="button" onClick={()=>{this.setState({slideshowIndex: parseInt(this.state.slideshowIndex + 1) % this.testObject.photos.length})}}>
-                            <img className="slideshowArrow" src="../rightarrow.png" />
+                            <img className="slideshowImage"
+                                 src={typeof this.testObject.photos[this.state.slideshowIndex] !== "undefined"
+                                     ? this.testObject.photos[this.state.slideshowIndex]
+                                     : ""
+                                 }/>
+                            <button type="button" onClick={() => {
+                                this.setState({slideshowIndex: parseInt(this.state.slideshowIndex + 1) % this.testObject.photos.length})
+                            }}>
+                                <img className="slideshowArrow" src={rightArrowIcon}/>
                             </button>
                         </div>
                         <div className="productStats">

@@ -16,8 +16,8 @@ export default class ProductsPage extends Component {
                 name: "first acoustic",
                 description: "this is a description",
                 price: 2500,
-                mainImage: "./guitarsample.jpg",
-                photos: ["./guitarsample.jpg"],
+                mainImage: "./guitarSample.jpg",
+                photos: ["./guitarSample.jpg"],
                 tags: ["acoustic"]
             },
             {
@@ -25,8 +25,8 @@ export default class ProductsPage extends Component {
                 name: "second electric",
                 description: "and this is another description",
                 price: 1700,
-                mainImage: "./guitarsample.jpg",
-                photos: ["./guitarsample.jpg"],
+                mainImage: "./guitarSample.jpg",
+                photos: ["./guitarSample.jpg"],
                 tags: ["electric"]
             },
             {
@@ -34,8 +34,8 @@ export default class ProductsPage extends Component {
                 name: "third bass",
                 description: "third this is a description",
                 price: 1200,
-                mainImage: "./guitarsample.jpg",
-                photos: ["./guitarsample.jpg"],
+                mainImage: "./guitarSample.jpg",
+                photos: ["./guitarSample.jpg"],
                 tags: ["bass"]
             },
             {
@@ -43,8 +43,8 @@ export default class ProductsPage extends Component {
                 name: "fourth electroacoustic guitar1",
                 description: "fourth this is yet another description",
                 price: 2100,
-                mainImage: "./guitarsample.jpg",
-                photos: ["./guitarsample.jpg"],
+                mainImage: "./guitarSample.jpg",
+                photos: ["./guitarSample.jpg"],
                 tags: ["electroacoustic"]
             }
         ]

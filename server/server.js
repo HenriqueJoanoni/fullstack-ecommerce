@@ -1,13 +1,11 @@
 /** Server-side global */
 require(`dotenv`).config({path: `./config/.env`})
-require(`./config/db`)
+require(`./config/dbconn`)
 
 
 /** Import Routes */
 const userRoutes = require('./routes/users')
 const productRoutes = require('./routes/products')
-
-
 
 
 /** Express */
