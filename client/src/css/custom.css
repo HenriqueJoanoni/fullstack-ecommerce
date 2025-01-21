@@ -1,10 +1,10 @@
 body {
-  font-family: Arial, sans-serif;
-  color: #000000;
-  background-color: #6a696b;
-  box-sizing: border-box;
-  margin: 0;
-  overflow: auto;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    background-color: #6a696b;
+    box-sizing: border-box;
+    margin: 0;
+    overflow: auto;
 }
 
 .header-container {
@@ -18,19 +18,18 @@ body {
 
 /* -----------------firstheader*/
 .first-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1em;
-  padding-left: 5vw; 
-  padding-right: 5vw;
-  color: white;
-  font-size: 2.5em;
-  font-family: "League Spartan", sans-serif;
-  font-weight: 700;
-  height: 0.1vh;
-  position: relative;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    color: white;
+    font-size: 2.5em;
+    font-family: "League Spartan", sans-serif;
+    font-weight: 700;
+    height: 0.1vh;
+    position: relative;
 }
 
 .header-links-container {
@@ -75,6 +74,7 @@ a:hover {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    cursor: pointer;
 }
 
 /*---------------search input*/
@@ -82,11 +82,12 @@ a:hover {
 .search-container {
     display: flex;
     align-items: center;
-    position: absolute;
-    padding-right: 2vw;
-    right: 5vw;
-    top: 50%;
+    position: relative;
+    right: 2vw;
+    top: 100%;
+    margin-left: 40vw;
     transform: translateY(-50%);
+    margin-top: 3vh;
 }
 
 .search-input {
@@ -95,24 +96,17 @@ a:hover {
     font-size: 0.34em;
     background-color: #c4c4c4;
     height: 3vh;
-    margin-left: 10px;
-    margin-right: 3.5vw;
-    transition: width 0.3s ease;
-    padding-left: 0.5vw;
+    margin-left: 9vw;
     border: none;
+    padding-left: 0.5vw;
 }
 
 .search-input::placeholder {
     color: #1e1e1e;
-    padding-left: 0.3vw;
 }
 
 .search-input:focus {
     outline: none;
-}
-
-.search-input.expanded {
-    width: 20vw;
 }
 
 /* -----------heart and shopping bag icons*/
@@ -121,6 +115,7 @@ a:hover {
     gap: 0.3em;
     align-items: center;
     justify-content: flex-end;
+    z-index: 10;
 }
 
 .icon-wrapper {
@@ -281,7 +276,6 @@ a:hover {
 }
 
 /*----------------------cards*/
-
 .card-section {
     padding: 2em;
     background-color: #848484;
@@ -438,5 +432,3 @@ a:hover {
     max-width: 400px;
     margin: 20px;
 }
-
-

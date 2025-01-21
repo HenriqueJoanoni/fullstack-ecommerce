@@ -45,7 +45,7 @@ export default class ProductInfoPage extends Component {
                 <div className="productInfoContainer">
                     <span>
                         <Link to="/products">
-                            <img className="returnArrow" src={returnArrowIcon}/>
+                            <img className="returnArrow" src={returnArrowIcon} alt="return icon"/>
                         </Link>
                         <h2>{typeof this.state.product.product_name !== "undefined" ? this.state.product.product_name : "unknown"}</h2>
                     </span>
@@ -54,18 +54,18 @@ export default class ProductInfoPage extends Component {
                             <button type="button" onClick={() => {
                                 this.setState({slideshowIndex: this.state.slideshowIndex === 0 ? this.testObject.photos.length - 1 : this.state.slideshowIndex - 1})
                             }}>
-                                <img className="slideshowArrow" src={leftArrowIcon}/>
+                                <img className="slideshowArrow" src={leftArrowIcon} alt="left arrow icon"/>
                             </button>
 
                             <img className="slideshowImage"
                                  src={typeof this.testObject.photos[this.state.slideshowIndex] !== "undefined"
                                      ? this.testObject.photos[this.state.slideshowIndex]
                                      : ""
-                                 }/>
+                                 } alt="slideshow content"/>
                             <button type="button" onClick={() => {
                                 this.setState({slideshowIndex: parseInt(this.state.slideshowIndex + 1) % this.testObject.photos.length})
                             }}>
-                                <img className="slideshowArrow" src={rightArrowIcon}/>
+                                <img className="slideshowArrow" src={rightArrowIcon} alt="right arrow" />
                             </button>
                         </div>
                         <div className="productStats">
