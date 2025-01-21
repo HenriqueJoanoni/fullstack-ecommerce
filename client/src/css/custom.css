@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   color: #000000;
   background-color: #6a696b;
+  box-sizing: border-box;
   margin: 0;
   overflow: auto;
 }
@@ -394,4 +395,49 @@ a:hover {
   font-family: 'Poppins', sans-serif;
   padding: 0.5em;
   margin-right: 1.2vw;
+}
+
+#searchToolsContainer {
+  background-color: rgba(31, 31, 31, 0.8);
+  width: 80%;
+  min-height: 200px;
+  color: #bbbbbb;
+  margin: auto;
+  margin-block: 100px 30px;
+  padding: 20px 50px;
+  border-radius: 10px;
+
+}
+
+#searchToolsContainer h3 {
+  font-size: 1.8rem;
+
+}
+
+#searchBar input {
+  padding: 4px 10px;
+  min-width: 200px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  background-color: #c4c4c4;
+  outline: none;
+  border: none;
+}
+
+#searchBar input::placeholder {
+  color: #1e1e1e;
+}
+
+#productsDisplayPanel {
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.productCard {
+  max-width: 400px;
+  margin: 20px;
 }
