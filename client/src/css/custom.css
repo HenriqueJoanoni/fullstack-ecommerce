@@ -18,7 +18,6 @@ body {
 
 /* -----------------firstheader*/
 .first-header {
-<<<<<<< HEAD
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,21 +30,7 @@ body {
   font-weight: 700;
   height: 0.1vh;
   position: relative;
-=======
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1em;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    color: white;
-    font-size: 2.5em;
-    font-family: "League Spartan", sans-serif;
-    font-weight: 700;
-    height: 0.1vh;
-    position: relative;
-    cursor: pointer;
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
+  cursor: pointer;
 }
 
 .header-links-container {
@@ -78,21 +63,6 @@ a:hover {
 
 /* --------------firestrings*/
 #firestrings-logo {
-<<<<<<< HEAD
-  font-family: "Cormorant SC", serif;
-  font-size: 0.8em;
-  font-weight: bolder;
-  color: #d6d6d6;
-  text-align: center;
-  letter-spacing: 2px;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); 
-  cursor:pointer;
-=======
     font-family: "Cormorant SC", serif;
     font-size: 0.8em;
     font-weight: bolder;
@@ -105,37 +75,11 @@ a:hover {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 }
 
 /*---------------search input*/
 
 .search-container {
-<<<<<<< HEAD
-  display: flex;
-  align-items: center;
-  position: relative;
-  right:2vw;
-  top: 100%; 
-  margin-left: 40vw;
-  transform: translateY(-50%);
-  margin-top:3vh;
-}
-
-.search-input {
-  width: 12vw;
-  border-radius: 4px;
-  font-size: 0.34em;
-  background-color: #c4c4c4;
-  height: 3vh;
-  margin-left: 9vw;
-  border: none;
-  padding-left: 0.5vw; 
-}
-
-.search-input::placeholder {
-  color: #1e1e1e;
-=======
     display: flex;
     align-items: center;
     position: absolute;
@@ -161,23 +105,12 @@ a:hover {
 .search-input::placeholder {
     color: #1e1e1e;
     padding-left: 0.3vw;
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 }
 
 .search-input:focus {
     outline: none;
 }
 
-<<<<<<< HEAD
-
-/* -----------heart and shopping bag icons*/
-.icon-container {
-  display: flex;
-  gap: 0.3em;
-  align-items: center;
-  justify-content: flex-end;
-  z-index:10;
-=======
 .search-input.expanded {
     width: 20vw;
 }
@@ -188,7 +121,6 @@ a:hover {
     gap: 0.3em;
     align-items: center;
     justify-content: flex-end;
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 }
 
 .icon-wrapper {
@@ -407,24 +339,6 @@ a:hover {
 
 /*-----------------dropdown*/
 .dropdown-menu {
-<<<<<<< HEAD
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #cbcbcb;
-  z-index: 10;
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.5s ease, border-color 0.5s ease;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #333;
-  gap: 1vw;
-  height: auto;
-=======
     position: absolute;
     top: 100%;
     left: 0;
@@ -441,7 +355,6 @@ a:hover {
     color: #333;
     gap: 1vw;
     height: auto;
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 }
 
 .first-dropdown,
@@ -460,28 +373,6 @@ a:hover {
 }
 
 .dd-header-links a {
-<<<<<<< HEAD
-  color: #333;
-  text-decoration: none;
-  font-size: 1em;
-  font-family: 'Poppins', sans-serif;
-  padding: 0.5em;
-  margin: 0.2em 0;
-}
-
-.newarrivalstxt {
-  padding-right: 27vw !important;
-}
-
-.dd2-header-links a {
-  color: #5a5a5a;
-  text-decoration: none;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: 'Poppins', sans-serif;
-  padding: 0.5em;
-  margin-right: 1.2vw;
-=======
     color: #333;
     text-decoration: none;
     font-size: 1em;
@@ -502,7 +393,6 @@ a:hover {
     font-family: 'Poppins', sans-serif;
     padding: 0.5em;
     margin-right: 1.2vw;
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 }
 
 #searchToolsContainer {
@@ -545,14 +435,8 @@ a:hover {
 }
 
 .productCard {
-<<<<<<< HEAD
-  max-width: 400px;
-  margin: 20px;
-}
-=======
     max-width: 400px;
     margin: 20px;
 }
 
 
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)

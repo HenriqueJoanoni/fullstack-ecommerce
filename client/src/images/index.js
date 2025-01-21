@@ -2,11 +2,7 @@
 import guitarFootage from './guitarFootage.mp4';
 import heartIcon from './heartIcon.png';
 import shoppingBagIcon from './shoppingBag.png';
-<<<<<<< HEAD
-import downArrowIcon from './down-arrow.png';
-=======
 import downArrowIcon from './downArrow.png';
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
 import guitarSample from './guitarSample.jpg';
 import userIcon from './user.png';
 import gibson from './gibson.jpg';

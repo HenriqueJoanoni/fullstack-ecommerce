@@ -15,13 +15,10 @@ export default class ProductInfoPage extends Component {
             description: "A light, crisp sounding guitar, ideal for beginners and experienced players alike",
             price: 1500,
             mainImage: "./guitarSample.jpg",
-<<<<<<< HEAD
-            photos: [guitarsample, gibson],
-=======
             photos: [guitarSample, gibson],
->>>>>>> 4940ba2 (refactor(login): Refactoring login page and fixing project structure)
             brand: "Epiphone Les Paul"
         }
+        
 
         this.state = {
             slideshowIndex: 0,
