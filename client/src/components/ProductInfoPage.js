@@ -74,7 +74,7 @@ export default class ProductInfoPage extends Component {
                             <p>Brand: {typeof this.state.product.product_brand !== "undefined" ? this.state.product.product_brand : "unknown"}</p>
                             <p>Other Info:</p>
 
-                            <button type="button">Add to cart</button>
+                            <button type="button" onClick={()=>{this.props.updateCart(this.state.product._id, 1)}}>Add to cart</button>
                         </div>
                     </div>
 
