@@ -14,10 +14,8 @@ export default class App extends Component {
                     <Route exact path="/products" component={ProductsPage} />
                     <Route exact path="/products/:_id" component={ProductInfoPage} />
                     <Route exact path="/login" component={LoginForm} />
-                    {/*<Route exact path="/register" component={RegisterForm} />*/}
                 </Switch>
             </BrowserRouter>
-            /* <Home/> */
         )
     }
 }
