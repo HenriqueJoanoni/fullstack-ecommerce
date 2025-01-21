@@ -3,6 +3,7 @@ import {BrowserRouter, Switch, Route} from "react-router-dom"
 import Home from "./components/Home";
 import ProductsPage from "./components/ProductsPage";
 import ProductInfoPage from "./components/ProductInfoPage"
+import LoginForm from "./components/LoginForm";
 
 export default class App extends Component {
     constructor(props){
@@ -47,13 +48,10 @@ export default class App extends Component {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/products" component={ProductsPage} />
-                    <Route exact path="/products/:_id" render={(props)=><ProductInfoPage {...props} cart={this.state.cart} updateCart={this.updateCart}/>}/>      
-                    {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
+                    <Route exact path="/products/:_id" component={ProductInfoPage} />
+                    <Route exact path="/login" component={LoginForm} />
                 </Switch>
             </BrowserRouter>
-            /* <Home/> */
-            
-
         )
     }
 }
