@@ -22,9 +22,20 @@ After clone the project, open your terminal / cmd:
 Open another tab of your terminal / cmd:
 > cd client
 
-> npm install 
+> npm install JWT_PRIVATE_KEY
 
 Wait the installation to finnish, this will create your `node_modules` folder.
+
+## Create your .pem file
+- Go to [this link](https://slproweb.com/products/Win32OpenSSL.html) and download the most recent version of OpenSSL and
+install it on your pc.
+- Assuming  OpenSSL has been installed in the folder `C:\OpenSSL`, we need to run the following commands
+> - cd C:/OpenSSL/bin
+>
+> - ./OpenSSL genrsa -des3 -out C:\OpenSSL\jwt_private_key.pem 2048
+- Move your generated key to under the `server/config` folder of the project
+- On your .env file update the constant `JWT_PRIVATE_KEY` to `JWT_PRIVATE_KEY = './config/jwt_private_key.pem'`
+
 
 ## Running The Project
 

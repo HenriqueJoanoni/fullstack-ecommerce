@@ -3,6 +3,8 @@ const router = express.Router()
 const User = require("../models/User")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const fs = require("fs")
+const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY, 'utf8')
 
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
@@ -34,7 +36,7 @@ router.post('/register', async (req, res) => {
                 email: newUser.user_email,
                 accessLevel: newUser.user_access_level,
             },
-            process.env.JWT_PRIVATE_KEY,
+            JWT_PRIVATE_KEY,
             {algorithm: "HS256", expiresIn: process.env.JWT_EXPIRY}
         )
         await newUser.save()
@@ -74,7 +76,7 @@ router.post("/login", async (req, res) => {
                 email: user.user_email,
                 accessLevel: user.user_access_level,
             },
-            process.env.JWT_PRIVATE_KEY,
+            JWT_PRIVATE_KEY,
             {
                 algorithm: "HS256",
                 expiresIn: process.env.JWT_EXPIRY,

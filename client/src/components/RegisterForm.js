@@ -10,7 +10,8 @@ export default class RegisterForm extends Component {
             firstName: "",
             lastName: "",
             email: "",
-            password: ""
+            password: "",
+            confirm_password: "",
         }
     }
 
@@ -28,6 +29,7 @@ export default class RegisterForm extends Component {
             lastName: this.state.last_name,
             email: this.state.email,
             password: this.state.password,
+            confirm_password: this.state.confirm_password,
             redirect: localStorage.getItem("redirectTo") || "/login"
         }
 
