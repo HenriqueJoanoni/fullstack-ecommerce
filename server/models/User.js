@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     user_password: {type: String, required: true},
     user_profile_picture: {type: String},
     user_access_level: {type: Number},
+    token: {type: String, default: ""},
 }, {
     collection: 'users'
 })
