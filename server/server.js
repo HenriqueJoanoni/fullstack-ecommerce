@@ -1,29 +1,34 @@
 /** Server-side global */
 require(`dotenv`).config({path: `./config/.env`})
+require(`./config/dbconn`)
 
-/** Require database */
-require('./config/dbconn')
-
-/** Express */
-const express = require(`express`)
-const app = express()
 
 /** Import Routes */
 const userRoutes = require('./routes/users')
 const productRoutes = require('./routes/products')
 
+
+/** Express */
+const express = require(`express`)
+const app = express()
+app.use(express.json())
+
+
 /** Middleware */
 app.use(require(`body-parser`).json())
 app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
+
 
 /** Routes */
 app.use(userRoutes)
 app.use(productRoutes)
 
+
 /** Start the Server */
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Connected to port ` + process.env.SERVER_PORT)
 })
+
 
 /** Error 404 */
 app.use((
@@ -31,10 +36,10 @@ app.use((
     res,
     next) => {
 
-    const error = new Error("Not Found");
-    error.statusCode = 404;
-    next(error);
-});
+    const error = new Error("Not Found")
+    error.statusCode = 404
+    next(error)
+})
 
 
 /** Other Errors */

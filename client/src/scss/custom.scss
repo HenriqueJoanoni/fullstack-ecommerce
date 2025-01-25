@@ -1,51 +1,238 @@
-.header-links-container a {
-    position: relative; 
-    text-decoration: none; 
-    padding: 10px 15px; 
-  }
-  
-  .header-links-container a.active {
-    // color:#fff;
+/** BASE COLORS */
+$base-color1: #2D3250;
+$base-color2: #7077A1;
+$important-text-color1: #333;
+$default-text-color: #555;
+$default-background-color: #2c2c2c;
+$second-header-color: #bbbbbb;
+
+/** RGB COLORS */
+$rgba1: rgba(0, 0, 0, 0.12);
+$rgba2: rgba(0, 0, 0, 0.1);
+$rgba3: rgba(0, 0, 0, 0.3);
+
+@mixin box-shadow($color1, $color2) {
+  box-shadow: 0 8px 20px $color1, 0 3px 6px $color2;
 }
-  
-  .header-links-container a.active::before {
-    content: ''; 
-    position: absolute;
-    top: 50%; 
-    left: 0;
-    width: 100%; 
-    height: 80%; 
-    background-color: black; 
-    border-radius: 25px; 
-    transform: translateY(-50%); 
-    z-index: -1; 
-  }
-  
 
-  $secondheader-color: #bbbbbb;
+@mixin transition-effect($property, $duration: 0.5s) {
+  transition: $property $duration ease-in-out;
+}
 
-  .first-header {
-    position: relative;
-  
-    .header-links-container {
-      a {
-        position: relative;
-  
-        &.active {
-          padding-bottom: 5px;
-  
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: -24px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background-color: $secondheader-color;
-            border-radius:20px;
-          }
+* {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.header-links-container a {
+  position: relative;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.header-links-container a.active {
+  // color:#fff;
+}
+
+.header-links-container a.active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  background-color: black;
+  border-radius: 25px;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.first-header {
+  position: relative;
+
+  .header-links-container {
+    a {
+      position: relative;
+
+      &.active {
+        padding-bottom: 5px;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -24px;
+          left: 0;
+          width: 100%;
+          height: 6px;
+          background-color: $second-header-color;
+          border-radius: 20px;
         }
       }
     }
   }
-  
+}
+
+/* product info page */
+
+.productInfoContainer {
+  width: 80%;
+  margin: 50px auto;
+  background-color: rgba(31, 31, 31, 0.8);
+  min-height: 500px;
+  padding: 20px;
+  color: #eee;
+  border-radius: 10px;
+
+  span {
+    width: 50%;
+    display: flex;
+    align-items: center;
+
+    .returnArrow {
+      width: 25px;
+      height: 25px;
+      margin-inline: 50px;
+
+    }
+  }
+
+  .productInfo {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: auto;
+
+    .slideshow {
+      width: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .slideshowImage {
+        width: 450px;
+        aspect-ratio: 1;
+        margin-inline: 10px;
+
+      }
+
+      .slideshowArrow {
+        width: 25px;
+      }
+    }
+  }
+}
+
+/* login page */
+.login-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("../images/pexels-edwardeyer-811838.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-container {
+  width: 400px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  color: $important-text-color1;
+  font-size: 1.8rem;
+}
+
+.welcome-text {
+  margin-bottom: 30px;
+  color: $default-text-color;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: $default-text-color;
+    font-weight: bold;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  .form-control:focus {
+    border-color: $base-color2;
+    outline: none;
+    box-shadow: 0 0 4px rgba(110, 142, 251, 0.5);
+  }
+}
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 5px 0 5px;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.btn-primary {
+  background-color: $default-background-color;
+
+  &:hover {
+    background-color: #5b5b66;
+  }
+}
+
+.btn-secondary {
+  background-color: $base-color2;
+
+  &:hover {
+    color: $base-color1;
+  }
+}
+
+.register-link {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: $default-text-color;
+
+  a {
+    color: $important-text-color1;
+    text-decoration: none;
+    font-size: 1rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.demo-info {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: $default-text-color;
+  text-align: left;
+}
