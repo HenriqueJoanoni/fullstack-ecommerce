@@ -180,11 +180,10 @@ $rgba3: rgba(0, 0, 0, 0.3);
   }
 }
 
-.btn-primary {
+.btn {
   display: inline-block;
   width: 100%;
   padding: 10px 15px;
-  background-color: $default-background-color;
   border: none;
   color: #fff;
   font-size: 1rem;
@@ -192,10 +191,26 @@ $rgba3: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   transition: all 0.3s ease;
   cursor: pointer;
+  margin: 5px 0 5px;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.btn-primary {
+  background-color: $default-background-color;
 
   &:hover {
     background-color: #5b5b66;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.btn-secondary {
+  background-color: $base-color2;
+
+  &:hover {
+    color: $base-color1;
   }
 }
 
