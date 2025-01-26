@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 export default class ProductCard extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
     }
 
 
-    render(){
+    render() {
         return (
             <div className="card">
                 <div className="card-image">
-                    <img src={this.props.productImage} alt="Guitar Sample" />
+                    <img src={this.props.productImage} alt="Guitar Sample"/>
                 </div>
                 <div className="card-content">
                     <h2>Guitar 5</h2>

@@ -5,6 +5,7 @@ import ProductsPage from "./components/ProductsPage";
 import ProductInfoPage from "./components/ProductInfoPage"
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import ContactForm from "./components/ContactForm";
 
 export default class App extends Component {
     render() {
@@ -16,6 +17,7 @@ export default class App extends Component {
                     <Route exact path="/products/:_id" component={ProductInfoPage} />
                     <Route exact path="/login" component={LoginForm} />
                     <Route exact path="/register" component={RegisterForm} />
+                    <Route exact path="/contact" component={ContactForm} />
                 </Switch>
             </BrowserRouter>
         )

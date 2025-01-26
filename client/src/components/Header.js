@@ -2,7 +2,7 @@ import React, {Component, createRef} from "react";
 import {heartIcon, shoppingBagIcon, userIcon, downArrowIcon} from '../images';
 import '../css/custom.css';
 import '../scss/custom.scss';
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export default class Header extends Component {
     constructor(props) {
@@ -61,10 +61,10 @@ export default class Header extends Component {
             <div className="header-container">
                 <header className="first-header">
                     <div className="header-links-container">
-                        <a href="#home" className="active">Discover</a>
-                        <a href="#instruments">Instruments</a>
-                        <a href="#brands">Brands</a>
-                        <a href="#contact">Contact</a>
+                        <NavLink exact to="/" activeClassName="active">Discover</NavLink>
+                        <NavLink to="/products" activeClassName="active">Instruments</NavLink>
+                        {/*<NavLink to="/#brands" activeClassName="active">Brands</NavLink>*/}
+                        <NavLink to="/contact" activeClassName="active">Contact</NavLink>
                     </div>
 
                     <div id="firestrings-logo" onClick={this.handleLogoClick}>
