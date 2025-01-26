@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from "axios"
 import Header from "./Header";
 import SearchTools from './SearchTools';
 import ProductDisplayCard from './ProductDisplayCard';
-import { SERVER_HOST } from "../config/global_constants"
+import PageFooter from "./PageFooter";
+import {SERVER_HOST} from "../config/global_constants"
 
 
 export default class ProductsPage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         /*
         this.products = [
@@ -58,22 +59,27 @@ export default class ProductsPage extends Component {
             searchQuery: "",
             sortField: "name",
             sortDirection: 1
-        }        
+        }
     }
 
     determineSelectedProducts = () => {
-        //console.log(this.state.selectedTags)
+        // console.log(this.state.selectedTags)
         let updatedSelectedProducts = [...this.state.products]
         //filter from search
-        if (this.state.searchQuery !== ""){
-            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.product_name.toLowerCase().includes(this.state.searchQuery.toLowerCase()))
+        if (this.state.searchQuery !== "") {
+            updatedSelectedProducts = updatedSelectedProducts.filter(
+                product => product.product_name.toLowerCase().includes(this.state.searchQuery.toLowerCase()
+                )
+            )
         }
 
         //filter from tags
-        if (this.state.selectedTags.length !== 0){
-            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.tags.some(tag => this.state.selectedTags.includes(tag)))
+        if (this.state.selectedTags.length !== 0) {
+            updatedSelectedProducts = updatedSelectedProducts.filter(
+                product => product.tags.some(tag => this.state.selectedTags.includes(tag)
+                )
+            )
         }
-        
 
         return updatedSelectedProducts
     }
@@ -85,7 +91,7 @@ export default class ProductsPage extends Component {
     }
 
     updateSort = val => {
-        switch (val){
+        switch (val) {
             case "name_a_z":
                 this.setState({sortField: "product_name", sortDirection: 1})
                 break
@@ -103,8 +109,8 @@ export default class ProductsPage extends Component {
     }
 
     toggleTag = tagName => {
-        if (!this.state.selectedTags.includes(tagName)){
-            this.setState({selectedTags: [...this.state.selectedTags, tagName ]})
+        if (!this.state.selectedTags.includes(tagName)) {
+            this.setState({selectedTags: [...this.state.selectedTags, tagName]})
         } else {
             let i = this.state.selectedTags.indexOf(tagName)
             let newTagsList = [...this.state.selectedTags]
@@ -115,38 +121,42 @@ export default class ProductsPage extends Component {
     }
 
     sortProducts = productsList => {
-        return productsList.sort((a, b) => a[this.state.sortField] > b[this.state.sortField] ? this.state.sortDirection : -this.state.sortDirection)
+        return productsList.sort((a, b) =>
+            a[this.state.sortField] > b[this.state.sortField] ? this.state.sortDirection : -this.state.sortDirection)
     }
 
-    componentDidMount(){
+    componentDidMount() {
         axios.get(`${SERVER_HOST}/products`)
-        .then(res => {
-            if (res.data){
-                if (res.data.errorMessage){
-                    console.log(res.data.errorMessage)
-                } else {
-                    this.setState({products: res.data})
+            .then(res => {
+                if (res.data) {
+                    if (res.data.errorMessage) {
+                        console.log(res.data.errorMessage)
+                    } else {
+                        this.setState({products: res.data})
+                    }
                 }
-            }
-        })
-        .catch(err => {console.log(err)})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
 
-    render (){
+    render() {
         return (
             <>
-                <Header />
-                <SearchTools searchQuery={this.state.searchQuery} 
-                            updateSearchQuery={this.updateSearchQuery} 
-                            toggleTag={this.toggleTag}
-                            updateSort={this.updateSort}
+                <Header/>
+                <SearchTools searchQuery={this.state.searchQuery}
+                             updateSearchQuery={this.updateSearchQuery}
+                             toggleTag={this.toggleTag}
+                             updateSort={this.updateSort}
                 />
                 <div id="productsDisplayPanel">
-                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard key={product._id} product={product}/>)}
-                </div>  
+                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard
+                        key={product._id} product={product}/>)}
+                </div>
+                <PageFooter/>
             </>
-            
         )
     }
 }
