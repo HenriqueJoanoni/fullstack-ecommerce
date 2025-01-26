@@ -3,7 +3,7 @@ import TagCheckBox from "./TagCheckBox"
 
 export default class SearchTools extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             filter: "default"
@@ -14,17 +14,26 @@ export default class SearchTools extends Component {
     updateSortField = e => {
         this.props.updateSort(e.target.value)
         this.setState({filter: e.target.value})
-        
     }
 
-
-    render(){
+    render() {
         return (
-            <div id="searchToolsContainer">
-                <div id="searchToolsRow1">
-                    <input type="text" value={this.props.searchQuery} onChange={(e)=>this.props.updateSearchQuery(e)} placeholder="Search Results:"></input>
-                    <div id="sortContainer">
-                        <select value={this.state.filter} onChange={this.updateSortField}>
+            <div className="container">
+                <div id="searchToolsContainer" className="search-tools-container">
+                    <div className="search-row">
+                        <input
+                            type="text"
+                            value={this.props.searchQuery}
+                            onChange={(e) => this.props.updateSearchQuery(e)}
+                            placeholder="Search"
+                            className="search-input"
+                        />
+
+                        <select
+                            value={this.state.filter}
+                            onChange={this.updateSortField}
+                            className="sort-dropdown"
+                        >
                             <option value="default">Sort By</option>
                             <option value="name_a_z">Name: A-Z</option>
                             <option value="name_z_a">Name: Z-A</option>
@@ -32,15 +41,22 @@ export default class SearchTools extends Component {
                             <option value="price_h_l">Price: High - Low</option>
                         </select>
                     </div>
-                </div>
-                <div id="searchTools">
-                    <div id="tagsContainer">
-                        <h4>Filter Results</h4>
-                        {this.tags.map(tag => <TagCheckBox key={`${tag}_cb`} tagname={tag} toggleTag={this.props.toggleTag} name={tag}/>)}
+
+                    <div className="filter-container">
+                        <h4 className="filter-title">Filter Results</h4>
+                        <div className="filter-tags">
+                            {this.tags.map((tag) => (
+                                <TagCheckBox
+                                    key={`${tag}_cb`}
+                                    tagname={tag}
+                                    name={tag}
+                                    toggleTag={this.props.toggleTag}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
-    
 }
