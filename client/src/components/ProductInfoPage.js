@@ -21,8 +21,30 @@ export default class ProductInfoPage extends Component {
         
 
         this.state = {
+            _id: this.props.match.params._id,
             slideshowIndex: 0,
-            product: {}
+            product: {},
+            
+        }
+    }
+
+    handleAddToCart = () => {
+        this.setState({inCart: true})
+        this.props.addToCart(this.state.product._id, this.state.product.product_name, this.state.product.product_price)
+    }
+
+    handleRemoveFromCart = () => {
+        this.setState({inCart: false})
+        this.props.removeFromCart(this.state.product._id)
+    }
+
+    handleUpdateQuantity = newVal => {
+        {console.log(newVal)}
+        //remove by setting qty to 0
+        if (parseInt(newVal) === 0){
+            this.handleRemoveFromCart()
+        } else {
+            this.props.updateCart(this.state.product._id, newVal)
         }
     }
 
@@ -42,6 +64,7 @@ export default class ProductInfoPage extends Component {
         return (
             <>
                 <Header/>
+                {console.log(this.props.cart)}
                 <div className="productInfoContainer">
                     <span>
                         <Link to="/products">
@@ -74,7 +97,19 @@ export default class ProductInfoPage extends Component {
                             <p>Brand: {typeof this.state.product.product_brand !== "undefined" ? this.state.product.product_brand : "unknown"}</p>
                             <p>Other Info:</p>
 
-                            <button type="button" onClick={()=>{this.props.updateCart(this.state.product._id, 1)}}>Add to cart</button>
+                            {
+                            //add / remove button
+                            typeof this.props.cart[this.state._id] === "undefined" ?
+                            <button type="button" onClick={this.handleAddToCart}>Add to cart</button> :
+                            <button type="button" onClick={this.handleRemoveFromCart}>Remove from cart</button>
+                            }   
+                    
+                            {
+                            // qty input
+                            typeof this.props.cart[this.state._id] !== "undefined" ? 
+                            <div className="cartControls">
+                                <input type="number" min="0" value={this.props.cart[this.state._id].qty} onChange={(e)=>{this.handleUpdateQuantity(e.target.value)}}/>
+                            </div> : null}
                         </div>
                     </div>
 

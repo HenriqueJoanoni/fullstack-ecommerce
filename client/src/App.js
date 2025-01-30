@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import ProductsPage from "./components/ProductsPage";
 import ProductInfoPage from "./components/ProductInfoPage"
 import LoginForm from "./components/LoginForm";
+import ShoppingCart from "./components/ShoppingCart"
 
 export default class App extends Component {
     constructor(props){
@@ -13,18 +14,29 @@ export default class App extends Component {
         }
     }
 
-    updateCart = (productCode, change) => {
+    addToCart = (productCode, productName, price) => {
+        
         let newObj = {}
         Object.keys(this.state.cart).forEach(key => {
-            if (key === productCode && this.state.cart[key] + change === 0){}
-            else {
-                newObj[key] = this.state.cart[key] + change
+            newObj[key] = this.state.cart[key]
+        })
+        newObj[productCode] = {name: productName, price: price, qty: 1}
+        this.setState({cart: newObj})
+    }
+
+    updateCart = (productCode, newVal) => {
+        let newObj = {}
+        Object.keys(this.state.cart).forEach(key => {
+            if (key===productCode){
+                newObj[key] = {name: this.state.cart[key].name,
+                                price: this.state.cart[key].price,
+                                qty: parseInt(newVal)
+                }
+            } else {
+                newObj[key] = this.state.cart[key]
             }
         })
-        if (!Object.keys(this.state.cart).includes(productCode)){
-            newObj[productCode] = 1
-        }
-        console.log(JSON.stringify(newObj))
+        {console.log(JSON.stringify(newObj))}
         this.setState({cart: newObj})
     }
 
@@ -48,8 +60,21 @@ export default class App extends Component {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/products" component={ProductsPage} />
-                    <Route exact path="/products/:_id" component={ProductInfoPage} />
+                    <Route exact path="/products/:_id" render={(props)=><ProductInfoPage {...props} 
+                            addToCart={this.addToCart} 
+                            removeFromCart={this.removeFromCart} 
+                            updateCart={this.updateCart}
+                            cart={this.state.cart}/>}/>      
+                    {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
                     <Route exact path="/login" component={LoginForm} />
+
+                    <Route exact path="/cart" render={props=> 
+                        <ShoppingCart {...props} removeFromCart={this.removeFromCart}
+                                                updateCart={this.updateCart}
+                                                cart={this.state.cart}                  
+                        />} 
+                    />
+
                 </Switch>
             </BrowserRouter>
         )

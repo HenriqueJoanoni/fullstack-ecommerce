@@ -9,6 +9,7 @@ import gibson from './gibson.jpg';
 import leftArrowIcon from './leftArrow.png';
 import rightArrowIcon from './rightArrow.png';
 import returnArrowIcon from './returnArrow.png';
+import trashCan from "./trashCan.png"
 
 export {
     guitarFootage,
@@ -21,4 +22,5 @@ export {
     leftArrowIcon,
     rightArrowIcon,
     returnArrowIcon,
+    trashCan,
 };

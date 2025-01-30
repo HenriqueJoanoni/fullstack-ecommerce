@@ -89,11 +89,13 @@ export default class Header extends Component {
                             <img className="header-icon" src={heartIcon} alt="Heart"/>
                         </div>
                         <div className="icon-wrapper">
+                            <Link to="/cart">
                             <img
                                 className="header-icon"
                                 src={shoppingBagIcon}
                                 alt="Shopping Bag"
                             />
+                            </Link>
                         </div>
                         <div className="icon-wrapper">
                             <Link to="/login">
