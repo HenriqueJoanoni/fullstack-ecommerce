@@ -9,7 +9,13 @@ import gibson from './gibson.jpg';
 import leftArrowIcon from './leftArrow.png';
 import rightArrowIcon from './rightArrow.png';
 import returnArrowIcon from './returnArrow.png';
+import guitarPlay from './pexels-aaronsvd-12544.jpg';
+import gpsIcon from './gps.png';
+import phoneIcon from './call.png';
+import clockIcon from './clock.png';
+import guitarPick from './guitarPick.png';
 import trashCan from "./trashCan.png"
+
 
 export {
     guitarFootage,
@@ -22,5 +28,11 @@ export {
     leftArrowIcon,
     rightArrowIcon,
     returnArrowIcon,
+    guitarPlay,
+    gpsIcon,
+    phoneIcon,
+    clockIcon,
+    guitarPick,
     trashCan,
+
 };

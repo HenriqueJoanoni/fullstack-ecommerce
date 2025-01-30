@@ -4,6 +4,7 @@ import Header from "./Header"
 import {guitarSample, gibson, leftArrowIcon, rightArrowIcon, returnArrowIcon} from '../images';
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
+import PageFooter from "./PageFooter";
 
 export default class ProductInfoPage extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class ProductInfoPage extends Component {
             photos: [guitarSample, gibson],
             brand: "Epiphone Les Paul"
         }
-        
+
 
         this.state = {
             _id: this.props.match.params._id,
@@ -70,12 +71,20 @@ export default class ProductInfoPage extends Component {
                         <Link to="/products">
                             <img className="returnArrow" src={returnArrowIcon} alt="return icon"/>
                         </Link>
-                        <h2>{typeof this.state.product.product_name !== "undefined" ? this.state.product.product_name : "unknown"}</h2>
+                        <h2>
+                            {typeof this.state.product.product_name !== "undefined" ?
+                                this.state.product.product_name : "unknown"}
+                        </h2>
                     </span>
                     <div className="productInfo">
                         <div className="slideshow">
                             <button type="button" onClick={() => {
-                                this.setState({slideshowIndex: this.state.slideshowIndex === 0 ? this.testObject.photos.length - 1 : this.state.slideshowIndex - 1})
+                                this.setState(
+                                    {
+                                        slideshowIndex: this.state.slideshowIndex === 0 ?
+                                            this.testObject.photos.length - 1 : this.state.slideshowIndex - 1
+                                    }
+                                )
                             }}>
                                 <img className="slideshowArrow" src={leftArrowIcon} alt="left arrow icon"/>
                             </button>
@@ -86,15 +95,29 @@ export default class ProductInfoPage extends Component {
                                      : ""
                                  } alt="slideshow content"/>
                             <button type="button" onClick={() => {
-                                this.setState({slideshowIndex: parseInt(this.state.slideshowIndex + 1) % this.testObject.photos.length})
+                                this.setState(
+                                    {
+                                        slideshowIndex: parseInt(this.state.slideshowIndex + 1) %
+                                            this.testObject.photos.length
+                                    }
+                                )
                             }}>
-                                <img className="slideshowArrow" src={rightArrowIcon} alt="right arrow" />
+                                <img className="slideshowArrow" src={rightArrowIcon} alt="right arrow"/>
                             </button>
                         </div>
                         <div className="productStats">
-                            <p>€{typeof this.state.product.product_price !== "undefined" ? this.state.product.product_price : "unknown"}</p>
-                            <p>{typeof this.state.product.product_description !== "undefined" ? this.state.product.product_description : "unknown"}</p>
-                            <p>Brand: {typeof this.state.product.product_brand !== "undefined" ? this.state.product.product_brand : "unknown"}</p>
+                            <p>
+                                €{typeof this.state.product.product_price !== "undefined" ?
+                                    this.state.product.product_price : "unknown"}
+                            </p>
+                            <p>
+                                {typeof this.state.product.product_description !== "undefined" ?
+                                    this.state.product.product_description : "unknown"}
+                            </p>
+                            <p>
+                                Brand: {typeof this.state.product.product_brand !== "undefined" ?
+                                    this.state.product.product_brand : "unknown"}
+                            </p>
                             <p>Other Info:</p>
 
                             {
@@ -112,8 +135,8 @@ export default class ProductInfoPage extends Component {
                             </div> : null}
                         </div>
                     </div>
-
                 </div>
+                <PageFooter/>
             </>
         )
     }

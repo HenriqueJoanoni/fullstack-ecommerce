@@ -5,6 +5,9 @@ import ProductsPage from "./components/ProductsPage";
 import ProductInfoPage from "./components/ProductInfoPage"
 import LoginForm from "./components/LoginForm";
 import ShoppingCart from "./components/ShoppingCart"
+import RegisterForm from "./components/RegisterForm";
+import ContactForm from "./components/ContactForm";
+
 
 export default class App extends Component {
     constructor(props){
@@ -67,16 +70,19 @@ export default class App extends Component {
                             cart={this.state.cart}/>}/>      
                     {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
                     <Route exact path="/login" component={LoginForm} />
-
+                      
                     <Route exact path="/cart" render={props=> 
                         <ShoppingCart {...props} removeFromCart={this.removeFromCart}
                                                 updateCart={this.updateCart}
                                                 cart={this.state.cart}                  
                         />} 
                     />
-
-                </Switch>
+                    <Route exact path="/register" component={RegisterForm} />
+                    <Route exact path="/contact" component={ContactForm} />
+                 </Switch>
             </BrowserRouter>
+                           
+                
         )
     }
 }
