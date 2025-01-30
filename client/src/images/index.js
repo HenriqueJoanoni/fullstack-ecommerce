@@ -14,6 +14,8 @@ import gpsIcon from './gps.png';
 import phoneIcon from './call.png';
 import clockIcon from './clock.png';
 import guitarPick from './guitarPick.png';
+import trashCan from "./trashCan.png"
+
 
 export {
     guitarFootage,
@@ -31,4 +33,6 @@ export {
     phoneIcon,
     clockIcon,
     guitarPick,
+    trashCan,
+
 };
