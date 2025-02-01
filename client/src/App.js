@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {BrowserRouter, Switch, Route} from "react-router-dom"
 import Home from "./components/Home";
 import ProductsPage from "./components/ProductsPage";
@@ -10,7 +10,7 @@ import ContactForm from "./components/ContactForm";
 
 
 export default class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             cart: {}
@@ -18,7 +18,7 @@ export default class App extends Component {
     }
 
     addToCart = (productCode, productName, price) => {
-        
+
         let newObj = {}
         Object.keys(this.state.cart).forEach(key => {
             newObj[key] = this.state.cart[key]
@@ -30,23 +30,26 @@ export default class App extends Component {
     updateCart = (productCode, newVal) => {
         let newObj = {}
         Object.keys(this.state.cart).forEach(key => {
-            if (key===productCode){
-                newObj[key] = {name: this.state.cart[key].name,
-                                price: this.state.cart[key].price,
-                                qty: parseInt(newVal)
+            if (key === productCode) {
+                newObj[key] = {
+                    name: this.state.cart[key].name,
+                    price: this.state.cart[key].price,
+                    qty: parseInt(newVal)
                 }
             } else {
                 newObj[key] = this.state.cart[key]
             }
         })
-        {console.log(JSON.stringify(newObj))}
+        {
+            console.log(JSON.stringify(newObj))
+        }
         this.setState({cart: newObj})
     }
 
     removeFromCart = productCode => {
         let newObj = {}
         Object.keys(this.state.cart).forEach(key => {
-            if (key!==productCode){
+            if (key !== productCode) {
                 newObj[key] = this.state.cart[key]
             }
         })
@@ -54,35 +57,31 @@ export default class App extends Component {
         this.setState({cart: newObj})
     }
 
-
-
     render() {
         return (
             <BrowserRouter>
                 {console.log(this.state.cart)}
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/products" component={ProductsPage} />
-                    <Route exact path="/products/:_id" render={(props)=><ProductInfoPage {...props} 
-                            addToCart={this.addToCart} 
-                            removeFromCart={this.removeFromCart} 
-                            updateCart={this.updateCart}
-                            cart={this.state.cart}/>}/>      
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/products" component={ProductsPage}/>
+                    <Route exact path="/products/:_id" render={(props) => <ProductInfoPage {...props}
+                                                                                           addToCart={this.addToCart}
+                                                                                           removeFromCart={this.removeFromCart}
+                                                                                           updateCart={this.updateCart}
+                                                                                           cart={this.state.cart}/>}/>
                     {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
-                    <Route exact path="/login" component={LoginForm} />
-                      
-                    <Route exact path="/cart" render={props=> 
+                    <Route exact path="/login" component={LoginForm}/>
+
+                    <Route exact path="/cart" render={props =>
                         <ShoppingCart {...props} removeFromCart={this.removeFromCart}
-                                                updateCart={this.updateCart}
-                                                cart={this.state.cart}                  
-                        />} 
+                                      updateCart={this.updateCart}
+                                      cart={this.state.cart}
+                        />}
                     />
-                    <Route exact path="/register" component={RegisterForm} />
-                    <Route exact path="/contact" component={ContactForm} />
-                 </Switch>
+                    <Route exact path="/register" component={RegisterForm}/>
+                    <Route exact path="/contact" component={ContactForm}/>
+                </Switch>
             </BrowserRouter>
-                           
-                
         )
     }
 }
