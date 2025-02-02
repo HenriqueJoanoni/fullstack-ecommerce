@@ -121,35 +121,35 @@ export default class Header extends Component {
                         </a>
                         <a href="#">
                             Shop All{' '}
-                            {/* <img
+                            <img
                                 className="arrow-down-icon"
                                 src={downArrowIcon}
                                 alt="Arrow Down"
-                            /> */}
+                            />
                         </a>
                         <a href="#">
                             Best Sellers{' '}
-                            {/* <img
+                            <img
                                 className="arrow-down-icon"
                                 src={downArrowIcon}
                                 alt="Arrow Down"
-                            /> */}
+                            />
                         </a>
                         <a href="#">
                             Pages{' '}
-                            {/* <img
+                            <img
                                 className="arrow-down-icon"
                                 src={downArrowIcon}
                                 alt="Arrow Down"
-                            /> */}
+                            />
                         </a>
                         <a href="#">
                             Sale{' '}
-                            {/* <img
+                            <img
                                 className="arrow-down-icon"
                                 src={downArrowIcon}
                                 alt="Arrow Down"
-                            /> */}
+                            />
                         </a>
                     </div>
                 </header>
