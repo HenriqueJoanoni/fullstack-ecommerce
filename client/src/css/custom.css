@@ -472,6 +472,7 @@ h2 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin-bottom:0px;
     border: 1px solid #d1d1d1;  
 }
 .cartTable th,
