@@ -8,13 +8,14 @@ export default class TagCheckBox extends Component {
 
     updateCheckBox = (e) => {
         this.setState({checked: !this.state.checked})
-        this.props.toggleTag(e.target.value)
+        this.props.toggleTag(e.target.value, this.props.tagSet)
+
     }
 
     render() {
         return (
             <div className="tagCheckBox">
-                <input 
+                <input
                     type="checkbox"
                     name={`${this.props.tagname}_cb`}
                     id={`${this.props.tagname}_cb`}
