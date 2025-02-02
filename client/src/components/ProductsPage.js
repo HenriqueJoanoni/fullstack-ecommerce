@@ -8,64 +8,18 @@ import {SERVER_HOST} from "../config/global_constants"
 
 
 export default class ProductsPage extends Component {
-    constructor(props) {
-        super(props);
-        /*
-        this.products = [
-            {
-                id: 1,
-                name: "first acoustic",
-                description: "this is a description",
-                price: 2500,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["acoustic"]
-            },
-            {
-                id: 2,
-                name: "second electric",
-                description: "and this is another description",
-                price: 1700,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["electric"]
-            },
-            {
-                id: 3,
-                name: "third bass",
-                description: "third this is a description",
-                price: 1200,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["bass"]
-            },
-            {
-                id: 4,
-                name: "fourth electroacoustic guitar1",
-                description: "fourth this is yet another description",
-                price: 2100,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["electroacoustic"]
-            }
-        ]
-
-    */
-
-
-        this.state = {
-            products: [],
-            selectedTags: [],
-            selectedBrands: [],
-            filterByNew: false,
-            searchQuery: "",
-            sortField: "name",
-            sortDirection: 1
-        }
-
-        
-        
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      selectedTags: [],
+        selectedBrands: [],
+        filterByNew: false,
+      searchQuery: "",
+      sortField: "name",
+      sortDirection: 1
+    };
+  }
 
     determineSelectedProducts = () => {
         // console.log(this.state.selectedTags)
@@ -88,7 +42,7 @@ export default class ProductsPage extends Component {
 
         //brand tags
         if (this.state.selectedBrands.length !== 0){
-            updatedSelectedProducts = updatedSelectedProducts.filter( 
+            updatedSelectedProducts = updatedSelectedProducts.filter(
                 product => this.state.selectedBrands.includes(product.product_brand)
             )
         }
@@ -121,7 +75,8 @@ export default class ProductsPage extends Component {
             case "price_h_l":
                 this.setState({sortField: "product_price", sortDirection: -1})
                 break
-
+            default:
+                break;
         }
     }
 
@@ -153,7 +108,7 @@ export default class ProductsPage extends Component {
                 this.setState({selectedTags: newTagsList})
             }
         }
-        
+
         console.log(this.state.selectedTags)
     }
 
@@ -179,10 +134,15 @@ export default class ProductsPage extends Component {
     }
 
 
-    render() {
-        return (
-            <>
-                <Header/>
+render() {
+    return (
+      <div id="productsPage">
+        <Header />
+        <div className="products-container">
+          {/* ------filters column*/}
+          <div className="filters-column">
+            <div className="filters-section">
+              <h3>Filter Results</h3>
                 <SearchTools searchQuery={this.state.searchQuery}
                              updateSearchQuery={this.updateSearchQuery}
                              toggleTag={this.toggleTag}
@@ -190,12 +150,34 @@ export default class ProductsPage extends Component {
                              filterByNew={this.filterByNew}
                              updateFilterByNew={this.updateFilterByNew}
                 />
-                <div id="productsDisplayPanel">
-                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard
-                        key={product._id} product={product}/>)}
-                </div>
-                <PageFooter/>
-            </>
-        )
-    }
+            </div>
+          </div>
+
+          <div className="products-display">
+            {/* ---------sort header*/}
+            <div className="sort-header">
+              <span>Showing {this.determineSelectedProducts().length} results</span>
+              <select
+                onChange={(e) => this.updateSort(e.target.value)}
+                className="sort-dropdown"
+              >
+                <option value="name_a_z">Sort By: Name (A-Z)</option>
+                <option value="name_z_a">Name (Z-A)</option>
+                <option value="price_l_h">Price (Low to High)</option>
+                <option value="price_h_l">Price (High to Low)</option>
+              </select>
+            </div>
+
+            {/* ----------product cards*/}
+            <div className="products-grid">
+              {this.sortProducts(this.determineSelectedProducts()).map(product => (
+                <ProductDisplayCard key={product._id} product={product} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <PageFooter />
+      </div>
+    );
+}
 }

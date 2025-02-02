@@ -19,65 +19,59 @@ export default class SearchTools extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div id="searchToolsContainer" className="search-tools-container">
-                    <div className="search-row">
-                        <input
-                            type="text"
-                            value={this.props.searchQuery}
-                            onChange={(e) => this.props.updateSearchQuery(e)}
-                            placeholder="Search"
-                            className="search-input"
-                        />
+            <div className="search-tools-wrapper">
+                <div className="search-sort-row">
+                    <input
+                        type="text"
+                        value={this.props.searchQuery}
+                        onChange={(e) => this.props.updateSearchQuery(e)}
+                        placeholder="Search products..."
+                        className="filter-search-input"
+                    />
 
-                        <select
-                            value={this.state.filter}
-                            onChange={this.updateSortField}
-                            className="sort-dropdown"
-                        >
-                            <option value="default">Sort By</option>
-                            <option value="name_a_z">Name: A-Z</option>
-                            <option value="name_z_a">Name: Z-A</option>
-                            <option value="price_l_h">Price: Low - High</option>
-                            <option value="price_h_l">Price: High - Low</option>
-                        </select>
-                    </div>
+                    <select
+                        value={this.state.filter}
+                        onChange={this.updateSortField}
+                        className="sort-dropdown"
+                    >
+                        <option value="default">Sort By</option>
+                        <option value="name_a_z">Name: A-Z</option>
+                        <option value="name_z_a">Name: Z-A</option>
+                        <option value="price_l_h">Price: Low - High</option>
+                        <option value="price_h_l">Price: High - Low</option>
+                    </select>
+                </div>
 
-                    <div className="filter-container">
-                        <h4 className="filter-title">Filter Results</h4>
-                        <div className="filter-tags">
-                            <div>
-                                <p>Filter by Item</p>
-                                {this.itemTags.map((tag) => (
-                                    <TagCheckBox
-                                        key={`${tag}_cb`}
-                                        tagname={tag}
-                                        name={tag}
-                                        toggleTag={this.props.toggleTag}
-                                        tagSet="itemTags"
-                                    />
-                                ))}
-                            </div>
-                            <div>
-                            <p>Filter By Brand</p>
-                                {this.productBrands.map(tag => (
-                                    <TagCheckBox 
-                                        key={`${tag}_cb`}
-                                        tagname={tag}
-                                        name={tag}
-                                        toggleTag={this.props.toggleTag}
-                                        tagSet="productBrands"
-                                    />
-                                ))}
-                            </div>
-                            <div>
-                                <p>Sort By new Items: </p>
-                                <input type="checkbox"
-                                        value="Filter By New"
-                                        checked={this.props.filterByNew}
-                                        onClick={e=>{this.props.updateFilterByNew(e.target.checked)}}
-                                />
-                            </div>
+                <div className="filter-section">
+                    <h3 className="filter-header">Filter by Category</h3>
+                    <div className="filter-tags-grid">
+                        <p>Filter by Item</p>
+                        {this.itemTags.map((tag) => (
+                            <TagCheckBox
+                                key={`${tag}_cb`}
+                                tagname={tag}
+                                name={tag}
+                                toggleTag={this.props.toggleTag}
+                                tagSet="itemTags"
+                            />
+                        ))}
+                        <p>Filter By Brand</p>
+                        {this.productBrands.map(tag => (
+                            <TagCheckBox
+                                key={`${tag}_cb`}
+                                tagname={tag}
+                                name={tag}
+                                toggleTag={this.props.toggleTag}
+                                tagSet="productBrands"
+                            />
+                        ))}
+                        <div>
+                            <p>Sort By new Items: </p>
+                            <input type="checkbox"
+                                   value="Filter By New"
+                                   checked={this.props.filterByNew}
+                                   onClick={e=>{this.props.updateFilterByNew(e.target.checked)}}
+                            />
                         </div>
                     </div>
                 </div>

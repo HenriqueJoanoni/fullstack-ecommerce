@@ -1,5 +1,5 @@
 import React, {Component, createRef} from 'react';
-import {guitarFootage, guitarSample} from '../images';
+import {guitarFootage, guitarSample, guitarPlay} from '../images';
 import '../css/custom.css';
 import '../scss/custom.scss';
 import Header from "./Header";
@@ -66,7 +66,7 @@ export default class Home extends Component {
                         <div className="card-container">
                             <div className="card">
                                 <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
+                                    <img src={guitarPlay} alt="Guitar Sample"/>
                                 </div>
                                 <div className="card-content">
                                     <h2>Guitar 1</h2>
@@ -75,7 +75,7 @@ export default class Home extends Component {
                             </div>
                             <div className="card">
                                 <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
+                                    <img src={guitarPlay} alt="Guitar Sample"/>
                                 </div>
                                 <div className="card-content">
                                     <h2>Guitar 2</h2>

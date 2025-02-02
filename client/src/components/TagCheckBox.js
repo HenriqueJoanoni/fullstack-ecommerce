@@ -15,13 +15,15 @@ export default class TagCheckBox extends Component {
     render() {
         return (
             <div className="tagCheckBox">
-                <label htmlFor={`${this.props.tagname}_cb`}>{this.props.name}</label>
-                <input type="checkbox"
-                       name={`${this.props.tagname}_cb`}
-                       value={this.props.name}
-                       checked={this.state.checked}
-                       onChange={(e) => this.updateCheckBox(e)}
+                <input
+                    type="checkbox"
+                    name={`${this.props.tagname}_cb`}
+                    id={`${this.props.tagname}_cb`}
+                    value={this.props.name}
+                    checked={this.state.checked}
+                    onChange={(e) => this.updateCheckBox(e)}
                 />
+                <label htmlFor={`${this.props.tagname}_cb`}>{this.props.name}</label>
             </div>
         )
     }
