@@ -12,8 +12,10 @@ export default class ProductsPage extends Component {
     this.state = {
       products: [],
       selectedTags: [],
+      selectedBrands: [],
       searchQuery: "",
-      sortField: "name",
+      filterByNew: false,
+      sortField: "product_name",
       sortDirection: 1
     };
   }
@@ -21,17 +23,28 @@ export default class ProductsPage extends Component {
   determineSelectedProducts = () => {
     let updatedSelectedProducts = [...this.state.products];
 
-    // Filter from search
-    if (this.state.searchQuery !== "") {
-      updatedSelectedProducts = updatedSelectedProducts.filter(
-        product => product.product_name.toLowerCase().includes(this.state.searchQuery.toLowerCase())
+    if (this.state.searchQuery) {
+      updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+        product.product_name?.toLowerCase().includes(this.state.searchQuery.toLowerCase())
       );
     }
 
-    // Filter from tags
-    if (this.state.selectedTags.length !== 0) {
-      updatedSelectedProducts = updatedSelectedProducts.filter(
-        product => product.tags.some(tag => this.state.selectedTags.includes(tag))
+    if (this.state.selectedTags.length > 0) {
+      updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+        product.tags?.some(tag => this.state.selectedTags.includes(tag)) ?? false
+      );
+    }
+
+    if (this.state.selectedBrands.length > 0) {
+      updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+        product.product_brand?.toLowerCase() && 
+        this.state.selectedBrands.includes(product.product_brand.toLowerCase())
+      );
+    }
+
+    if (this.state.filterByNew) {
+      updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+        product.is_new === true
       );
     }
 
@@ -40,7 +53,6 @@ export default class ProductsPage extends Component {
 
   updateSearchQuery = e => {
     this.setState({ searchQuery: e.target.value });
-    this.determineSelectedProducts();
   };
 
   updateSort = val => {
@@ -62,45 +74,65 @@ export default class ProductsPage extends Component {
     }
   };
 
-  toggleTag = tagName => {
-    if (!this.state.selectedTags.includes(tagName)) {
-      this.setState({ selectedTags: [...this.state.selectedTags, tagName] });
+  updateFilterByNew = val => {
+    this.setState({ filterByNew: val });
+  };
+
+  toggleTag = (tagName, tagSet) => {
+    if (tagSet === "productBrands") {
+      const normalizedBrand = tagName.toLowerCase();
+      this.setState(prevState => ({
+        selectedBrands: prevState.selectedBrands.includes(normalizedBrand)
+          ? prevState.selectedBrands.filter(b => b !== normalizedBrand)
+          : [...prevState.selectedBrands, normalizedBrand]
+      }));
     } else {
-      let i = this.state.selectedTags.indexOf(tagName);
-      let newTagsList = [...this.state.selectedTags];
-      newTagsList.splice(i, 1);
-      this.setState({ selectedTags: newTagsList });
+      this.setState(prevState => ({
+        selectedTags: prevState.selectedTags.includes(tagName)
+          ? prevState.selectedTags.filter(t => t !== tagName)
+          : [...prevState.selectedTags, tagName]
+      }));
     }
   };
 
   sortProducts = productsList => {
-    return productsList.sort((a, b) =>
-      a[this.state.sortField] > b[this.state.sortField] ? this.state.sortDirection : -this.state.sortDirection
-    );
+    return productsList.sort((a, b) => {
+      const aValue = a[this.state.sortField];
+      const bValue = b[this.state.sortField];
+      
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return this.state.sortDirection * aValue.localeCompare(bValue);
+      }
+      return this.state.sortDirection * (aValue - bValue);
+    });
   };
 
   componentDidMount() {
     axios.get(`${SERVER_HOST}/products`)
       .then(res => {
         if (res.data) {
-          if (res.data.errorMessage) {
-            console.log(res.data.errorMessage);
-          } else {
-            this.setState({ products: res.data });
-          }
+          const safeProducts = res.data.map(product => ({
+            tags: [],
+            product_brand: product.product_brand?.toLowerCase() || '',
+            is_new: false,
+            ...product
+          }));
+          this.setState({ products: safeProducts });
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log("Error loading products:", err);
       });
   }
 
-render() {
+  render() {
+    const filteredProducts = this.determineSelectedProducts();
+    const sortedProducts = this.sortProducts(filteredProducts);
+
     return (
       <div id="productsPage">
         <Header />
         <div className="products-container">
-          {/* ------filters column*/}
           <div className="filters-column">
             <div className="filters-section">
               <h3>Filter Results</h3>
@@ -109,14 +141,15 @@ render() {
                 updateSearchQuery={this.updateSearchQuery}
                 toggleTag={this.toggleTag}
                 updateSort={this.updateSort}
+                filterByNew={this.state.filterByNew}
+                updateFilterByNew={this.updateFilterByNew}
               />
             </div>
           </div>
 
           <div className="products-display">
-            {/* ---------sort header*/}
             <div className="sort-header">
-              <span>Showing {this.determineSelectedProducts().length} results</span>
+              <span>Showing {filteredProducts.length} results</span>
               <select 
                 onChange={(e) => this.updateSort(e.target.value)}
                 className="sort-dropdown"
@@ -128,9 +161,8 @@ render() {
               </select>
             </div>
 
-            {/* ----------product cards*/}
             <div className="products-grid">
-              {this.sortProducts(this.determineSelectedProducts()).map(product => (
+              {sortedProducts.map(product => (
                 <ProductDisplayCard key={product._id} product={product} />
               ))}
             </div>
@@ -139,5 +171,5 @@ render() {
         <PageFooter />
       </div>
     );
-}
+  }
 }
