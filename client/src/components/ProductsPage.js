@@ -56,10 +56,15 @@ export default class ProductsPage extends Component {
         this.state = {
             products: [],
             selectedTags: [],
+            selectedBrands: [],
+            filterByNew: false,
             searchQuery: "",
             sortField: "name",
             sortDirection: 1
         }
+
+        
+        
     }
 
     determineSelectedProducts = () => {
@@ -74,11 +79,23 @@ export default class ProductsPage extends Component {
         }
 
         //filter from tags
+        //item tags
         if (this.state.selectedTags.length !== 0) {
             updatedSelectedProducts = updatedSelectedProducts.filter(
-                product => product.tags.some(tag => this.state.selectedTags.includes(tag)
-                )
+                product => product.product_tags.some(tag => this.state.selectedTags.includes(tag))
             )
+        }
+
+        //brand tags
+        if (this.state.selectedBrands.length !== 0){
+            updatedSelectedProducts = updatedSelectedProducts.filter( 
+                product => this.state.selectedBrands.includes(product.product_brand)
+            )
+        }
+
+        //show new only?
+        if (this.state.filterByNew){
+            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.is_new)
         }
 
         return updatedSelectedProducts
@@ -108,15 +125,35 @@ export default class ProductsPage extends Component {
         }
     }
 
-    toggleTag = tagName => {
-        if (!this.state.selectedTags.includes(tagName)) {
-            this.setState({selectedTags: [...this.state.selectedTags, tagName]})
-        } else {
-            let i = this.state.selectedTags.indexOf(tagName)
-            let newTagsList = [...this.state.selectedTags]
-            newTagsList.splice(i, 1)
-            this.setState({selectedTags: newTagsList})
+    updateFilterByNew = val => {
+        this.setState({filterByNew: val})
+    }
+
+    toggleTag = (tagName, tagSet) => {
+        //brand tags
+        if (tagSet === "productBrands"){
+            if (!this.state.selectedBrands.includes(tagName)) {
+                this.setState({selectedBrands: [...this.state.selectedBrands, tagName]})
+            } else {
+                let i = this.state.selectedBrands.indexOf(tagName)
+                let newTagsList = [...this.state.selectedBrands]
+                newTagsList.splice(i, 1)
+                this.setState({selectedBrands: newTagsList})
+            }
         }
+
+        //product tags
+        else {
+            if (!this.state.selectedTags.includes(tagName)) {
+                this.setState({selectedTags: [...this.state.selectedTags, tagName]})
+            } else {
+                let i = this.state.selectedTags.indexOf(tagName)
+                let newTagsList = [...this.state.selectedTags]
+                newTagsList.splice(i, 1)
+                this.setState({selectedTags: newTagsList})
+            }
+        }
+        
         console.log(this.state.selectedTags)
     }
 
@@ -150,6 +187,8 @@ export default class ProductsPage extends Component {
                              updateSearchQuery={this.updateSearchQuery}
                              toggleTag={this.toggleTag}
                              updateSort={this.updateSort}
+                             filterByNew={this.filterByNew}
+                             updateFilterByNew={this.updateFilterByNew}
                 />
                 <div id="productsDisplayPanel">
                     {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard

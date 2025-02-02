@@ -8,7 +8,8 @@ export default class SearchTools extends Component {
         this.state = {
             filter: "default"
         }
-        this.tags = ["acoustic", "electric", "bass", "electroacoustic"]
+        this.itemTags = ["acoustic", "electric", "bass", "electroacoustic", "accessory", "amplifier", "product", "strings", "picks", "new", "other"]
+        this.productBrands = ["Gibson", "Fender", "Ernie Ball", "Ibanez", "D'addario", "Dunlop", "Marshall"]
     }
 
     updateSortField = e => {
@@ -45,14 +46,38 @@ export default class SearchTools extends Component {
                     <div className="filter-container">
                         <h4 className="filter-title">Filter Results</h4>
                         <div className="filter-tags">
-                            {this.tags.map((tag) => (
-                                <TagCheckBox
-                                    key={`${tag}_cb`}
-                                    tagname={tag}
-                                    name={tag}
-                                    toggleTag={this.props.toggleTag}
+                            <div>
+                                <p>Filter by Item</p>
+                                {this.itemTags.map((tag) => (
+                                    <TagCheckBox
+                                        key={`${tag}_cb`}
+                                        tagname={tag}
+                                        name={tag}
+                                        toggleTag={this.props.toggleTag}
+                                        tagSet="itemTags"
+                                    />
+                                ))}
+                            </div>
+                            <div>
+                            <p>Filter By Brand</p>
+                                {this.productBrands.map(tag => (
+                                    <TagCheckBox 
+                                        key={`${tag}_cb`}
+                                        tagname={tag}
+                                        name={tag}
+                                        toggleTag={this.props.toggleTag}
+                                        tagSet="productBrands"
+                                    />
+                                ))}
+                            </div>
+                            <div>
+                                <p>Sort By new Items: </p>
+                                <input type="checkbox"
+                                        value="Filter By New"
+                                        checked={this.props.filterByNew}
+                                        onClick={e=>{this.props.updateFilterByNew(e.target.checked)}}
                                 />
-                            ))}
+                            </div>
                         </div>
                     </div>
                 </div>
