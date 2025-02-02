@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import axios from "axios";
 import {SERVER_HOST} from "../config/global_constants";
 
@@ -27,6 +27,12 @@ export default class RegisterForm extends Component {
     validateForm = () => {
         const errors = {}
         const {firstName, lastName, email, password, confirm_password} = this.state
+        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        console.log({
+            "first name": firstName,
+            "last name": lastName,
+        })
 
         if (!firstName.trim()) {
             errors.firstName = "First name is required"
@@ -38,6 +44,10 @@ export default class RegisterForm extends Component {
 
         if (!email.trim()) {
             errors.email = "Email is required"
+        }
+
+        if (email.trim() && !email.match(validateEmail)) {
+            errors.email = "Please, enter a valid email address"
         }
 
         if (!password.trim()) {
@@ -65,6 +75,11 @@ export default class RegisterForm extends Component {
         const errors = this.validateForm()
         if (Object.keys(errors).length > 0) {
             this.setState({errors})
+
+            setTimeout(() => {
+                this.setState({ errors: {} });
+            }, 5000);
+
             return
         }
 
@@ -85,9 +100,9 @@ export default class RegisterForm extends Component {
                 localStorage.setItem("authToken", res.data.token)
                 this.props.history.push(res.data.redirect)
             }
-        } catch (err) {
-            if (err.response?.data?.error) {
-                this.setState({errors: {form: err.response.data.error}})
+        } catch (error) {
+            if (error.response?.data?.error) {
+                this.setState({errors: {form: error.response.data.error}})
             } else {
                 this.setState({errors: {form: "An unexpected error occurred."}})
             }
@@ -102,30 +117,30 @@ export default class RegisterForm extends Component {
         return (
             <div className="login-background">
                 <div className="login-container">
-                    <form className="login-form" onSubmit={this.handleSubmit}>
+                    <form className="login-form" onSubmit={this.handleSubmit} noValidate>
                         <h2>Register</h2>
                         <p className="welcome-text">Please, create your account.</p>
 
-                        {errors.form && <div className="invalid-feedback">{errors.form}</div>}
+                        {errors.form && <div className="alert alert-error">{errors.form}</div>}
 
                         <div className="form-group">
-                            <label htmlFor="first_name" className="form-label">First Name:</label>
+                            <label htmlFor="firstName" className="form-label">First Name:</label>
                             <input
-                                type="first_name"
+                                type="text"
                                 className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
-                                id="first_name"
-                                name="first_name"
+                                id="firstName"
+                                name="firstName"
                                 onChange={this.handleChange}
                             />
                             {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="first_name" className="form-label">Last Name:</label>
+                            <label htmlFor="lastName" className="form-label">Last Name:</label>
                             <input
-                                type="last_name"
+                                type="text"
                                 className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
-                                id="last_name"
-                                name="last_name"
+                                id="lastName"
+                                name="lastName"
                                 onChange={this.handleChange}
                             />
                             {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}

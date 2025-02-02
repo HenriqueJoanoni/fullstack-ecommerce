@@ -24,9 +24,14 @@ export default class LoginForm extends Component {
     validateForm = () => {
         const errors = {}
         const {email, password} = this.state
+        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (!email) {
             errors.email = "Email is required"
+        }
+
+        if (email.trim() && !email.match(validateEmail)) {
+            errors.email = "Please, enter a valid email address"
         }
 
         if (!password) {
@@ -42,6 +47,11 @@ export default class LoginForm extends Component {
         const errors = this.validateForm()
         if (Object.keys(errors).length > 0) {
             this.setState({errors})
+
+            setTimeout(() => {
+                this.setState({ errors: {} });
+            }, 5000);
+
             return
         }
 
@@ -73,11 +83,11 @@ export default class LoginForm extends Component {
         return (
             <div className="login-background">
                 <div className="login-container">
-                    <form className="login-form" onSubmit={this.handleSubmit}>
+                    <form className="login-form" onSubmit={this.handleSubmit} noValidate>
                         <h2>Login to your account</h2>
                         <p className="welcome-text">Welcome! Please log in to continue.</p>
 
-                        {errors.form && <div className="invalid-feedback">{errors.form}</div>}
+                        {errors.form && <div className="alert alert-error">{errors.form}</div>}
 
                         <div className="form-group">
                             <label htmlFor="email" className="form-label">Email Address:</label>
