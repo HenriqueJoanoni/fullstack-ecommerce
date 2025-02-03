@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {SERVER_HOST} from "../config/global_constants";
-import {Link} from "react-router-dom";
+import {SERVER_HOST, ACCESS_GUEST_LEVEL} from "../config/global_constants";
+import {Link, Redirect} from "react-router-dom";
 
 
 export default class LoginForm extends Component {
@@ -10,7 +10,8 @@ export default class LoginForm extends Component {
         this.state = {
             email: "",
             password: "",
-            errors: {}
+            errors: {},
+            isLoggedIn: false,
         }
     }
 
@@ -58,15 +59,19 @@ export default class LoginForm extends Component {
         const credentials = {
             email: this.state.email,
             password: this.state.password,
-            redirect: localStorage.getItem("redirectTo") || "/",
+            redirect: sessionStorage.getItem("redirectTo") || "/",
         }
 
         console.log("Sending request to: ", `${SERVER_HOST}/login`, credentials)
         try {
             const res = await axios.post(`${SERVER_HOST}/login`, credentials)
             if (res.status === 200) {
-                localStorage.setItem("authToken", res.data.token)
-                this.props.history.push(res.data.redirect)
+                sessionStorage.setItem("authToken", res.data.token)
+
+                sessionStorage.name = res.data.name
+                sessionStorage.email = res.data.email
+                sessionStorage.accessLevel = res.data.accessLevel
+                this.setState({isLoggedIn: true})
             }
         } catch (error) {
             if (error.response?.data?.error) {
@@ -85,6 +90,9 @@ export default class LoginForm extends Component {
                 <div className="login-container">
                     <form className="login-form" onSubmit={this.handleSubmit} noValidate>
                         <h2>Login to your account</h2>
+
+                        {this.state.isLoggedIn ? <Redirect to="/" /> : null}
+
                         <p className="welcome-text">Welcome! Please log in to continue.</p>
 
                         {errors.form && <div className="alert alert-error">{errors.form}</div>}

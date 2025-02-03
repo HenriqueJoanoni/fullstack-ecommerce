@@ -7,7 +7,14 @@ import LoginForm from "./components/LoginForm";
 import ShoppingCart from "./components/ShoppingCart"
 import RegisterForm from "./components/RegisterForm";
 import ContactForm from "./components/ContactForm";
+import ProfilePage from "./components/ProfilePage";
+import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL, ACCESS_ADMIN_LEVEL} from "./config/global_constants";
+import LoggedInRoute from "./components/LoggedInRoute";
 
+if (typeof sessionStorage.accessLevel === "undefined") {
+    sessionStorage.name = "GUEST"
+    sessionStorage.accessLevel = ACCESS_GUEST_LEVEL
+}
 
 export default class App extends Component {
     constructor(props) {
@@ -80,6 +87,8 @@ export default class App extends Component {
                     />
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
+                    <LoggedInRoute exact path="/profile" component={ProfilePage}
+                                   allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                 </Switch>
             </BrowserRouter>
         )

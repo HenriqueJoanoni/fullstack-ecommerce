@@ -1,8 +1,9 @@
 import React, {Component, createRef} from "react";
-import {heartIcon, shoppingBagIcon, userIcon, downArrowIcon} from '../images';
+import {heartIcon, shoppingBagIcon, userIcon, downArrowIcon, loggedUser, gpsIcon} from '../images';
 import '../css/custom.css';
 import '../scss/custom.scss';
 import {Link, NavLink} from "react-router-dom";
+import {ACCESS_ADMIN_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants";
 
 export default class Header extends Component {
     constructor(props) {
@@ -98,13 +99,22 @@ export default class Header extends Component {
                             </Link>
                         </div>
                         <div className="icon-wrapper">
-                            <Link to="/login">
-                                <img
-                                    className="header-icon"
-                                    src={userIcon}
-                                    alt="Profile-login"
-                                />
-                            </Link>
+                            {sessionStorage.accessLevel >= ACCESS_NORMAL_USER_LEVEL ?
+                                <Link to="/profile">
+                                    <img
+                                        className="header-icon"
+                                        src={loggedUser}
+                                        alt="User profile picture"
+                                    />
+                                </Link>
+                                : <Link to="/login">
+                                    <img
+                                        className="header-icon"
+                                        src={userIcon}
+                                        alt="Default profile icon"
+                                    />
+                                </Link>
+                            }
                         </div>
                     </div>
                 </header>

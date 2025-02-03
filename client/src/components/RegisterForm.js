@@ -91,13 +91,13 @@ export default class RegisterForm extends Component {
             email: this.state.email,
             password: this.state.password,
             confirm_password: this.state.confirm_password,
-            redirect: localStorage.getItem("redirectTo") || "/login",
+            redirect: sessionStorage.getItem("redirectTo") || "/login",
         }
 
         try {
             const res = await axios.post(`${SERVER_HOST}/register`, credentials)
             if (res.status === 201) {
-                localStorage.setItem("authToken", res.data.token)
+                sessionStorage.setItem("authToken", res.data.token)
                 this.props.history.push(res.data.redirect)
             }
         } catch (error) {

@@ -15,7 +15,7 @@ import phoneIcon from './call.png';
 import clockIcon from './clock.png';
 import guitarPick from './guitarPick.png';
 import trashCan from "./trashCan.png"
-
+import loggedUser from './userLogged.png'
 
 export {
     guitarFootage,
@@ -34,5 +34,5 @@ export {
     clockIcon,
     guitarPick,
     trashCan,
-
+    loggedUser,
 };
