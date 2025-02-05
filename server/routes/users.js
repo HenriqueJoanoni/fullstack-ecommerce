@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const fs = require("fs")
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY, 'utf8')
+const logout = require("../middlewares/logoutMiddleware")
+const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
@@ -26,8 +28,10 @@ router.post('/register', async (req, res) => {
             first_name: firstName,
             last_name: lastName,
             user_email: email,
+            user_phone: "",
             user_password: hash,
-            user_access_level: 2,
+            user_profile_picture: "",
+            user_access_level: 1,
             token: "",
         })
 
@@ -85,6 +89,7 @@ router.post("/login", async (req, res) => {
 
         res.status(200).json({
             name: user.first_name,
+            email: user.user_email,
             accessLevel: user.user_access_level,
             token: token,
             redirect: redirect || "/",
@@ -96,18 +101,33 @@ router.post("/login", async (req, res) => {
 })
 
 /** LOGOUT ROUTE */
-router.post("/logout", (req, res) => {
-    res.json({})
-})
+router.post("/logout", logout)
 
-router.get("/users", async (req, res) => {
+/***********************************
+ *          PROTECTED ROUTES       *
+ * *********************************/
+
+/** OPEN USER PROFILE */
+router.get("/profile", verifyTokenPassword, async (req, res) => {
     try {
-        const users = await User.find({})
-        console.log(users)
-        res.json(users)
-    } catch (err) {
-        console.error(err)
-        res.status(500).send("Internal Server Error")
+        const user = await User.findOne({user_email: req.decodedToken.email})
+        console.log({
+            "LOGGED USER: ": user
+        })
+
+        if (!user) {
+            return res.status(404).json({error: "User not found"})
+        }
+
+        res.json({
+            name: user.first_name,
+            email: user.user_email,
+            accessLevel: user.user_access_level,
+            user: req.decodedToken
+        })
+    } catch (error) {
+        console.log("Error fetching user profile: ", error)
+        res.status(500).json({error: "Internal server error"})
     }
 })
 

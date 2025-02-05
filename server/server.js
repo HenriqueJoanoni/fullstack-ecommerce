@@ -29,6 +29,39 @@ app.listen(process.env.SERVER_PORT, () => {
     console.log(`Connected to port ` + process.env.SERVER_PORT)
 })
 
+/** Mailer */
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+app.use(cors());
+
+app.post("/send-email", async (req, res) => {
+    const {name, email, message} = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        }
+    })
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: "henrique.joanoni@gmail.com",
+        subject: `New contact submission from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    }
+
+    try {
+        await transporter.sendMail(mailOptions)
+        res.json({message: "Email sent successfully."})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "Error sending email."})
+    }
+})
+app.listen(5000, () => console.log("Server running on port 5000"))
+
 
 /** Error 404 */
 app.use((
