@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {Route, Redirect} from "react-router-dom";
+import React, {Component} from "react"
+import {Route, Redirect} from "react-router-dom"
 
 const LoggedInRoute = ({ component: Component, exact, path, allowedAccessLevel, ...rest }) => {
-    const userAccessLevel = parseInt(sessionStorage.getItem("accessLevel"), 10);
+    const userAccessLevel = parseInt(sessionStorage.getItem("accessLevel"), 10)
 
     return (
         <Route
@@ -16,7 +16,7 @@ const LoggedInRoute = ({ component: Component, exact, path, allowedAccessLevel, 
                 )
             }
         />
-    );
-};
+    )
+}
 
-export default LoggedInRoute;
+export default LoggedInRoute

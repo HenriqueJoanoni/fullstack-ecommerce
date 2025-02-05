@@ -1,9 +1,9 @@
-import React, {Component, createRef} from "react";
-import {heartIcon, shoppingBagIcon, userIcon, downArrowIcon, loggedUser, gpsIcon} from '../images';
-import '../css/custom.css';
-import '../scss/custom.scss';
-import {Link, NavLink} from "react-router-dom";
-import {ACCESS_ADMIN_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants";
+import React, {Component, createRef} from "react"
+import {heartIcon, shoppingBagIcon, userIcon, downArrowIcon, loggedUser, gpsIcon} from '../images'
+import '../css/custom.css'
+import '../scss/custom.scss'
+import {Link, NavLink} from "react-router-dom"
+import {ACCESS_ADMIN_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
 
 export default class Header extends Component {
     constructor(props) {
@@ -12,49 +12,49 @@ export default class Header extends Component {
             searchQuery: '',
             isExpanded: false,
             isDropdownOpen: false,
-        };
-        this.searchInputRef = createRef();
-        this.cardSectionRef = createRef();
+        }
+        this.searchInputRef = createRef()
+        this.cardSectionRef = createRef()
         this.products = []
     }
 
     handleSearchChange = (e) => {
-        this.setState({searchQuery: e.target.value});
-    };
+        this.setState({searchQuery: e.target.value})
+    }
 
     toggleSearch = () => {
         this.setState((prevState) => ({
             isExpanded: !prevState.isExpanded,
-        }));
-    };
+        }))
+    }
 
     handleClickOutside = (event) => {
         if (
             this.searchInputRef.current &&
             !this.searchInputRef.current.contains(event.target)
         ) {
-            this.setState({isExpanded: false});
+            this.setState({isExpanded: false})
         }
-    };
+    }
 
     handleLogoClick = () => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    };
+        window.scrollTo({top: 0, behavior: 'smooth'})
+    }
 
     toggleDropdown = () => {
         this.setState((prevState) => ({
             isDropdownOpen: !prevState.isDropdownOpen,
-        }));
-    };
+        }))
+    }
 
     scrollToCardSection = () => {
         if (this.cardSectionRef.current) {
-            this.cardSectionRef.current.scrollIntoView({behavior: 'smooth'});
+            this.cardSectionRef.current.scrollIntoView({behavior: 'smooth'})
         }
-    };
+    }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleClickOutside);
+        document.addEventListener('click', this.handleClickOutside)
     }
 
     render() {
@@ -91,11 +91,11 @@ export default class Header extends Component {
                         </div>
                         <div className="icon-wrapper">
                             <Link to="/cart">
-                            <img
-                                className="header-icon"
-                                src={shoppingBagIcon}
-                                alt="Shopping Bag"
-                            />
+                                <img
+                                    className="header-icon"
+                                    src={shoppingBagIcon}
+                                    alt="Shopping Bag"
+                                />
                             </Link>
                         </div>
                         <div className="icon-wrapper">

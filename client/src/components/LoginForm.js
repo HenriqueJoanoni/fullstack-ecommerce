@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import axios from "axios";
-import {SERVER_HOST, ACCESS_GUEST_LEVEL} from "../config/global_constants";
-import {Link, Redirect} from "react-router-dom";
+import React, {Component} from "react"
+import axios from "axios"
+import {SERVER_HOST, ACCESS_GUEST_LEVEL} from "../config/global_constants"
+import {Link, Redirect} from "react-router-dom"
 
 
 export default class LoginForm extends Component {
@@ -25,7 +25,7 @@ export default class LoginForm extends Component {
     validateForm = () => {
         const errors = {}
         const {email, password} = this.state
-        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
         if (!email) {
             errors.email = "Email is required"
@@ -50,8 +50,8 @@ export default class LoginForm extends Component {
             this.setState({errors})
 
             setTimeout(() => {
-                this.setState({ errors: {} });
-            }, 5000);
+                this.setState({errors: {}})
+            }, 5000)
 
             return
         }
@@ -91,7 +91,7 @@ export default class LoginForm extends Component {
                     <form className="login-form" onSubmit={this.handleSubmit} noValidate>
                         <h2>Login to your account</h2>
 
-                        {this.state.isLoggedIn ? <Redirect to="/" /> : null}
+                        {this.state.isLoggedIn ? <Redirect to="/"/> : null}
 
                         <p className="welcome-text">Welcome! Please log in to continue.</p>
 

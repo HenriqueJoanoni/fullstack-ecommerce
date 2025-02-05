@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import TagCheckBox from "./TagCheckBox"
+import {upload, downArrowIcon} from "../images"
 
 export default class SearchTools extends Component {
     constructor(props) {
@@ -22,13 +23,13 @@ export default class SearchTools extends Component {
                 ...prevState.expandedSections,
                 [section]: !prevState.expandedSections[section]
             }
-        }));
-    };
+        }))
+    }
 
     handleBrandToggle = (brandName) => {
-        const normalizedBrand = brandName.toLowerCase();
-        this.props.toggleTag(normalizedBrand, "productBrands");
-    };
+        const normalizedBrand = brandName.toLowerCase()
+        this.props.toggleTag(normalizedBrand, "productBrands")
+    }
 
     renderBrandFilters() {
         return this.productBrands.map((brand) => (
@@ -39,7 +40,7 @@ export default class SearchTools extends Component {
                 toggleTag={this.handleBrandToggle}
                 tagSet="productBrands"
             />
-        ));
+        ))
     }
 
     render() {
@@ -62,9 +63,9 @@ export default class SearchTools extends Component {
                                 Item Types
                                 <span className="arrow">
                                     {this.state.expandedSections.itemTypes ? (
-                                        <img className="arrow-down-icon" src={upload} alt="Collapse" />
+                                        <img className="arrow-down-icon" src={upload} alt="Collapse"/>
                                     ) : (
-                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand" />
+                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand"/>
                                     )}
                                 </span>
                             </h4>
@@ -84,9 +85,9 @@ export default class SearchTools extends Component {
                                 Brands
                                 <span className="arrow">
                                     {this.state.expandedSections.brands ? (
-                                        <img className="arrow-down-icon" src={upload} alt="Collapse" />
+                                        <img className="arrow-down-icon" src={upload} alt="Collapse"/>
                                     ) : (
-                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand" />
+                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand"/>
                                     )}
                                 </span>
                             </h4>
@@ -98,9 +99,9 @@ export default class SearchTools extends Component {
                                 New Items
                                 <span className="arrow">
                                     {this.state.expandedSections.newItems ? (
-                                        <img className="arrow-down-icon" src={upload} alt="Collapse" />
+                                        <img className="arrow-down-icon" src={upload} alt="Collapse"/>
                                     ) : (
-                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand" />
+                                        <img className="arrow-down-icon" src={downArrowIcon} alt="Expand"/>
                                     )}
                                 </span>
                             </h4>
@@ -121,6 +122,6 @@ export default class SearchTools extends Component {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

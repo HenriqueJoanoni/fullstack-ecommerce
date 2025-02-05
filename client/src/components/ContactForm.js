@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import Header from "./Header";
-import Footer from "./PageFooter";
-import {clockIcon, gpsIcon, phoneIcon} from "../images";
+import React, {Component} from "react"
+import Header from "./Header"
+import Footer from "./PageFooter"
+import {clockIcon, gpsIcon, phoneIcon} from "../images"
 
 export default class ContactForm extends Component {
     constructor(props) {
@@ -15,13 +15,13 @@ export default class ContactForm extends Component {
     }
 
     handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({[e.target.name]: e.target.value})
     }
 
     handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        const {name, email, message, status} = this.state;
+        const {name, email, message, status} = this.state
 
         try {
             const response = await fetch("http://localhost:5000/send-email/", {
@@ -45,7 +45,7 @@ export default class ContactForm extends Component {
 
     render() {
 
-        const {name, email, message, status} = this.state;
+        const {name, email, message, status} = this.state
 
         return (
             <>

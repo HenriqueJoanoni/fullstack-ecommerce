@@ -27,7 +27,7 @@ export default class RegisterForm extends Component {
     validateForm = () => {
         const errors = {}
         const {firstName, lastName, email, password, confirm_password} = this.state
-        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
         console.log({
             "first name": firstName,
@@ -77,8 +77,8 @@ export default class RegisterForm extends Component {
             this.setState({errors})
 
             setTimeout(() => {
-                this.setState({ errors: {} });
-            }, 5000);
+                this.setState({ errors: {} })
+            }, 5000)
 
             return
         }

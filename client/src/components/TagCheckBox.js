@@ -26,6 +26,6 @@ export default class TagCheckBox extends Component {
                     {this.props.name}
                 </label>
             </div>
-        );
+        )
     }
 }
