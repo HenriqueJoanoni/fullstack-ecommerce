@@ -10,47 +10,6 @@ import {SERVER_HOST} from "../config/global_constants"
 export default class ProductsPage extends Component {
     constructor(props) {
         super(props);
-        /*
-        this.products = [
-            {
-                id: 1,
-                name: "first acoustic",
-                description: "this is a description",
-                price: 2500,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["acoustic"]
-            },
-            {
-                id: 2,
-                name: "second electric",
-                description: "and this is another description",
-                price: 1700,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["electric"]
-            },
-            {
-                id: 3,
-                name: "third bass",
-                description: "third this is a description",
-                price: 1200,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["bass"]
-            },
-            {
-                id: 4,
-                name: "fourth electroacoustic guitar1",
-                description: "fourth this is yet another description",
-                price: 2100,
-                mainImage: "./guitarSample.jpg",
-                photos: ["./guitarSample.jpg"],
-                tags: ["electroacoustic"]
-            }
-        ]
-
-    */
 
 
         this.state = {

@@ -659,3 +659,138 @@ button:hover {
       }
     }
   }
+
+
+
+/*  ----- ADMIN PAGES ------- */
+#adminPageContainer {
+  width: 100%;
+  min-height: 80vh;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  
+
+
+  #adminControlPanel {
+    width: 80%;
+    box-shadow: 5px 11px 40px 13px rgba(0,0,0,0.75);
+    margin: auto;
+    
+    #adminControlPanelHeader {
+      width: 100%;
+      height: 75px;
+      display: flex;
+
+      button {
+        margin: 0;
+        border-radius: 0;
+        font-size: 1rem;
+        background-color: $important-text-color1;
+        color: white;
+      }
+
+      .selected {
+        background-color: white;
+        color: $important-text-color1;
+      }
+    }
+
+    
+    #productsHeader {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      h2 {
+        font-size: 1.75rem;
+        outline: none;
+        box-shadow: none;
+        border: none;
+      }
+
+      #addProductButton {
+        width: 200px;
+      }
+    }
+
+    #productsMain {
+      width: 90%;
+      margin: auto; 
+      span {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 75%;
+        margin: auto;
+        font-weight: 200;
+
+        input {
+          padding: 2px 5px;
+          height: 1.5rem;
+          display: block;
+          margin-left: 30px;
+          min-width: 250px;
+          border-radius: 5px;
+          outline: none;
+          border: 1px solid black;
+        }
+      }
+
+      #searchResults {
+        width: 75%;
+        margin: auto;
+      }
+
+      /*   ADMIN SEARCH RESULT     */
+      .adminSearchResult {
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+
+        
+
+        div {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 10px 20px;
+
+          .productDetails {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            align-content: center;
+
+            p {
+              margin: 5px 0;
+            }
+          }
+
+          img {
+            width: 75px;
+            height: 75px; 
+          }
+        }
+
+
+        &:hover {
+          background-color: #ddd;
+          cursor: pointer;
+        }
+
+        
+      }
+      
+    }
+      
+    
+
+
+  }
+}
