@@ -18,7 +18,7 @@ export default class TagCheckBox extends Component {
                     type="checkbox"
                     name={`${this.props.tagname}_cb`}
                     id={`${this.props.tagname}_cb`}
-                    value={this.props.name}
+                    value={this.props.name.toLowerCase()}
                     checked={this.state.checked}
                     onChange={this.updateCheckBox}
                 />

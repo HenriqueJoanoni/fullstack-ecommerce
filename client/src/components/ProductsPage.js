@@ -21,6 +21,7 @@ export default class ProductsPage extends Component {
     }
 
     determineSelectedProducts = () => {
+        console.log(this.state.products)
         let updatedSelectedProducts = [...this.state.products]
 
         if (this.state.searchQuery) {
@@ -31,7 +32,7 @@ export default class ProductsPage extends Component {
 
         if (this.state.selectedTags.length > 0) {
             updatedSelectedProducts = updatedSelectedProducts.filter(product =>
-                product.tags?.some(tag => this.state.selectedTags.includes(tag)) ?? false
+                product.product_tags?.some(tag => this.state.selectedTags.includes(tag))
             )
         }
 
@@ -72,10 +73,6 @@ export default class ProductsPage extends Component {
             default:
                 break
         }
-    }
-
-    updateFilterByNew = val => {
-        this.setState({filterByNew: val})
     }
 
     updateFilterByNew = val => {
