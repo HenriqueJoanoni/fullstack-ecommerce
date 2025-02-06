@@ -22,7 +22,7 @@ After clone the project, open your terminal / cmd:
 Open another tab of your terminal / cmd:
 > cd client
 
-> npm install JWT_PRIVATE_KEY
+> npm install
 
 Wait the installation to finnish, this will create your `node_modules` folder.
 
