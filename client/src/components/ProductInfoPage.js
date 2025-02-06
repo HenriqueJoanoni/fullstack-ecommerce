@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import Header from "./Header"
-import {guitarSample, gibson, leftArrowIcon, rightArrowIcon, returnArrowIcon} from '../images';
+import {guitarSample, guitarPlay, gibson, leftArrowIcon, rightArrowIcon, returnArrowIcon} from '../images';
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 import PageFooter from "./PageFooter";
@@ -15,8 +15,8 @@ export default class ProductInfoPage extends Component {
             name: "Epiphone Les Paul Special II",
             description: "A light, crisp sounding guitar, ideal for beginners and experienced players alike",
             price: 1500,
-            mainImage: "./guitarSample.jpg",
-            photos: [guitarSample, gibson],
+            mainImage: "./guitarPlay.jpg",
+            photos: [guitarPlay, guitarSample, gibson],
             brand: "Epiphone Les Paul"
         }
 

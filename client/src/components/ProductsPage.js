@@ -1,69 +1,62 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import axios from "axios"
-import Header from "./Header";
-import SearchTools from './SearchTools';
-import ProductDisplayCard from './ProductDisplayCard';
-import PageFooter from "./PageFooter";
+import Header from "./Header"
+import SearchTools from './SearchTools'
+import ProductDisplayCard from './ProductDisplayCard'
+import PageFooter from "./PageFooter"
 import {SERVER_HOST} from "../config/global_constants"
-
 
 export default class ProductsPage extends Component {
     constructor(props) {
         super(props);
 
 
+
         this.state = {
             products: [],
             selectedTags: [],
             selectedBrands: [],
-            filterByNew: false,
             searchQuery: "",
-            sortField: "name",
+            filterByNew: false,
+            sortField: "product_name",
             sortDirection: 1
         }
-
-        
-        
     }
 
     determineSelectedProducts = () => {
-        // console.log(this.state.selectedTags)
+        console.log(this.state.products)
         let updatedSelectedProducts = [...this.state.products]
-        //filter from search
-        if (this.state.searchQuery !== "") {
-            updatedSelectedProducts = updatedSelectedProducts.filter(
-                product => product.product_name.toLowerCase().includes(this.state.searchQuery.toLowerCase()
-                )
+
+        if (this.state.searchQuery) {
+            updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+                product.product_name?.toLowerCase().includes(this.state.searchQuery.toLowerCase())
             )
         }
 
-        //filter from tags
-        //item tags
-        if (this.state.selectedTags.length !== 0) {
-            updatedSelectedProducts = updatedSelectedProducts.filter(
-                product => product.product_tags.some(tag => this.state.selectedTags.includes(tag))
+        if (this.state.selectedTags.length > 0) {
+            updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+                product.product_tags?.some(tag => this.state.selectedTags.includes(tag))
             )
         }
 
-        //brand tags
-        if (this.state.selectedBrands.length !== 0){
-            updatedSelectedProducts = updatedSelectedProducts.filter( 
-                product => this.state.selectedBrands.includes(product.product_brand)
+        if (this.state.selectedBrands.length > 0) {
+            updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+                product.product_brand?.toLowerCase() &&
+                this.state.selectedBrands.includes(product.product_brand.toLowerCase())
             )
         }
 
-        //show new only?
-        if (this.state.filterByNew){
-            updatedSelectedProducts = updatedSelectedProducts.filter(product => product.is_new)
+        if (this.state.filterByNew) {
+            updatedSelectedProducts = updatedSelectedProducts.filter(product =>
+                product.is_new === true
+            )
         }
 
         return updatedSelectedProducts
     }
 
-
     updateSearchQuery = e => {
         this.setState({searchQuery: e.target.value})
-        this.determineSelectedProducts()
     }
 
     updateSort = val => {
@@ -80,7 +73,8 @@ export default class ProductsPage extends Component {
             case "price_h_l":
                 this.setState({sortField: "product_price", sortDirection: -1})
                 break
-
+            default:
+                break
         }
     }
 
@@ -89,72 +83,100 @@ export default class ProductsPage extends Component {
     }
 
     toggleTag = (tagName, tagSet) => {
-        //brand tags
-        if (tagSet === "productBrands"){
-            if (!this.state.selectedBrands.includes(tagName)) {
-                this.setState({selectedBrands: [...this.state.selectedBrands, tagName]})
-            } else {
-                let i = this.state.selectedBrands.indexOf(tagName)
-                let newTagsList = [...this.state.selectedBrands]
-                newTagsList.splice(i, 1)
-                this.setState({selectedBrands: newTagsList})
-            }
+        if (tagSet === "productBrands") {
+            const normalizedBrand = tagName.toLowerCase()
+            this.setState(prevState => ({
+                selectedBrands: prevState.selectedBrands.includes(normalizedBrand)
+                    ? prevState.selectedBrands.filter(b => b !== normalizedBrand)
+                    : [...prevState.selectedBrands, normalizedBrand]
+            }))
+        } else {
+            this.setState(prevState => ({
+                selectedTags: prevState.selectedTags.includes(tagName)
+                    ? prevState.selectedTags.filter(t => t !== tagName)
+                    : [...prevState.selectedTags, tagName]
+            }))
         }
-
-        //product tags
-        else {
-            if (!this.state.selectedTags.includes(tagName)) {
-                this.setState({selectedTags: [...this.state.selectedTags, tagName]})
-            } else {
-                let i = this.state.selectedTags.indexOf(tagName)
-                let newTagsList = [...this.state.selectedTags]
-                newTagsList.splice(i, 1)
-                this.setState({selectedTags: newTagsList})
-            }
-        }
-        
-        console.log(this.state.selectedTags)
     }
 
     sortProducts = productsList => {
-        return productsList.sort((a, b) =>
-            a[this.state.sortField] > b[this.state.sortField] ? this.state.sortDirection : -this.state.sortDirection)
+        return productsList.sort((a, b) => {
+            const aValue = a[this.state.sortField]
+            const bValue = b[this.state.sortField]
+
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return this.state.sortDirection * aValue.localeCompare(bValue)
+            }
+            return this.state.sortDirection * (aValue - bValue)
+        })
     }
 
     componentDidMount() {
         axios.get(`${SERVER_HOST}/products`)
             .then(res => {
                 if (res.data) {
-                    if (res.data.errorMessage) {
-                        console.log(res.data.errorMessage)
-                    } else {
-                        this.setState({products: res.data})
-                    }
+                    const safeProducts = res.data.map(product => ({
+                        tags: [],
+                        product_brand: product.product_brand?.toLowerCase() || '',
+                        is_new: false,
+                        ...product
+                    }))
+                    this.setState({products: safeProducts})
                 }
             })
             .catch(err => {
-                console.log(err)
+                console.log("Error loading products:", err)
             })
     }
 
-
     render() {
+        const filteredProducts = this.determineSelectedProducts()
+        const sortedProducts = this.sortProducts(filteredProducts)
+
         return (
-            <>
+            <div id="productsPage">
                 <Header/>
-                <SearchTools searchQuery={this.state.searchQuery}
-                             updateSearchQuery={this.updateSearchQuery}
-                             toggleTag={this.toggleTag}
-                             updateSort={this.updateSort}
-                             filterByNew={this.filterByNew}
-                             updateFilterByNew={this.updateFilterByNew}
-                />
-                <div id="productsDisplayPanel">
-                    {this.sortProducts(this.determineSelectedProducts()).map(product => <ProductDisplayCard
-                        key={product._id} product={product}/>)}
+                <div className="products-container">
+                    {/* ------filters column*/}
+                    <div className="filters-column">
+                        <div className="filters-section">
+                            <h3>Filter Results</h3>
+                            <SearchTools
+                                searchQuery={this.state.searchQuery}
+                                updateSearchQuery={this.updateSearchQuery}
+                                toggleTag={this.toggleTag}
+                                updateSort={this.updateSort}
+                                filterByNew={this.state.filterByNew}
+                                updateFilterByNew={this.updateFilterByNew}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="products-display">
+                        {/* ---------sort header*/}
+                        <div className="sort-header">
+                            <span>Showing {filteredProducts.length} results</span>
+                            <select
+                                onChange={(e) => this.updateSort(e.target.value)}
+                                className="sort-dropdown"
+                            >
+                                <option value="name_a_z">Sort By: Name (A-Z)</option>
+                                <option value="name_z_a">Name (Z-A)</option>
+                                <option value="price_l_h">Price (Low to High)</option>
+                                <option value="price_h_l">Price (High to Low)</option>
+                            </select>
+                        </div>
+
+                        {/* ----------product cards*/}
+                        <div className="products-grid">
+                            {sortedProducts.map(product => (
+                                <ProductDisplayCard key={product._id} product={product}/>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 <PageFooter/>
-            </>
+            </div>
         )
     }
 }

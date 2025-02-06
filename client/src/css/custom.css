@@ -41,7 +41,7 @@ body {
 
 /*-----------------firstheader links*/
 a {
-    color: #bbbbbb;
+    color: #cccccc;
     text-decoration: none;
     font-size: 0.36em;
     font-weight: 600;
@@ -92,7 +92,7 @@ a:hover {
 
 .search-input {
     width: 12vw;
-    border-radius: 4px;
+    border-radius: 2px;
     font-size: 0.34em;
     background-color: #c4c4c4;
     height: 3vh;
@@ -102,7 +102,8 @@ a:hover {
 }
 
 .search-input::placeholder {
-    color: #1e1e1e;
+    color: #2e2e2e;
+    font-size:small;
 }
 
 .search-input:focus {
@@ -132,21 +133,21 @@ a:hover {
 
 /* -----------------2nd sticky header*/
 .second-header {
-    background-color: #bbbbbb;
-    padding: 0.8rem;
+    background-color: #cccccc;
+    padding: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.85rem;
     color: #333;
-    gap: 1vw;
+    gap: 2vw;
     height: 1vh;
-    box-shadow: 0 2px 4px #30303033; 
+    box-shadow: 0 2px 4px #6a6a6a1e; 
     }
 
 .second-header-links {
     display: flex;
-    gap: 1.5em;
+    gap: 2em;
     align-items: center;
 }
 
@@ -296,22 +297,23 @@ a:hover {
     background-color: rgb(44, 44, 44);
     color: white;
     width: 100%;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+    border: 1px solid grey;
+    /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); */
+    border-radius: 0px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     text-align: left;
     max-height: 25em;
     position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
     cursor: pointer;
 }
 
-.card:hover {
+/* .card:hover {
     background-color: rgba(35, 35, 35, 0.603);
     transform: translateY(-5px);
-}
+} */
 
 .card-image img {
     width: 100%;
@@ -330,7 +332,7 @@ a:hover {
 
 .card-content p {
     font-size: 1em;
-    color: #bbbbbb;
+    color: #cccccc;
 }
 
 /*-----------------dropdown*/
@@ -470,7 +472,8 @@ h2 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    border: 1px solid #d1d1d1;  
+    margin-bottom:0px;
+    border: 1px solid #d1d1d1;
 }
 .cartTable th,
 .cartTable td {
@@ -577,7 +580,6 @@ h2 {
     background: #2b2b2b;
     color: white;
     font-weight: 500;
-    font-family:;
     font-size: 1rem;
     border: none;
     cursor: pointer;
@@ -588,4 +590,241 @@ h2 {
 
 #checkoutButton:hover {
     background: #505050;
+}
+
+/*-----------fixing the products page*/
+#productsPage {
+    background: #ffffff;
+    min-height: 100vh;
+  }
+  
+  .products-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* --------filters column */
+  .filters-column {
+    width: 270px;
+    position: sticky;
+    top: 125px;
+    height: fit-content;
+    background: #f8f8f8;
+    border: 1px solid #dadada;
+    border-radius: 2px;
+    padding: 18px;
+    z-index: 50;
+    align-self: flex-start;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+  
+  .filters-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  /* ---------products display area */
+  .products-display {
+    flex: 1;
+  }
+  
+  .sort-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2vh;
+    padding-left:25px;
+    color:#515151;
+  }
+  
+  .sort-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #dadada;
+    border-radius: 0px;
+    background: #f8f8f8;
+    font-size: 0.6rem;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 0 10px;
+  }
+  
+  /* ---------product cards */
+  .productCard {
+    background: #f8f8f8;
+    border: 1px solid #dadada;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: 0.4s ease;
+  }
+  
+  .productCard:hover {
+    /* transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); */
+    background-color:#e8e8e8;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .card-content {
+    padding: 15px;
+  }
+  
+  .card-content h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .card-content p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  /* ---------searchtools */
+.search-tools-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .search-sort-row {
+    display: flex;
+    gap: 0px;
+    flex-direction: column;
+  }
+  
+  .filter-search-input {
+    width: 100%;
+    padding: 10px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+h3{
+    margin:0px;
+    padding:0px;
+    line-height:0.8;
+}
+
+  .filter-search-input:focus {
+    outline: none;
+    border-color: #c2c2c2;
+  }
+
+  .filter-search-input{
+    margin-bottom:15px;
+  }
+  
+  .filter-sort-dropdown {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background-color: white;
+    font-size: 0.9rem;
+    appearance: none;
+    background-size: 12px auto;
+    cursor: pointer;
+  }
+  
+  .filter-header {
+    font-size: 1.1rem;
+    margin-bottom: 0px;
+    color: #333;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .filter-tags-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .tagCheckBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.tagCheckBox input[type="checkbox"] {
+    order: -1; 
+    margin: 0;
+    width: 12px;
+    height: 12px;
+    accent-color: #626262;
+}
+
+.tagCheckBox label {
+    font-size: 0.95rem;
+    color: #535353;
+    cursor: pointer;
+    user-select: none;
+}
+
+h4{
+    margin:none;
+    padding:none;
+}
+.filter-group h4 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px 0;
+    padding: 4px 0;
+    user-select: none;
+}
+.filter-group h4 .arrow {
+    font-size: 0.8em;
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+.filter-group h4:hover {
+    color: #333;
+}
+.filter-group > div {
+    margin-left: 8px;
+}
+.filter-group {
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/*-----animation for filters column*/
+.filter-tags-grid {
+    transition: all 0.3s ease;
+}
+.filter-tags-grid {
+    display: grid;
+    gap: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.tagCheckBox {
+    animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
