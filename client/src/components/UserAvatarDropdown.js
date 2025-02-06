@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {userIcon, loggedUser} from '../images'
-import {ACCESS_ADMIN_LEVEL, ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
+import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
 
 export default class UserAvatarDropdown extends Component {
     constructor(props) {
@@ -49,7 +49,7 @@ export default class UserAvatarDropdown extends Component {
             <div className="profile-menu">
                 <div className="icon-wrapper" onClick={this.toggleDropdown}>
                     {isLoggedIn ? (
-                        <img className="header-icon" src={loggedUser} alt="User profile picture"/>
+                        <img className="header-icon" src={loggedUser} alt="User profile icon"/>
                     ) : (
                         <Link to="/login">
                             <img className="header-icon" src={userIcon} alt="Default profile icon"/>
@@ -77,7 +77,6 @@ export default class UserAvatarDropdown extends Component {
                                 <span>Logout</span>
                             </li>
                         </ul>
-
                     </div>
                 )}
             </div>

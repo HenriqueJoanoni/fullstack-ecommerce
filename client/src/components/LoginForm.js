@@ -68,8 +68,10 @@ export default class LoginForm extends Component {
             if (res.status === 200) {
                 sessionStorage.setItem("authToken", res.data.token)
 
-                sessionStorage.name = res.data.name
+                sessionStorage.firstName = res.data.firstName
+                sessionStorage.lastName = res.data.lastName
                 sessionStorage.email = res.data.email
+                sessionStorage.phone = res.data.phone
                 sessionStorage.accessLevel = res.data.accessLevel
                 this.setState({isLoggedIn: true})
             }

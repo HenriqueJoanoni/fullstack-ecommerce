@@ -88,8 +88,10 @@ router.post("/login", async (req, res) => {
         )
 
         res.status(200).json({
-            name: user.first_name,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.user_email,
+            phone: user.user_phone,
             accessLevel: user.user_access_level,
             token: token,
             redirect: redirect || "/",
@@ -120,8 +122,10 @@ router.get("/profile", verifyTokenPassword, async (req, res) => {
         }
 
         res.json({
-            name: user.first_name,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.user_email,
+            phone: user.user_phone,
             accessLevel: user.user_access_level,
             user: req.decodedToken
         })
