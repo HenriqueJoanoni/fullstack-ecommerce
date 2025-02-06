@@ -8,7 +8,7 @@ export default class AdminSearchResult extends Component {
 
     render(){
         return (
-            <div className="adminSearchResult">
+            <div className="adminSearchResult" onClick={()=>{this.props.setEditingState(this.props.product._id, true)}}>
                 <div>
                     {this.props.product.product_img !== null ? <img src={guitarSample}/> : null}
                     <div className="productDetails">

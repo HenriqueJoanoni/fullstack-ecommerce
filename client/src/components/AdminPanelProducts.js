@@ -2,6 +2,7 @@ import react, { Component} from "react"
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 import AdminSearchResult from "./AdminSearchResult"
+import EditProductModal from "./EditProductModal"
 
 
 export default class AdminPanelProducts extends Component {
@@ -20,6 +21,7 @@ export default class AdminPanelProducts extends Component {
     }
 
     setEditingState = (id, editing) => {
+        console.log("here")
         if (!editing){
             this.setState({editingID: null, editing: false})
         } else {
@@ -50,6 +52,10 @@ export default class AdminPanelProducts extends Component {
 
     render(){
         return (
+            //display edit modal if editing
+            this.state.editing ? <EditProductModal /> :
+
+            //else panel
             <div id="adminPanelProducts">
                 <div id="productsHeader">
                     <h2>Manage Products</h2>
@@ -65,7 +71,7 @@ export default class AdminPanelProducts extends Component {
 
                     <div id="searchResults">
                         {this.state.searchQuery !== "" ? 
-                            this.determineSelectedProducts().map(product => < AdminSearchResult onClick={()=>{this.setEditingState(product._id, true)}} product={product}/>) :
+                            this.determineSelectedProducts().map(product => < AdminSearchResult key={product._id} setEditingState={this.setEditingState} product={product}/>) :
                             null
                         }
                     </div>
