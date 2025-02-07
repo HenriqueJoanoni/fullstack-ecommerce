@@ -1,16 +1,16 @@
-import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import React, {Component} from "react"
+import {Link} from "react-router-dom"
 import {userIcon, loggedUser} from '../images'
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
 
 export default class UserAvatarDropdown extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             isOpen: false,
             positionLeft: false
-        };
-        this.dropdownRef = React.createRef();
+        }
+        this.dropdownRef = React.createRef()
     }
 
     toggleDropdown = () => {
@@ -20,30 +20,30 @@ export default class UserAvatarDropdown extends Component {
             }),
             () => {
                 if (this.state.isOpen) {
-                    this.adjustDropdownPosition();
+                    this.adjustDropdownPosition()
                 }
             }
-        );
-    };
+        )
+    }
 
     adjustDropdownPosition = () => {
         if (this.dropdownRef.current) {
-            const rect = this.dropdownRef.current.getBoundingClientRect();
-            const isNearRightEdge = rect.right > window.innerWidth;
+            const rect = this.dropdownRef.current.getBoundingClientRect()
+            const isNearRightEdge = rect.right > window.innerWidth
 
-            this.setState({positionLeft: isNearRightEdge});
+            this.setState({positionLeft: isNearRightEdge})
         }
-    };
+    }
 
     handleLogout = () => {
-        sessionStorage.clear();
-        window.location.reload();
-    };
+        sessionStorage.clear()
+        window.location.reload()
+    }
 
     render() {
-        const {isOpen, positionLeft} = this.state;
-        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL;
-        const isAdmin = sessionStorage.accessLevel > ACCESS_NORMAL_USER_LEVEL;
+        const {isOpen, positionLeft} = this.state
+        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
+        const isAdmin = sessionStorage.accessLevel > ACCESS_NORMAL_USER_LEVEL
 
         return (
             <div className="profile-menu">
@@ -80,6 +80,6 @@ export default class UserAvatarDropdown extends Component {
                     </div>
                 )}
             </div>
-        );
+        )
     }
 }

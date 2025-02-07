@@ -1,7 +1,7 @@
 import React, {Component, createRef} from "react"
 import {Link, NavLink} from "react-router-dom"
 import {heartIcon, shoppingBagIcon, downArrowIcon} from '../images'
-import UserAvatarDropdown from "./UserAvatarDropdown";
+import UserAvatarDropdown from "./UserAvatarDropdown"
 
 export default class Header extends Component {
     constructor(props) {
