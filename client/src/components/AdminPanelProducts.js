@@ -3,6 +3,7 @@ import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 import AdminSearchResult from "./AdminSearchResult"
 import EditProductModal from "./EditProductModal"
+import AddProductModal from "./AddProductModal"
 
 
 export default class AdminPanelProducts extends Component {
@@ -12,7 +13,8 @@ export default class AdminPanelProducts extends Component {
             searchQuery: "",
             allProducts: [],
             editingID: null,
-            editingMode: false
+            editingMode: false,
+            addingMode: false
         }
     }
 
@@ -23,10 +25,14 @@ export default class AdminPanelProducts extends Component {
     setEditingState = (id, editing) => {
         console.log("here")
         if (!editing){
-            this.setState({editingID: null, editing: false})
+            this.setState({editingID: null, editingMode: false})
         } else {
-            this.setState({editingID: id, editing: true})
+            this.setState({editingID: id, editingMode: true})
         }
+    }
+
+    setAddingState = val => {
+        this.setState({addingMode: val})
     }
 
     determineSelectedProducts = () => {
@@ -51,15 +57,25 @@ export default class AdminPanelProducts extends Component {
     }
 
     render(){
-        return (
-            //display edit modal if editing
-            this.state.editing ? <EditProductModal /> :
+        if (this.state.editingMode){
+            return <EditProductModal 
+                        product={this.state.allProducts.filter(product => product._id===this.state.editingID)[0]}
+                        setEditingState={this.setEditingState}
+                    />
+        } 
+        
+        else if (this.state.addingMode){
+            return <AddProductModal 
+                    setAddingState={this.setAddingState}
+                />
+        }
 
-            //else panel
+        //if not editing or adding, show main panel
+        return (
             <div id="adminPanelProducts">
                 <div id="productsHeader">
                     <h2>Manage Products</h2>
-                    <button id="addProductButton" type="button">Add Product</button>
+                    <button id="addProductButton" type="button" onClick={()=>{this.setAddingState(true)}}>Add Product</button>
                 </div>
                 <div id="productsMain">
                     <span>

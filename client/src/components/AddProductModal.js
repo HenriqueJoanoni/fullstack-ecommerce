@@ -6,12 +6,12 @@ export default class EditProductModal extends Component {
         super(props)
         this.state = {
             formValues: {
-                product_name: this.props.product?.product_name || "",
-                qty_in_stock: this.props.product.qty_in_stock,
-                product_description: this.props.product.product_description,
-                product_brand: this.props.product?.product_brand,
-                product_price: this.props.product?.product_price,
-                product_tags: this.props.product?.product_tags
+                product_name: "",
+                qty_in_stock: "",
+                product_description: "",
+                product_brand: "",
+                product_price: "",
+                product_tags: ""
             },
 
             errorMessages: {
@@ -42,7 +42,7 @@ export default class EditProductModal extends Component {
         this.setState({formValues: newObj})
     }
 
-    saveChanges =()=>{
+    addProduct =()=>{
         this.validateFormValues()
 
         if (Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key].length === 0)){
@@ -95,7 +95,7 @@ export default class EditProductModal extends Component {
             newErrorMessages.product_price = "Price is mandatory."
         } else if (parseFloat(this.state.formValues.product_price) <= 0){
             newErrorMessages.product_price = "Price must be greater than 0."
-        } else if (!/^\d+(\.\d{2})?$/.test(this.state.formValues.product_price)){
+        } else if (/$\d+(\.\d{2})?^/.test(this.state.formValues.product_price)){
             newErrorMessages.product_price = "Price must be a valid number."
         }
 
@@ -107,10 +107,10 @@ export default class EditProductModal extends Component {
 
     render(){
         return (
-            <div id="editProductModal" className="modal">
+            <div id="addProductModal" className="modal">
                 {console.log(this.props.product)}
                 <div className="productFormContainer">
-                    <h2>Edit Product</h2>
+                    <h2>Add New Product</h2>
                     <form onChange={e=>{this.updateFormValues(e)}}>
                         <span className="formRow">
                             <div className="formItem">
@@ -150,8 +150,8 @@ export default class EditProductModal extends Component {
                         </span>
 
                         <div>
-                            <button type="button" onClick={()=>{this.props.setEditingState(null, false)}}>Cancel</button>
-                            <button type="button" onClick={this.saveChanges}>Save Changes</button>
+                            <button type="button" onClick={()=>{this.props.setAddingState(false)}}>Cancel</button>
+                            <button type="button" onClick={this.addProduct}>Add Product</button>
                         </div>
 
                         

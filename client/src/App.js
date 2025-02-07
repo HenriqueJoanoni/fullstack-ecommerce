@@ -7,6 +7,12 @@ import LoginForm from "./components/LoginForm";
 import ShoppingCart from "./components/ShoppingCart"
 import RegisterForm from "./components/RegisterForm";
 import ContactForm from "./components/ContactForm";
+import { ACCESS_GUEST_LEVEL } from './config/global_constants';
+import AdminPage from "./components/AdminPage";
+import LoggedInRoute from './components/LoggedInRoute';
+import ProfilePage from "./components/ProfilePage";
+import { ACCESS_NORMAL_USER_LEVEL } from './config/global_constants';
+
 
 if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.name = "GUEST"
