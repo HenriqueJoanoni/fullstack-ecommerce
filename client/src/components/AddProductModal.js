@@ -1,4 +1,6 @@
 import react, { Component} from "react"
+import axios from "axios"
+import { SERVER_HOST } from "../config/global_constants"
 
 
 export default class EditProductModal extends Component {
@@ -6,12 +8,22 @@ export default class EditProductModal extends Component {
         super(props)
         this.state = {
             formValues: {
+                product_deal: {
+                    is_deal: false,
+                    discount_price: 1800,
+                    deal_deadline: "2025-06-01T00:00:00.000+00:00"
+                },
+                product_picture: [],
+                is_available: true,
+                product_sku: "",
                 product_name: "",
                 qty_in_stock: "",
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: ""
+                product_tags: "",
+                product_category: "",
+                is_new: false
             },
 
             errorMessages: {
@@ -46,7 +58,13 @@ export default class EditProductModal extends Component {
         this.validateFormValues()
 
         if (Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key].length === 0)){
-            console.log("valid") //update function here
+            axios.post(`${SERVER_HOST}/product`, this.state.formValues)
+            .then(res => {
+                if (res.status === 200){
+                    this.props.refreshProducts()
+                    this.props.setAddingState(false)
+                }
+            })
         } 
     }
 
@@ -58,8 +76,16 @@ export default class EditProductModal extends Component {
             product_description: "",
             product_brand: "",
             product_price: "",
-            product_tags: ""
+            product_tags: "",
+            product_sku: ""
         }
+
+        //product sku
+        if (this.state.formValues.product_sku.length===0){
+            newErrorMessages.product_sku = "Product SKU is mandatory"
+        } else if (!/^SKU\d{6}$/.test(this.state.formValues.product_sku)){
+            newErrorMessages.product_sku = "Invalid SKU - must be 'SKU' followed by 6 digits"
+        } 
 
         //product_name
         if (this.state.formValues.product_name.length === 0){
@@ -108,10 +134,17 @@ export default class EditProductModal extends Component {
     render(){
         return (
             <div id="addProductModal" className="modal">
-                {console.log(this.props.product)}
                 <div className="productFormContainer">
                     <h2>Add New Product</h2>
                     <form onChange={e=>{this.updateFormValues(e)}}>
+                        <span className="formRow">
+                            <div className="formItem">
+                                <label htmlFor="product_sku">Product SKU:</label>
+                                <input type="text" name="product_sku" value={this.state.formValues["product_sku"]}/>
+                                <p class="errorMessage">{this.state.errorMessages.product_sku}</p>
+                            </div>
+                        </span>
+
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_name">Name:</label>

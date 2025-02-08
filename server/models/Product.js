@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema({
     },
     product_category: {type: String},
     product_brand: {type: String},
+    qty_in_stock: {type: Number}
 }, {
     collection: 'products'
 })

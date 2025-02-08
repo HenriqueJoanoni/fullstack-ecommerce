@@ -10,7 +10,6 @@ router.get(`/products`, (req, res) =>
         if (data){
             res.json(data)
         } else {
-            console.log(error)
             res.json(error)
         }
     })
@@ -28,7 +27,7 @@ router.get(`/products/:_id`, (req, res) => {
     })
 })
 
-
+/*
 router.post("/new-product", async (req, res) => {
 try {
     const product = req.body
@@ -39,6 +38,45 @@ try {
     console.log(error)
     res.status(400).send({error: error.message})
 }})
+*/
+
+router.post("/product", (req, res) => {
+    console.log(req.body)
+    productsModel.create(req.body, (error, data) => {
+        if (res.data){
+            console.log(data)
+            res.json(data)
+        } else {
+            res.json(error)
+            console.log(error)
+        }
+    })
+})
+
+//edit product
+router.put("/products/:_id", (req, res)=>{
+    //update DB
+    productsModel.findByIdAndUpdate(req.params._id, req.body, (error, data) => {
+        if (data){
+            res.json(data)
+        } else {
+            res.json(error)
+        }
+    })
+    
+})
+
+
+router.delete("/products/:_id", (req, res)=>{
+    console.log(req.params._id)
+    productsModel.findByIdAndRemove(req.params._id, (error, data) => {
+        if (error){ 
+            res.json(error)
+        } else {
+            res.json(data)
+        }
+    })
+})
 
 
 module.exports = router

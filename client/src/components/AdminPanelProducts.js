@@ -43,17 +43,17 @@ export default class AdminPanelProducts extends Component {
         )
     }
 
-    componentDidMount(){
+    refreshProducts = () => {
         axios.get(`${SERVER_HOST}/products`)
         .then(res => {
             if (res.data){
                 this.setState({allProducts: res.data})
-                console.log(res.data)
             }
         })
-        .catch (err => {
-            console.log(err)
-        })
+    }
+
+    componentDidMount(){
+        this.refreshProducts()
     }
 
     render(){
@@ -61,12 +61,14 @@ export default class AdminPanelProducts extends Component {
             return <EditProductModal 
                         product={this.state.allProducts.filter(product => product._id===this.state.editingID)[0]}
                         setEditingState={this.setEditingState}
+                        refreshProducts={this.refreshProducts}
                     />
         } 
         
         else if (this.state.addingMode){
             return <AddProductModal 
                     setAddingState={this.setAddingState}
+                    refreshProducts={this.refreshProducts}
                 />
         }
 

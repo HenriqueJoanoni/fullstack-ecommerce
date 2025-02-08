@@ -1,17 +1,14 @@
 import react, { Component} from "react"
-
+import axios from "axios"
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class EditProductModal extends Component {
     constructor(props){
         super(props)
+        let oldProduct = this.props.product
         this.state = {
             formValues: {
-                product_name: this.props.product?.product_name || "",
-                qty_in_stock: this.props.product.qty_in_stock,
-                product_description: this.props.product.product_description,
-                product_brand: this.props.product?.product_brand,
-                product_price: this.props.product?.product_price,
-                product_tags: this.props.product?.product_tags
+                ...this.props.product
             },
 
             errorMessages: {
@@ -31,7 +28,7 @@ export default class EditProductModal extends Component {
         Object.keys(this.state.formValues).forEach(key => {
             //key that was changed
             if (key===e.target.name){
-                newObj[key] = e.target.value
+                newObj[key] = e.target.value    
             }
             //all other keys
             else {
@@ -44,10 +41,31 @@ export default class EditProductModal extends Component {
 
     saveChanges =()=>{
         this.validateFormValues()
-
+        console.log(this.state.formValues)
+        //update if all error messages are empty
         if (Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key].length === 0)){
-            console.log("valid") //update function here
+            axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, this.state.formValues)
+            .then(res => {
+                if (!res.data){
+                    
+                    window.alert("Error - Could not modify data")
+                } else {
+                    //successful update
+                    console.log(res.data)
+                    this.props.refreshProducts()
+                    this.props.setEditingState(null, false)
+                }
+            })
+
         } 
+    }
+
+    deleteProduct = () => {
+        axios.delete(`${SERVER_HOST}/products/${this.props.product._id}`)
+        .then(res => {
+            this.props.setEditingState(null, false)
+            this.props.refreshProducts()
+        })
     }
 
 
@@ -152,6 +170,7 @@ export default class EditProductModal extends Component {
                         <div>
                             <button type="button" onClick={()=>{this.props.setEditingState(null, false)}}>Cancel</button>
                             <button type="button" onClick={this.saveChanges}>Save Changes</button>
+                            <button type="button" onClick={this.deleteProduct}>Delete</button>
                         </div>
 
                         
