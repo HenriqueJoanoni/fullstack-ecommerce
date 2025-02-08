@@ -27,13 +27,18 @@ export default class ProfilePage extends Component {
         if (name === "phone") {
             const numericValue = value.replace(/\D/g, "")
             if (numericValue.length <= 10) {
-                this.setState({ [name]: numericValue })
+                this.setState((prevState) => ({
+                    [name]: numericValue,
+                    errors: {...prevState.errors, [name]: ""},
+                }))
             }
         } else {
-            this.setState({ [name]: value })
+            this.setState((prevState) => ({
+                [name]: value,
+                errors: {...prevState.errors, [name]: ""},
+            }))
         }
     }
-
 
     validateForm = () => {
         const errors = {}
@@ -53,7 +58,7 @@ export default class ProfilePage extends Component {
             errors.phone = "Invalid phone number"
         }
 
-        if (typeof email === "string" && email.trim() && !email.match(validateEmail)) {
+        if (!email || typeof email === "string" && email.trim() && !email.match(validateEmail)) {
             errors.email = "Please, enter a valid email address"
         }
 
@@ -72,13 +77,13 @@ export default class ProfilePage extends Component {
         e.preventDefault()
 
         const errors = this.validateForm()
-        if (Object.keys(errors).length === 1) {
-            this.showToast(`❌ ${Object.values(errors)}`, "error")
-            return
-        }
-
-        if (Object.keys(errors).length >= 2) {
-            this.showToast("❌ Something went wrong", "error")
+        if (Object.keys(errors).length > 0) {
+            this.setState({errors})
+            if (Object.keys(errors).length === 1) {
+                this.showToast(`❌ ${Object.values(errors)[0]}`, "error")
+            } else {
+                this.showToast("❌ Something went wrong", "error")
+            }
             return
         }
 
@@ -108,6 +113,7 @@ export default class ProfilePage extends Component {
                 sessionStorage.setItem("lastName", updatedUser.last_name)
                 sessionStorage.setItem("email", updatedUser.user_email)
                 sessionStorage.setItem("phone", updatedUser.user_phone)
+                this.setState({errors: {}})
             }
         } catch (error) {
             if (error.response?.data?.error) {
@@ -119,7 +125,7 @@ export default class ProfilePage extends Component {
     }
 
     render() {
-        const {showToast, message, type} = this.state
+        const {showToast, message, type, errors} = this.state
         return (
             <div className="app-container">
                 <div className="header-container">
@@ -143,18 +149,22 @@ export default class ProfilePage extends Component {
                                         <input
                                             type="text"
                                             name="firstName"
+                                            className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
                                             value={this.state.firstName}
                                             onChange={this.handleChange}
                                         />
+                                        {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                                     </div>
                                     <div className="form-group">
                                         <label>Last Name</label>
                                         <input
                                             type="text"
                                             name="lastName"
+                                            className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
                                             value={this.state.lastName}
                                             onChange={this.handleChange}
                                         />
+                                        {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                                     </div>
                                 </div>
 
@@ -164,9 +174,11 @@ export default class ProfilePage extends Component {
                                         <input
                                             type="email"
                                             name="email"
+                                            className={`form-control ${errors.email ? "is-invalid" : ""}`}
                                             value={this.state.email}
                                             onChange={this.handleChange}
                                         />
+                                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                                     </div>
                                     <div className="form-group">
                                         <label>Phone</label>
