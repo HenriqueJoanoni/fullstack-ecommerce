@@ -650,7 +650,7 @@ button:hover {
     min-width: 180px;
     background: $text-color;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    @include box-shadow($rgba1, $rgba2);
     overflow: hidden;
     opacity: 0;
     transform: translateY(-10px);
@@ -730,7 +730,7 @@ button:hover {
   .card-profile-info {
     flex: 2;
     background: $text-color;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    @include box-shadow($rgba1, $rgba2);
     border-radius: 12px;
     padding: 30px;
     width: 100%;
@@ -751,12 +751,10 @@ button:hover {
     }
 
     .form-group {
-      //margin-bottom: 20px;
       display: flex;
       flex-direction: column;
 
       label {
-        //display: block;
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 5px;
@@ -798,7 +796,7 @@ button:hover {
   .card-profile-user {
     flex: 1;
     background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    @include box-shadow($rgba1, $rgba2);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
@@ -847,5 +845,46 @@ button:hover {
         }
       }
     }
+  }
+}
+
+/** TOAST ALERT */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: $important-text-color1;
+  color: $text-color;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 2.5s;
+  @include box-shadow($rgba1, $rgba2);
+}
+
+.toast.success {
+  background-color: #3A7D44;
+}
+
+.toast.error {
+  background-color: #B82132;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

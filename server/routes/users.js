@@ -142,7 +142,7 @@ router.post("/profile-update", verifyTokenPassword, async (req, res) => {
         const user = await User.findOne({user_email: req.decodedToken.email})
 
         if (!user) {
-            return res.status(404).json({error: "Error during update"})
+            return res.status(404).json({error: "User not found"})
         }
 
         let updateFields = {

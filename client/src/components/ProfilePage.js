@@ -14,18 +14,73 @@ export default class ProfilePage extends Component {
             email: sessionStorage.getItem("email") || "",
             phone: sessionStorage.getItem("phone") || "",
             password: "",
-            errors: {}
+            errors: {},
+            showToast: false,
+            message: "",
+            type: "",
         }
     }
 
     handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+        const { name, value } = e.target
+
+        if (name === "phone") {
+            const numericValue = value.replace(/\D/g, "")
+            if (numericValue.length <= 10) {
+                this.setState({ [name]: numericValue })
+            }
+        } else {
+            this.setState({ [name]: value })
+        }
+    }
+
+
+    validateForm = () => {
+        const errors = {}
+        const {firstName, lastName, email, phone} = this.state
+        let validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        let phonePattern = /^0[1-9]\d{8}$/
+
+        if (!firstName) {
+            errors.firstName = "First name is required"
+        }
+
+        if (!lastName) {
+            errors.lastName = "Last name is required"
+        }
+
+        if (phone && !phone.match(phonePattern)) {
+            errors.phone = "Invalid phone number"
+        }
+
+        if (typeof email === "string" && email.trim() && !email.match(validateEmail)) {
+            errors.email = "Please, enter a valid email address"
+        }
+
+        return errors
+    }
+
+    showToast = (message, type) => {
+        this.setState({showToast: true, message, type})
+
+        setTimeout(() => {
+            this.setState({showToast: false})
+        }, 3000)
     }
 
     handleSubmit = async (e) => {
         e.preventDefault()
+
+        const errors = this.validateForm()
+        if (Object.keys(errors).length === 1) {
+            this.showToast(`❌ ${Object.values(errors)}`, "error")
+            return
+        }
+
+        if (Object.keys(errors).length >= 2) {
+            this.showToast("❌ Something went wrong", "error")
+            return
+        }
 
         const userInfo = {
             firstName: this.state.firstName,
@@ -45,8 +100,9 @@ export default class ProfilePage extends Component {
 
             if (res.status === 200) {
                 // console.log(res.data)
+                this.showToast("🎉 Success! Profile updated", "success")
 
-                /** UPDATE SESSION WITH THE LAST UPDATED INFO FROM THE USER AFTER PROFILE CHANGE */
+                /** UPDATE SESSION WITH THE LAST UPDATED INFO FROM THE USER COLLECTION AFTER PROFILE CHANGE */
                 const updatedUser = res.data.updatedUserData
                 sessionStorage.setItem("firstName", updatedUser.first_name)
                 sessionStorage.setItem("lastName", updatedUser.last_name)
@@ -54,15 +110,16 @@ export default class ProfilePage extends Component {
                 sessionStorage.setItem("phone", updatedUser.user_phone)
             }
         } catch (error) {
-            if (error) {
-                this.setState({errors: error.response.data.errors})
+            if (error.response?.data?.error) {
+                this.showToast(`❌ ${error.response.data.error}`, "error")
             } else {
-                this.setState({errors: "Profile could not be updated"})
+                this.showToast("❌ Profile could not be updated", "error")
             }
         }
     }
 
     render() {
+        const {showToast, message, type} = this.state
         return (
             <div className="app-container">
                 <div className="header-container">
@@ -70,9 +127,16 @@ export default class ProfilePage extends Component {
                 </div>
                 <section className="profile-section">
                     <h1 className="profile-title">Profile Page</h1>
+
+                    {showToast && (
+                        <div className={`toast ${type}`}>
+                            {message}
+                        </div>
+                    )}
+
                     <div className="container">
                         <div className="card-profile-info">
-                            <form onSubmit={this.handleSubmit}>
+                            <form onSubmit={this.handleSubmit} noValidate>
                                 <div className="form-row">
                                     <div className="form-group">
                                         <label>First Name</label>
@@ -112,6 +176,7 @@ export default class ProfilePage extends Component {
                                             placeholder="Phone number"
                                             value={this.state.phone}
                                             onChange={this.handleChange}
+                                            maxLength="10"
                                         />
                                     </div>
                                 </div>
