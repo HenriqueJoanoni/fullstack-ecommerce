@@ -88,8 +88,10 @@ router.post("/login", async (req, res) => {
         )
 
         res.status(200).json({
-            name: user.first_name,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.user_email,
+            phone: user.user_phone,
             accessLevel: user.user_access_level,
             token: token,
             redirect: redirect || "/",
@@ -120,13 +122,53 @@ router.get("/profile", verifyTokenPassword, async (req, res) => {
         }
 
         res.json({
-            name: user.first_name,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.user_email,
+            phone: user.user_phone,
             accessLevel: user.user_access_level,
             user: req.decodedToken
         })
     } catch (error) {
         console.log("Error fetching user profile: ", error)
+        res.status(500).json({error: "Internal server error"})
+    }
+})
+
+/** UPDATE USER INFO */
+router.post("/profile-update", verifyTokenPassword, async (req, res) => {
+    try {
+        const {firstName, lastName, phone, email, password} = req.body
+        const user = await User.findOne({user_email: req.decodedToken.email})
+
+        if (!user) {
+            return res.status(404).json({error: "User not found"})
+        }
+
+        let updateFields = {
+            first_name: firstName,
+            last_name: lastName,
+            user_phone: phone,
+            user_email: email,
+        }
+
+        if (password) {
+            updateFields.user_password = await bcrypt.hash(password, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS))
+        }
+
+        await User.updateOne(
+            {user_email: req.decodedToken.email},
+            {$set: updateFields}
+        )
+
+        const  updatedUserData = await User.findOne({user_email: email}, "-password")
+
+        res.status(200).json({
+            message: "Profile Updated Successfully",
+            updatedUserData: updatedUserData
+        })
+    } catch (error) {
+        console.log(error)
         res.status(500).json({error: "Internal server error"})
     }
 })
