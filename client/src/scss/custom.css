@@ -1,9 +1,73 @@
 /** BASE COLORS */
 /** GENERAL STYLING FOR SEARCH TOOLS */
 /** RGB COLORS */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 * {
   box-sizing: border-box;
   padding: 0;
+}
+
+/** ERROR HANDLING CLASSES */
+.is-invalid {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.is-invalid:focus {
+  border-color: #b02a37;
+  box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: block;
+}
+
+.is-invalid + .invalid-feedback {
+  display: block;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-error .close-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #721c24;
+  cursor: pointer;
+}
+
+.alert-error .close-btn:hover {
+  color: #501018;
+}
+
+.alert.fade-out {
+  animation: fadeOut 0.5s forwards;
 }
 
 .header-links-container a {
@@ -41,7 +105,7 @@
   left: 0;
   width: 100%;
   height: 6px;
-  background-color: #bbbbbb;
+  background-color: #cccccc;
   border-radius: 20px;
 }
 
@@ -228,10 +292,10 @@
 }
 
 .sort-dropdown {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
+  padding: 0.7rem;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  color: #323232;
   max-width: 200px;
 }
 
@@ -252,7 +316,7 @@
 
 /** CONTACT PAGE */
 .page-container {
-  color: #bbbbbb;
+  color: #cccccc;
   text-align: center;
   width: 100%;
   height: 80%;
@@ -461,7 +525,7 @@ button:hover {
   width: 100%;
   padding: 10px 20px;
   background: #343438;
-  color: #bbbbbb;
+  color: #cccccc;
   font-size: 0.8em;
   text-align: center;
 }
@@ -494,94 +558,6 @@ button:hover {
     gap: 20px;
   }
 }
-/*  ------- CART PAGE ----------- */
-#shoppingCartContainer {
-  width: 80%;
-  margin: 30px auto;
-  background-color: #eee;
-  min-height: 400px;
-  border-radius: 10px;
-  padding: 20px 40px;
-}
-#shoppingCartContainer h2 {
-  font-size: 1.8rem;
-}
-#shoppingCartContainer .cartItem {
-  width: 60%;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-}
-#shoppingCartContainer .cartItem div {
-  display: flex;
-  align-items: center;
-}
-#shoppingCartContainer .cartItem div button {
-  width: 40px;
-  all: unset;
-}
-#shoppingCartContainer .cartItem div button img {
-  width: 40px;
-  margin: 5px 10px;
-}
-#shoppingCartContainer .cartItem div button:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-}
-#shoppingCartContainer .cartItem div .cartItemTitle {
-  font-weight: bold;
-  font-size: 1.2rem;
-  min-width: 200px;
-  padding: 5px 10px;
-}
-#shoppingCartContainer .cartItem div img {
-  width: 70px;
-}
-#shoppingCartContainer .cartItem div .cartItemQuantity {
-  width: 50px;
-  font-size: 1rem;
-}
-#shoppingCartContainer .cartItem div .cartItemPrice {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-left: 20px;
-}
-#shoppingCartContainer #cartTotalContainer {
-  width: 60%;
-  margin: auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-weight: bold;
-}
-#shoppingCartContainer #cartTotalContainer p {
-  width: -moz-min-content;
-  width: min-content;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  padding: 5px;
-  white-space: nowrap;
-}
-#shoppingCartContainer #checkoutButton {
-  display: block;
-  width: 150px;
-  height: 60px;
-  font-size: 1.2rem;
-  margin: 50px auto 0 auto;
-  border-radius: 10px;
-  outline: none;
-  border: 5px solid #2c2c2c;
-  background-color: #2c2c2c;
-  color: #d6d6d6;
-}
-#shoppingCartContainer #checkoutButton:hover {
-  background-color: #d6d6d6;
-  cursor: pointer;
-  color: #2c2c2c;
-  border: 1px solid #2c2c2c;
-  transition: 0.2s ease;
-}
-
 /*  ----- ADMIN PAGES ------- */
 #adminPageContainer {
   width: 100%;
@@ -589,12 +565,12 @@ button:hover {
   background-color: white;
   padding-top: 20px;
   padding-bottom: 25px;
-  /* ----------- edit modal ---------- */
 }
 #adminPageContainer #adminControlPanel {
   width: 80%;
   box-shadow: 5px 11px 40px 13px rgba(0, 0, 0, 0.75);
   margin: auto;
+  /*  ----- ADMIN PAGES ------- */
 }
 #adminPageContainer #adminControlPanel #adminControlPanelHeader {
   width: 100%;
@@ -683,15 +659,143 @@ button:hover {
   height: 75px;
 }
 #adminPageContainer #adminControlPanel #productsMain .adminSearchResult:hover {
+  background-color: #d6d6d6;
+  cursor: pointer;
+  color: #2c2c2c;
+  border: 1px solid #2c2c2c;
+  transition: 0.2s ease;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer {
+  width: 100%;
+  min-height: 80vh;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 25px;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel {
+  width: 80%;
+  box-shadow: 5px 11px 40px 13px rgba(0, 0, 0, 0.75);
+  margin: auto;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader {
+  width: 100%;
+  height: 75px;
+  display: flex;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader button {
+  margin: 0;
+  border-radius: 0;
+  font-size: 1rem;
+  background-color: #333;
+  color: white;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader .selected {
+  background-color: white;
+  color: #333;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader h2 {
+  font-size: 1.75rem;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader #addProductButton {
+  width: 200px;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain {
+  width: 90%;
+  margin: auto;
+  /*   ADMIN SEARCH RESULT     */
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+  margin: auto;
+  font-weight: 200;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain span input {
+  padding: 2px 5px;
+  height: 1.5rem;
+  display: block;
+  margin-left: 30px;
+  min-width: 250px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid black;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain #searchResults {
+  width: 75%;
+  margin: auto;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult {
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  align-content: center;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails p {
+  margin: 5px 0;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div img {
+  width: 75px;
+  height: 75px;
+}
+#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult:hover {
   background-color: #ddd;
   cursor: pointer;
 }
-#adminPageContainer .modal {
+
+/* ----------- edit modal ---------- */
+.modal {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: white;
   top: 0;
   left: 0;
-  z-index: 1001;
+  z-index: 10001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#productFormContainer {
+  width: 60%;
+  min-height: 400px;
+}
+
+/*   ---------- CONFIRM DELETE ------------- */
+.confirmDeleteModal {
+  width: 60%;
+  background-color: #eee;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  padding: 50px;
 }/*# sourceMappingURL=custom.css.map */

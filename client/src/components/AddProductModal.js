@@ -1,6 +1,7 @@
 import react, { Component} from "react"
 import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
+import TagCheckBox from "./TagCheckBox"
 
 
 export default class EditProductModal extends Component {
@@ -21,7 +22,7 @@ export default class EditProductModal extends Component {
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: "",
+                product_tags: [],
                 product_category: "",
                 is_new: false
             },
@@ -35,10 +36,16 @@ export default class EditProductModal extends Component {
                 product_tags: ""
             }
         }
+
+        this.allTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"]
+
     }
 
 
     updateFormValues = e => {
+        if (e.target.type==="checkbox"){
+            return
+        }
         let newObj = {}
         Object.keys(this.state.formValues).forEach(key => {
             //key that was changed
@@ -56,8 +63,10 @@ export default class EditProductModal extends Component {
 
     addProduct =()=>{
         this.validateFormValues()
+        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+        console.log(allValid)
 
-        if (Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key].length === 0)){
+        if (allValid){
             axios.post(`${SERVER_HOST}/product`, this.state.formValues)
             .then(res => {
                 if (res.status === 200){
@@ -126,9 +135,32 @@ export default class EditProductModal extends Component {
         }
 
 
+        //product tags
+        console.log(this.state.formValues.product_tags)
+        if (this.state.formValues.product_tags.length === 0){
+            newErrorMessages.product_tags = "Product must have at least one tag."
+        }
+
+
 
         //update all
         this.setState({errorMessages: newErrorMessages})
+    }
+
+
+    toggleTag = val => {
+        //add key if absent
+        if (!this.state.formValues.product_tags.includes(val.toLowerCase())){
+            let newTags = [...this.state.formValues.product_tags, val.toLowerCase()]
+            let newFormValues = {...this.state.formValues, ["product_tags"]: newTags}
+
+            this.setState({formValues: newFormValues})
+        }
+        //remove key if present
+        else {
+            let newTags = this.state.formValues.product_tags.filter(tag => tag !== val)
+            this.setState({formValues: {...this.state.formValues, ["product_tags"]: newTags}})
+        }
     }
 
     render(){
@@ -179,6 +211,19 @@ export default class EditProductModal extends Component {
                                 <input type="text" name="product_price" value={this.state.formValues["product_price"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.product_price}</p>
 
+                            </div>
+                        </span>
+
+                        <span className="formRow">
+                            <p>Product Tags:</p>
+                            <p className="errorMessage">{this.state.errorMessages.product_tags}</p>
+                            <div className="formItem" id="editFormTags">
+                                {this.allTags.map(tag => <TagCheckBox 
+                                                            key={`${tag}_edit_cb`}
+                                                            name={tag}
+                                                            tagName={tag}
+                                                            checked={this.state.formValues.product_tags.includes(tag.toLowerCase())}
+                                                            toggleTag={this.toggleTag}/>)}
                             </div>
                         </span>
 

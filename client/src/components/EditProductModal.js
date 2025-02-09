@@ -1,6 +1,8 @@
 import react, { Component} from "react"
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
+import ConfirmDeleteModal from "./ConfirmDeleteModal"
+import TagCheckBox from "./TagCheckBox"
 
 export default class EditProductModal extends Component {
     constructor(props){
@@ -18,12 +20,19 @@ export default class EditProductModal extends Component {
                 product_brand: "",
                 product_price: "",
                 product_tags: ""
-            }
+            },
+
+            showConfirmModal: false
         }
+
+        this.allTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"]
     }
 
 
     updateFormValues = e => {
+        if (e.target.type === "checkbox"){
+            return
+        }
         let newObj = {}
         Object.keys(this.state.formValues).forEach(key => {
             //key that was changed
@@ -41,23 +50,28 @@ export default class EditProductModal extends Component {
 
     saveChanges =()=>{
         this.validateFormValues()
-        console.log(this.state.formValues)
+        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+
         //update if all error messages are empty
-        if (Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key].length === 0)){
+        if (allValid){
             axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, this.state.formValues)
             .then(res => {
+                console.log(res)
                 if (!res.data){
                     
                     window.alert("Error - Could not modify data")
                 } else {
                     //successful update
-                    console.log(res.data)
-                    this.props.refreshProducts()
                     this.props.setEditingState(null, false)
+                    this.props.refreshProducts()
                 }
             })
 
         } 
+    }
+
+    confirmDelete =()=>{
+        this.setState({showConfirmModal: true})
     }
 
     deleteProduct = () => {
@@ -89,7 +103,7 @@ export default class EditProductModal extends Component {
 
 
         //qty
-        if (this.state.formValues.qty_in_stock.length === 0){
+        if (parseInt(this.state.formValues.qty_in_stock) === 0){
             newErrorMessages.qty_in_stock = "Quantity in stock is mandatory."
         }
         else if (parseFloat(this.state.formValues.qty_in_stock) < 0){
@@ -117,16 +131,43 @@ export default class EditProductModal extends Component {
             newErrorMessages.product_price = "Price must be a valid number."
         }
 
+        //product tags
+        if (this.state.formValues.product_tags.length === 0){
+            newErrorMessages.product_tags = "Product must have at least one tag."
+        }
+
 
 
         //update all
         this.setState({errorMessages: newErrorMessages})
     }
 
+
+    toggleTag = val => {
+        //add key if absent
+        if (!this.state.formValues.product_tags.includes(val.toLowerCase())){
+            let newTags = [...this.state.formValues.product_tags, val.toLowerCase()]
+            let newFormValues = {...this.state.formValues, ["product_tags"]: newTags}
+            this.setState({formValues: newFormValues})
+        }
+        //remove key if present
+        else {
+            let newTags = this.state.formValues.product_tags.filter(tag => tag !== val)
+            this.setState({formValues: {...this.state.formValues, ["product_tags"]: newTags}})
+        }
+    }
+
     render(){
         return (
             <div id="editProductModal" className="modal">
-                {console.log(this.props.product)}
+                {console.log(this.state.formValues)}
+                {this.state.showConfirmModal ? 
+                    <ConfirmDeleteModal 
+                        confirmFunc={this.deleteProduct}
+                        cancelFunc={()=>{this.setState({showConfirmModal: false})}}
+                    /> 
+                     : null /* show confirm delete modal? */
+                }
                 <div className="productFormContainer">
                     <h2>Edit Product</h2>
                     <form onChange={e=>{this.updateFormValues(e)}}>
@@ -167,10 +208,23 @@ export default class EditProductModal extends Component {
                             </div>
                         </span>
 
+                        <span className="formRow">
+                            <p>Product Tags:</p>
+                            <p className="errorMessage">{this.state.errorMessages.product_tags}</p>
+                            <div className="formItem" id="editFormTags">
+                                {this.allTags.map(tag => <TagCheckBox 
+                                                            key={`${tag}_edit_cb`}
+                                                            name={tag}
+                                                            tagName={tag}
+                                                            checked={this.props.product.product_tags.includes(tag.toLowerCase())}
+                                                            toggleTag={this.toggleTag}/>)}
+                            </div>
+                        </span>
+
                         <div>
                             <button type="button" onClick={()=>{this.props.setEditingState(null, false)}}>Cancel</button>
                             <button type="button" onClick={this.saveChanges}>Save Changes</button>
-                            <button type="button" onClick={this.deleteProduct}>Delete</button>
+                            <button type="button" onClick={this.confirmDelete}>Delete</button>
                         </div>
 
                         

@@ -56,7 +56,8 @@ router.post("/product", (req, res) => {
 //edit product
 router.put("/products/:_id", (req, res)=>{
     //update DB
-    productsModel.findByIdAndUpdate(req.params._id, req.body, (error, data) => {
+    productsModel.findByIdAndUpdate(req.params._id, {$set: req.body}, (error, data) => {
+        console.log(req.body)
         if (data){
             res.json(data)
         } else {
