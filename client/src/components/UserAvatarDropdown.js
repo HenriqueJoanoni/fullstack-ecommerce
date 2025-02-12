@@ -74,7 +74,7 @@ export default class UserAvatarDropdown extends Component {
                                 </li>
                             )}
                             <li onClick={this.handleLogout}>
-                                <span>Logout</span>
+                                <span class="logoutspan">Logout</span>
                             </li>
                         </ul>
                     </div>

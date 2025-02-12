@@ -631,8 +631,8 @@ button:hover {
     cursor: pointer;
 
     img {
-      width: 40px;
-      height: 40px;
+      // width: 40px;
+      // height: 40px;
       border-radius: 50%;
       object-fit: cover;
       transition: transform 0.2s ease-in-out;
@@ -685,6 +685,10 @@ button:hover {
           text-decoration: none;
           color: inherit;
           font-size: inherit;
+        }
+        
+        .logoutspan{
+          font-family: Arial, sans-serif;
         }
 
         &:hover {
