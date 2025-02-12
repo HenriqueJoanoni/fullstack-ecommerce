@@ -8,6 +8,7 @@ import ShoppingCart from "./components/ShoppingCart"
 import RegisterForm from "./components/RegisterForm"
 import ContactForm from "./components/ContactForm"
 import ProfilePage from "./components/ProfilePage"
+import FavoritesPage from "./components/FavoritesPage"
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
 import LoggedInRoute from "./components/LoggedInRoute"
 
@@ -88,6 +89,8 @@ export default class App extends Component {
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
+                                   allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+                    <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                 </Switch>
             </BrowserRouter>

@@ -2,6 +2,8 @@ import React, {Component, createRef} from "react"
 import {Link, NavLink} from "react-router-dom"
 import {heartIcon, shoppingBagIcon, downArrowIcon} from '../images'
 import UserAvatarDropdown from "./UserAvatarDropdown"
+import axios from "axios";
+import {ACCESS_GUEST_LEVEL, SERVER_HOST} from "../config/global_constants";
 
 export default class Header extends Component {
     constructor(props) {
@@ -52,17 +54,31 @@ export default class Header extends Component {
     }
 
     componentDidMount() {
+        axios.get(`${SERVER_HOST}/new-products`)
+            .then(res => {
+                if (res.data) {
+                    console.log(res.data)
+
+                    const newProducts = res.data.map(product => ({
+                        ...product,
+                    }))
+                    this.setState({products: newProducts})
+                }
+            })
+            .catch(err => {
+                console.log("error", err)
+            })
         document.addEventListener('click', this.handleClickOutside)
     }
 
     render() {
+        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
         return (
             <div className="header-container">
                 <header className="first-header">
                     <div className="header-links-container">
                         <NavLink exact to="/" activeClassName="active">Discover</NavLink>
                         <NavLink to="/products" activeClassName="active">Instruments</NavLink>
-                        {/*<NavLink to="/#brands" activeClassName="active">Brands</NavLink>*/}
                         <NavLink to="/contact" activeClassName="active">Contact</NavLink>
                     </div>
 
@@ -84,9 +100,13 @@ export default class Header extends Component {
                     </div>
 
                     <div className="icon-container">
-                        <div className="icon-wrapper">
-                            <img className="header-icon" src={heartIcon} alt="Heart"/>
-                        </div>
+                        {isLoggedIn && (
+                            <div className="icon-wrapper">
+                                <Link to="/favorites">
+                                    <img className="header-icon" src={heartIcon} alt="Heart"/>
+                                </Link>
+                            </div>
+                        )}
                         <div className="icon-wrapper">
                             <Link to="/cart">
                                 <img
@@ -96,7 +116,7 @@ export default class Header extends Component {
                                 />
                             </Link>
                         </div>
-                        <UserAvatarDropdown/>
+                        <UserAvatarDropdown logged={isLoggedIn}/>
                     </div>
                 </header>
 
@@ -110,56 +130,28 @@ export default class Header extends Component {
                                 alt="Arrow Down"
                             />
                         </a>
+                        <Link to="/products">
+                            Shop All
+                        </Link>
                         <a href="#">
-                            Shop All{' '}
-                            {/* <img
-                                className="arrow-down-icon"
-                                src={downArrowIcon}
-                                alt="Arrow Down"
-                            /> */}
+                            Best Sellers
                         </a>
                         <a href="#">
-                            Best Sellers{' '}
-                            {/* <img
-                                className="arrow-down-icon"
-                                src={downArrowIcon}
-                                alt="Arrow Down"
-                            /> */}
+                            Pages
                         </a>
                         <a href="#">
-                            Pages{' '}
-                            {/* <img
-                                className="arrow-down-icon"
-                                src={downArrowIcon}
-                                alt="Arrow Down"
-                            /> */}
-                        </a>
-                        <a href="#">
-                            Sale{' '}
-                            {/* <img
-                                className="arrow-down-icon"
-                                src={downArrowIcon}
-                                alt="Arrow Down"
-                            /> */}
+                            Sale
                         </a>
                     </div>
                 </header>
 
                 {this.state.isDropdownOpen && (
                     <div className="dropdown-menu">
-                        <div className="first-dropdown">
-                            <div className="dd-header-links">
-                                <a className="newarrivalstxt" href="#">
-                                    New Arrivals: Hottest Deals
-                                </a>
-                            </div>
-                        </div>
                         <div className="second-dropdown">
                             <div className="dd2-header-links">
-                                <a href="#">New Arrivals Option 4</a>
-                                <a href="#">New Arrivals Option 5</a>
-                                <a href="#">New Arrivals Option 6</a>
-                                <a href="#">More Options</a>
+                                {this.state.products.map(product => (
+                                    <a href="#">{product.product_name}</a>
+                                ))}
                             </div>
                         </div>
                     </div>

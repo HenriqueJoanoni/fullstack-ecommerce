@@ -1,30 +1,51 @@
-import React, {Component, createRef} from 'react';
-import {guitarFootage, guitarSample, guitarPlay} from '../images';
-import '../css/custom.css';
-import '../scss/custom.scss';
-import Header from "./Header";
-import PageFooter from "./PageFooter";
+import React, {Component, createRef} from 'react'
+import {guitarFootage, guitarSample, guitarPlay} from '../images'
+import '../css/custom.css'
+import '../scss/custom.scss'
+import Header from "./Header"
+import PageFooter from "./PageFooter"
+import axios from "axios";
+import {SERVER_HOST} from "../config/global_constants";
+import ProductDisplayCard from "./ProductDisplayCard";
 
 export default class Home extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             isDropdownOpen: false,
+            products: [],
         }
-        this.cardSectionRef = createRef();
+        this.cardSectionRef = createRef()
     }
 
     toggleDropdown = () => {
         this.setState((prevState) => ({
             isDropdownOpen: !prevState.isDropdownOpen,
-        }));
-    };
+        }))
+    }
 
     scrollToCardSection = () => {
         if (this.cardSectionRef.current) {
-            this.cardSectionRef.current.scrollIntoView({behavior: 'smooth'});
+            this.cardSectionRef.current.scrollIntoView({behavior: 'smooth'})
         }
-    };
+    }
+
+    componentDidMount() {
+        axios.get(`${SERVER_HOST}/deal-products`)
+            .then(res => {
+                if (res.data) {
+                    // console.log(res.data)
+
+                    const dealProducts = res.data.map(product => ({
+                        ...product,
+                    }))
+                    this.setState({products: dealProducts})
+                }
+            })
+            .catch(err => {
+                console.log("error", err)
+            })
+    }
 
     render() {
         return (
@@ -64,83 +85,14 @@ export default class Home extends Component {
 
                     <section className="card-section" ref={this.cardSectionRef}>
                         <div className="card-container">
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarPlay} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 1</h2>
-                                    <p>Great guitar for beginners!</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarPlay} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 2</h2>
-                                    <p>Perfect for intermediate players!</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 3</h2>
-                                    <p>Wow</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 4</h2>
-                                    <p>Great! Guys idk what to write</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 5</h2>
-                                    <p>Affordable!</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 6</h2>
-                                    <p>Professional!</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 7</h2>
-                                    <p>Great!</p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-image">
-                                    <img src={guitarSample} alt="Guitar Sample"/>
-                                </div>
-                                <div className="card-content">
-                                    <h2>Guitar 8</h2>
-                                    <p></p>
-                                </div>
-                            </div>
+                            {this.state.products.map(product => (
+                                <ProductDisplayCard key={product._id} product={product}/>
+                            ))}
                         </div>
                     </section>
                     <PageFooter/>
                 </div>
             </>
-        );
+        )
     }
 }
