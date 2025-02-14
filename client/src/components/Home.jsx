@@ -1,5 +1,5 @@
 import React, {Component, createRef} from 'react'
-import {guitarFootage, guitarSample, guitarPlay} from '../images'
+import {guitarFootage} from '../images'
 import '../css/custom.css'
 import '../scss/custom.scss'
 import Header from "./Header"
