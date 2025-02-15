@@ -145,4 +145,14 @@ router.get("/profile", verifyTokenPassword, async (req, res) => {
     }
 })
 
+router.delete("/delete/:_id", (req, res) => {
+    User.findByIdAndRemove(req.params._id, (error, data)=>{
+        if (data){
+            res.json(data)
+        } else {
+            res.json(error)
+        }
+    })
+})
+
 module.exports = router

@@ -770,6 +770,18 @@ button:hover {
 .userPurchaseSummaryContainer .userSummaryUserInfo .flexCol p {
   margin: 5px 10px;
 }
+.userPurchaseSummaryContainer .userSummaryUserInfo .userDeleteButton {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .userDeleteButton img {
+  width: 50px;
+  height: 50px;
+}
 .userPurchaseSummaryContainer .purchaseSearchTools h3 {
   margin: 0 auto 20px auto;
   text-align: center;

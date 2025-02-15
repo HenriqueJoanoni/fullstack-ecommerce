@@ -17,6 +17,8 @@ import guitarPick from './guitarPick.png';
 import trashCan from "./trashCan.png"
 import upload from "./upload.png"
 import loggedUser from './userLogged.png'
+import bin1 from "./bin1.png"
+import bin2 from "./bin2.png"
 
 export {
     guitarFootage,
@@ -37,4 +39,6 @@ export {
     trashCan,
     upload,
     loggedUser,
+    bin1,
+    bin2
 };

@@ -2,7 +2,7 @@ import react, { Component} from "react"
 import {SERVER_HOST} from "../config/global_constants"
 import axios from "axios"
 import UserSearchResult from "./UserSearchResult"
-import UserPurchaseSummary from "./UserPurchaseSummary"
+import UserSummary from "./UserSummary"
 
 export default class AdminPanelUsers extends Component {
     constructor(props){
@@ -20,26 +20,38 @@ export default class AdminPanelUsers extends Component {
     }
 
     toggleUserSummary = id =>{
-
         this.setState({showingSummary: !this.state.showingSummary,
                         summaryID: id,
                         selectedUser: this.state.allUsers.filter(user=>user._id===id)[0]})
     }
 
-    componentDidMount(){
+    refreshUsers = () => {
         axios.get(`${SERVER_HOST}/allUsers`)
         .then(res => {
             if (res.data){
                 this.setState({allUsers: res.data})
+            } else {
+                console.log(res.error)
             }
         })
+    }
+
+    componentDidMount(){
+        this.refreshUsers()
     }
 
 
     render(){
         return (
             <div id="adminPanelUsers">
-                {this.state.showingSummary ? <UserPurchaseSummary user={this.state.selectedUser} userID={this.state.summaryID} /> : null}
+                {this.state.showingSummary ? 
+                    <UserSummary user={this.state.selectedUser}
+                        toggleUserSummary={this.toggleUserSummary} 
+                        userID={this.state.summaryID} 
+                        refreshUsers={this.refreshUsers}
+                    />
+                    : null
+                }
                 <h2 id="usersHeader">View Users</h2>
                 <div id="usersMain">
                 <span>

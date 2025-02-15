@@ -1,10 +1,19 @@
 import react, {Component} from "react"
 import { loggedUser } from "../images"
 import PurchaseCard from "./PurchaseCard"
+import ConfirmDeleteModal from "./ConfirmDeleteModal"
+import { bin1 } from "../images"
+import { bin2 } from "../images"
+import axios from "axios"
+import { SERVER_HOST } from "../config/global_constants"
 
-export default class userPurchaseSummary extends Component{
+
+export default class userSummary extends Component{
     constructor(props){
         super(props)
+        this.state = {
+            confirmingDelete: false
+        }
         this.mockPurchases = [ 
             {
                 purchaserName: "Christopher Healy",
@@ -45,10 +54,28 @@ export default class userPurchaseSummary extends Component{
 
     }
 
+    deleteUser = () => {
+        axios.delete(`${SERVER_HOST}/delete/${this.props.user._id}`)
+        .then(res => {
+            if (res.error){
+                console.log(res.error)
+            } else {
+                this.props.toggleUserSummary(null)
+                this.props.refreshUsers()
+            }
+        })
+    }
+
 
     render(){
         return (
             <div className="userPurchaseSummaryContainer">
+                {this.state.confirmingDelete ? 
+                    <ConfirmDeleteModal name={`user '${this.props.user.first_name} ${this.props.user.last_name}'`}
+                                        confirmFunc={this.deleteUser}
+                                        cancelFunc={()=>{this.setState({confirmingDelete: false})}}/> : 
+                    null
+                }
                 <div className="userSummaryUserInfo">
                     <div>
                         <img src={loggedUser}/>
@@ -57,11 +84,21 @@ export default class userPurchaseSummary extends Component{
                             <p>{this.props.user.first_name} {this.props.user.last_name}</p>
                             <p>{this.props.user.user_email}</p>
                         </span>
+
                     </div>
 
                     <div className="flexCol">
                         <p>Joined on: {"21/01/25"}</p>
                         <p>Total Spent: {"€1240.50"}</p>
+                    </div>
+
+                    <div>
+                        <button className="userDeleteButton" 
+                            type="button" 
+                            onClick={(e)=>{this.setState({confirmingDelete: true})}}
+                        >
+                            <img src={bin1}/>
+                        </button>  
                     </div>
                 </div>
                 <div className="purchaseSearchTools">
@@ -69,7 +106,6 @@ export default class userPurchaseSummary extends Component{
                 </div>
                 <div className="userPurchaseResultsContainer">
                     {this.mockPurchases.map(purchase => <PurchaseCard purchase={purchase} showUser={false}/>)}
-                    
                 </div>
             </div>
 
