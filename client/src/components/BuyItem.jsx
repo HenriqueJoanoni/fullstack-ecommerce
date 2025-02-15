@@ -17,7 +17,7 @@ export default class BuyItem extends Component {
     };
   }
 
-  createOrder = (actions) => {
+  createOrder = (data, actions) => {
     console.log("Creating order with price:", this.props.price);
     return actions.order.create({
       purchase_units: [
