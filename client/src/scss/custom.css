@@ -561,21 +561,23 @@ button:hover {
 /*  ----- ADMIN PAGES ------- */
 #adminPageContainer {
   width: 100%;
+  height: auto;
   min-height: 80vh;
   background-color: white;
   padding-top: 20px;
   padding-bottom: 25px;
+  box-sizing: border-box;
 }
 #adminPageContainer #adminControlPanel {
   width: 80%;
   box-shadow: 5px 11px 40px 13px rgba(0, 0, 0, 0.75);
   margin: auto;
-  /*  ----- ADMIN PAGES ------- */
 }
 #adminPageContainer #adminControlPanel #adminControlPanelHeader {
   width: 100%;
   height: 75px;
   display: flex;
+  position: relative;
 }
 #adminPageContainer #adminControlPanel #adminControlPanelHeader button {
   margin: 0;
@@ -637,6 +639,7 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
+  border: 1px solid white;
 }
 #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div {
   display: flex;
@@ -664,108 +667,6 @@ button:hover {
   color: #2c2c2c;
   border: 1px solid #2c2c2c;
   transition: 0.2s ease;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer {
-  width: 100%;
-  min-height: 80vh;
-  background-color: white;
-  padding-top: 20px;
-  padding-bottom: 25px;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel {
-  width: 80%;
-  box-shadow: 5px 11px 40px 13px rgba(0, 0, 0, 0.75);
-  margin: auto;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader {
-  width: 100%;
-  height: 75px;
-  display: flex;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader button {
-  margin: 0;
-  border-radius: 0;
-  font-size: 1rem;
-  background-color: #333;
-  color: white;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #adminControlPanelHeader .selected {
-  background-color: white;
-  color: #333;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader {
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader h2 {
-  font-size: 1.75rem;
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsHeader #addProductButton {
-  width: 200px;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain {
-  width: 90%;
-  margin: auto;
-  /*   ADMIN SEARCH RESULT     */
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain span {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 75%;
-  margin: auto;
-  font-weight: 200;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain span input {
-  padding: 2px 5px;
-  height: 1.5rem;
-  display: block;
-  margin-left: 30px;
-  min-width: 250px;
-  border-radius: 5px;
-  outline: none;
-  border: 1px solid black;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain #searchResults {
-  width: 75%;
-  margin: auto;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult {
-  width: 100%;
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 10px 20px;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  align-content: center;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails p {
-  margin: 5px 0;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div img {
-  width: 75px;
-  height: 75px;
-}
-#adminPageContainer #adminControlPanel #adminPageContainer #adminControlPanel #productsMain .adminSearchResult:hover {
-  background-color: #ddd;
-  cursor: pointer;
 }
 
 /* ----------- edit modal ---------- */
@@ -798,4 +699,127 @@ button:hover {
   transform: translate(-50%, -50%);
   z-index: 100000;
   padding: 50px;
+}
+
+/*   -------- users panel -------- */
+#adminPanelUsers {
+  position: relative;
+}
+
+.userSearchResult {
+  width: 60%;
+  padding: 10px 15px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid white;
+}
+.userSearchResult div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.userSearchResult div .userInfo {
+  display: block;
+}
+.userSearchResult div .userInfo p {
+  margin: 5px 20px;
+}
+.userSearchResult:hover {
+  background-color: #d6d6d6;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.userPurchaseSummaryContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  width: 100%;
+  min-height: 100%;
+  background-color: white;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo {
+  width: 70%;
+  margin: auto;
+  display: flex;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: auto;
+  padding: 25px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div img {
+  width: 75px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div span p {
+  margin: 3px 10px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div span p:first-of-type {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .flexCol {
+  flex-direction: column;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .flexCol p {
+  margin: 5px 10px;
+}
+.userPurchaseSummaryContainer .purchaseSearchTools h3 {
+  margin: 0 auto 20px auto;
+  text-align: center;
+}
+.userPurchaseSummaryContainer .purchaseCard {
+  width: 60%;
+  margin: 10px auto;
+  border: 1px solid black;
+  padding-inline: 50px;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseInfo {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: auto;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseInfo .purchaseTimeTotal {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems table {
+  width: 100%;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems table, .userPurchaseSummaryContainer .purchaseCard .purchaseItems tr, .userPurchaseSummaryContainer .purchaseCard .purchaseItems th, .userPurchaseSummaryContainer .purchaseCard .purchaseItems td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems th {
+  background-color: #333;
+  color: white;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems th, .userPurchaseSummaryContainer .purchaseCard .purchaseItems td {
+  padding: 10px 15px;
+  text-align: center;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems .leftAligned {
+  text-align: left;
+}
+.userPurchaseSummaryContainer .purchaseCard .purchaseItems .purchaseTotalPrice {
+  margin-block: 10px;
+  margin-left: auto;
+  text-align: right;
+  padding: 5px 5px;
+  width: -moz-min-content;
+  width: min-content;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
 }/*# sourceMappingURL=custom.css.map */

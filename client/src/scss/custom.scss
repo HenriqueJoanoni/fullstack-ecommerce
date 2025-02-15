@@ -625,10 +625,12 @@ button:hover {
 /*  ----- ADMIN PAGES ------- */
 #adminPageContainer {
   width: 100%;
+  height: auto;
   min-height: 80vh;
   background-color: white;
   padding-top: 20px;
   padding-bottom: 25px;
+  box-sizing: border-box;
 
 
   #adminControlPanel {
@@ -640,6 +642,7 @@ button:hover {
       width: 100%;
       height: 75px;
       display: flex;
+      position: relative;
 
       button {
         margin: 0;
@@ -710,6 +713,7 @@ button:hover {
         align-items: center;
         justify-content: space-between;
         padding: 10px 20px;
+        border: 1px solid white;
 
         
 
@@ -749,140 +753,10 @@ button:hover {
       }
     }
   }
-
-
-
-/*  ----- ADMIN PAGES ------- */
-#adminPageContainer {
-  width: 100%;
-  min-height: 80vh;
-  background-color: white;
-  padding-top: 20px;
-  padding-bottom: 25px;
-
-
-  #adminControlPanel {
-    width: 80%;
-    box-shadow: 5px 11px 40px 13px rgba(0,0,0,0.75);
-    margin: auto;
-    
-    #adminControlPanelHeader {
-      width: 100%;
-      height: 75px;
-      display: flex;
-
-      button {
-        margin: 0;
-        border-radius: 0;
-        font-size: 1rem;
-        background-color: $important-text-color1;
-        color: white;
-      }
-
-      .selected {
-        background-color: white;
-        color: $important-text-color1;
-      }
-    }
-
-    
-    #productsHeader {
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      h2 {
-        font-size: 1.75rem;
-        outline: none;
-        box-shadow: none;
-        border: none;
-      }
-
-      #addProductButton {
-        width: 200px;
-      }
-    }
-
-    #productsMain {
-      width: 90%;
-      margin: auto; 
-      span {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 75%;
-        margin: auto;
-        font-weight: 200;
-
-        input {
-          padding: 2px 5px;
-          height: 1.5rem;
-          display: block;
-          margin-left: 30px;
-          min-width: 250px;
-          border-radius: 5px;
-          outline: none;
-          border: 1px solid black;
-        }
-      }
-
-      #searchResults {
-        width: 75%;
-        margin: auto;
-      }
-
-      /*   ADMIN SEARCH RESULT     */
-      .adminSearchResult {
-        width: 100%;
-        min-height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-
-        
-
-        div {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          padding: 10px 20px;
-
-          .productDetails {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            align-content: center;
-
-            p {
-              margin: 5px 0;
-            }
-          }
-
-          img {
-            width: 75px;
-            height: 75px; 
-          }
-        }
-
-
-        &:hover {
-          background-color: #ddd;
-          cursor: pointer;
-        }
-
-        
-      }
-      
-    }
-      
-    }
-  }
-
-  }
 }
+}
+
+
 
 /* ----------- edit modal ---------- */
 .modal {
@@ -916,6 +790,164 @@ button:hover {
   transform: translate(-50%, -50%);
   z-index: 100000;
   padding: 50px;
+}
+
+
+/*   -------- users panel -------- */
+#adminPanelUsers {
+  position: relative;
+}
+
+.userSearchResult {
+  width: 60%;
+  padding: 10px 15px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid white;
+
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .userInfo {
+      display: block;
+      p {
+        margin: 5px 20px;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: #d6d6d6;
+    border: 1px solid black;
+    cursor: pointer;
+  }
+  
+}
+
+
+.userPurchaseSummaryContainer {
+  position: absolute;
+  top: 0;
+  left: 0;    
+  z-index: 100000;
+  width: 100%;
+  min-height: 100%;
+  background-color: white;
+  
+
+  .userSummaryUserInfo {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    
+
+    div {
+      
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      margin: auto;
+      padding: 25px;
+      
+      img {
+        width: 75px;
+      }
+  
+      span p {
+        margin: 3px 10px;
+  
+        &:first-of-type {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .flexCol {
+      flex-direction: column;
+      
+      p {
+        margin: 5px 10px;
+      }
+    }
+    
+  }
+
+
+  .purchaseSearchTools {
+    h3 {
+      margin: 0 auto 20px auto;
+      text-align: center;
+    }
+  }
+
+  .purchaseCard {
+    width: 60%;
+    margin: 10px auto;
+   
+    border: 1px solid black;
+    padding-inline: 50px;
+
+    .purchaseInfo {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: auto;
+
+      .purchaseTimeTotal{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+      }
+
+    }
+
+    .purchaseItems {
+      
+      table {
+        width: 100%;
+      }
+
+      table, tr, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+
+      th {
+        background-color: $important-text-color1;
+        color: white;
+      }
+
+      th, td {
+        padding: 10px 15px;
+        text-align: center;
+      }
+
+      .leftAligned {
+        text-align: left;
+      }
+
+
+      .purchaseTotalPrice {
+        margin-block: 10px;
+        margin-left: auto;
+        text-align: right;
+        padding: 5px 5px;
+        width: min-content;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;  
+
+      }
+    }
+  }
 }
 
 

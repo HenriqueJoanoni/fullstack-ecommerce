@@ -37,10 +37,16 @@ export default class AdminPanelProducts extends Component {
 
     determineSelectedProducts = () => {
         //compare against both name and SKU 
-        let regex = new RegExp(`${this.state.searchQuery}`, "i") 
-        return [...this.state.allProducts].filter(product => 
-            regex.test(product.product_name) || regex.test(product.product_sku)
-        )
+        console.log(this.state)
+        if (this.state.searchQuery === ""){
+            return this.state.allProducts
+        } else {
+            let regex = new RegExp(`${this.state.searchQuery}`, "i") 
+            return [...this.state.allProducts].filter(product => 
+                regex.test(product.product_name) || regex.test(product.product_sku)
+            )
+        }
+        
     }
 
     refreshProducts = () => {

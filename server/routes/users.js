@@ -8,6 +8,20 @@ const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY, 'utf8')
 const logout = require("../middlewares/logoutMiddleware")
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
+/* Fetch all users */
+router.get(`/allUsers`, (req, res)=>{
+    User.find((error, data)=> {
+        if (data){
+            res.json(data)
+        } else {
+            console.log(data)
+            res.json(error)
+        }
+    })
+})
+
+
+
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
     try {
