@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import Header from "./Header";
 import CartItem from "./CartItem";
 import BuyItem from "./BuyItem";
+import PayPalMessage from "./PayPalMessage";
 
 export default class ShoppingCart extends Component {
   calculateTotal() {
@@ -13,6 +15,10 @@ export default class ShoppingCart extends Component {
       )
       .toFixed(2);
   }
+
+  resetCart = () => {
+    this.props.updateCart({});
+  };
 
   render() {
     const { cart } = this.props;
@@ -63,6 +69,9 @@ export default class ShoppingCart extends Component {
             </>
           )}
         </div>
+        <Route path="/PayPalMessage/:messageType/:payPalPaymentID" render={(props) => (
+          <PayPalMessage {...props} resetCart={this.resetCart} />
+        )} />
       </>
     );
   }

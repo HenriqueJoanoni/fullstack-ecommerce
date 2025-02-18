@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 export default class PayPalMessage extends Component {
     static messageType = {
@@ -16,17 +16,24 @@ export default class PayPalMessage extends Component {
             message: "",
             buttonColour: "red-button",
             payPalPaymentID: null,
-            messageType: null
+            messageType: null,
+            redirectToCart: false
         };
     }
     
     componentDidMount() {
-        // Get parameters from URL
         const { messageType, payPalPaymentID } = this.props.match.params;
         
-        // Update state with parameters
         this.setState({ messageType, payPalPaymentID }, () => {
             this.updateMessageContent();
+
+            if (messageType === PayPalMessage.messageType.SUCCESS) {
+                this.props.resetCart(); 
+                
+                setTimeout(() => {
+                    this.setState({ redirectToCart: true });
+                }, 3000); 
+            }
         });
     }
 
@@ -64,25 +71,26 @@ export default class PayPalMessage extends Component {
                 });
         }
     }
-   
-    
+
     render() {
-        const { heading, message, payPalPaymentID, messageType } = this.state;
+        if (this.state.redirectToCart) {
+            return <Redirect to="/shopping-cart" />;
+        }
 
         return (
             <div className="payPalMessage">
-                <h3>{heading}</h3>
-                <p>{message}</p>
+                <h3>{this.state.heading}</h3>
+                <p>{this.state.message}</p>
                 
-                {messageType === PayPalMessage.messageType.SUCCESS && 
+                {this.state.messageType === PayPalMessage.messageType.SUCCESS && 
                     <p>Your PayPal payment confirmation is: 
-                        <span id="payPalPaymentID">{payPalPaymentID}</span>
+                        <span id="payPalPaymentID">{this.state.payPalPaymentID}</span>
                     </p>
                 }
                 
                 <p id="payPalPaymentIDButton">
-                    <Link className={this.state.buttonColour} to="/">
-                        Continue
+                    <Link className={this.state.buttonColour} to="/shopping-cart">
+                        Continue to Cart
                     </Link>
                 </p>
             </div>
