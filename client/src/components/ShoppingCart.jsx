@@ -64,18 +64,23 @@ export default class ShoppingCart extends Component {
                 </p>
               </div>
               <div id="paypalButtonContainer">
-                <BuyItem price={total} itemID="cart" />
+                {Object.keys(cart).map((itemID) => (
+                  <BuyItem key={itemID} productID={itemID} price={total} />
+                ))}
               </div>
             </>
           )}
         </div>
-        <Route path="/PayPalMessage/:messageType/:payPalPaymentID" render={(props) => (
-          <div className="paypalMessageContainer">
-            <div className="paypalMessageBox">
-              <PayPalMessage {...props} resetCart={this.resetCart} />
+        <Route
+          path="/PayPalMessage/:messageType/:payPalPaymentID"
+          render={(props) => (
+            <div className="paypalMessageContainer">
+              <div className="paypalMessageBox">
+                <PayPalMessage {...props} resetCart={this.resetCart} />
+              </div>
             </div>
-          </div>
-        )} />
+          )}
+        />
       </>
     );
   }
