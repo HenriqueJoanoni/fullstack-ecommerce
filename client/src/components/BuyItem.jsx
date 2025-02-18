@@ -4,8 +4,6 @@ import { Redirect } from "react-router-dom";
 import { SANDBOX_CLIENT_ID, SERVER_HOST } from "../config/global_constants";
 import PayPalMessage from "./PayPalMessage";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-console.log("SANDBOX_CLIENT_ID:", SANDBOX_CLIENT_ID);
-
 
 export default class BuyItem extends Component {
   constructor(props) {
@@ -18,6 +16,7 @@ export default class BuyItem extends Component {
   }
 
   createOrder = (data, actions) => {
+    console.log('Product ID in createOrder:', this.props.productID);
     console.log("Creating order with price:", this.props.price);
     return actions.order.create({
       purchase_units: [
@@ -28,28 +27,27 @@ export default class BuyItem extends Component {
     });
   };
 
-  onApprove = (paymentData, actions) => {
-    return actions.order.capture().then(() => {
-      axios
-        .post(
-          `${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.itemID}/${this.props.price}`,
-          {},
-          { headers: { authorization: localStorage.token, "Content-type": "multipart/form-data" } }
-        )
-        .then((res) => {
-          this.setState({
-            payPalMessageType: PayPalMessage.messageType.SUCCESS,
-            payPalPaymentID: paymentData.orderID,
-            redirectToPayPalMessage: true,
-          });
-        })
-        .catch((errorData) => {
-          this.setState({
-            payPalMessageType: PayPalMessage.messageType.ERROR,
-            redirectToPayPalMessage: true,
-          });
+  onApprove = (paymentData) => {
+    console.log('Product ID in onApprove:', this.props.productID);
+    axios
+      .post(
+        `${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.productID}/${this.props.price}`,
+        {},
+        { headers: { authorization: localStorage.token, "Content-type": "multipart/form-data" } }
+      )
+      .then((res) => {
+        this.setState({
+          payPalMessageType: PayPalMessage.messageType.SUCCESS,
+          payPalPaymentID: paymentData.orderID,
+          redirectToPayPalMessage: true,
         });
-    });
+      })
+      .catch((errorData) => {
+        this.setState({
+          payPalMessageType: PayPalMessage.messageType.ERROR,
+          redirectToPayPalMessage: true,
+        });
+      });
   };
 
   onError = (errorData) => {
@@ -74,6 +72,7 @@ export default class BuyItem extends Component {
             to={`/PayPalMessage/${this.state.payPalMessageType}/${this.state.payPalPaymentID}`}
           />
         ) : null}
+
         <PayPalScriptProvider options={{ currency: "EUR", "client-id": SANDBOX_CLIENT_ID }}>
           <PayPalButtons
             style={{ layout: "horizontal" }}

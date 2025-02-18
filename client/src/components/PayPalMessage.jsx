@@ -64,7 +64,6 @@ export default class PayPalMessage extends Component {
                 break;
                 
             default:
-                console.error("Invalid messageType:", messageType);
                 this.setState({
                     heading: "Transaction Status Unknown",
                     message: "The transaction result could not be determined."
@@ -74,25 +73,27 @@ export default class PayPalMessage extends Component {
 
     render() {
         if (this.state.redirectToCart) {
-            return <Redirect to="/shopping-cart" />;
+            return <Redirect to="/cart" />;
         }
 
         return (
             <div className="payPalMessage">
-                <h3>{this.state.heading}</h3>
-                <p>{this.state.message}</p>
-                
-                {this.state.messageType === PayPalMessage.messageType.SUCCESS && 
-                    <p>Your PayPal payment confirmation is: 
-                        <span id="payPalPaymentID">{this.state.payPalPaymentID}</span>
+                <div className="payPalMessageCard">
+                    <h3>{this.state.heading}</h3>
+                    <p>{this.state.message}</p>
+                    
+                    {this.state.messageType === PayPalMessage.messageType.SUCCESS && 
+                        <p>Your PayPal payment confirmation is: 
+                            <span id="payPalPaymentID">{this.state.payPalPaymentID}</span>
+                        </p>
+                    }
+                    
+                    <p id="payPalPaymentIDButton">
+                        <Link className={this.state.buttonColour} to="/cart">
+                            Back to Cart
+                        </Link>
                     </p>
-                }
-                
-                <p id="payPalPaymentIDButton">
-                    <Link className={this.state.buttonColour} to="/shopping-cart">
-                        Continue to Cart
-                    </Link>
-                </p>
+                </div>
             </div>
         );
     }

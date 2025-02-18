@@ -70,7 +70,11 @@ export default class ShoppingCart extends Component {
           )}
         </div>
         <Route path="/PayPalMessage/:messageType/:payPalPaymentID" render={(props) => (
-          <PayPalMessage {...props} resetCart={this.resetCart} />
+          <div className="paypalMessageContainer">
+            <div className="paypalMessageBox">
+              <PayPalMessage {...props} resetCart={this.resetCart} />
+            </div>
+          </div>
         )} />
       </>
     );
