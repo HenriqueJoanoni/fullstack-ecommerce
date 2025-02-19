@@ -9,6 +9,7 @@ import RegisterForm from "./components/RegisterForm"
 import ContactForm from "./components/ContactForm"
 import ProfilePage from "./components/ProfilePage"
 import FavoritesPage from "./components/FavoritesPage"
+import BuyItem from "./components/BuyItem"
 import PayPalMessage from "./components/PayPalMessage"
 
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
@@ -95,6 +96,8 @@ export default class App extends Component {
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                     <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+                    
+                    <Route exact path="/BuyItem/:_id" component={BuyItem} />
                     <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>                     
 
                 
