@@ -12,10 +12,11 @@ const productSchema = new mongoose.Schema({
         discount_price: {type: Number, required: true},
         deal_deadline: {type: Date, required: true},
     },
+    sold: {type:Boolean, default:false},
     product_category: {type: String},
     product_brand: {type: String},
 }, {
     collection: 'products'
-})
+},)
 
 module.exports = mongoose.model('Product', productSchema)

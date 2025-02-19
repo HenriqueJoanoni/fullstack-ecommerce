@@ -28,14 +28,16 @@ export default class BuyItem extends Component {
   };
 
   onApprove = (paymentData) => {
+      const token = sessionStorage.getItem('authToken')
     console.log('Product ID in onApprove:', this.props.productID);
-    axios
-      .post(
-        `${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.productID}/${this.props.price}`,
+    // console.log(sessionStorage)
+
+    axios.post(`${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.productID}/${this.props.price}`,
         {},
-        { headers: { authorization: localStorage.token, "Content-type": "multipart/form-data" } }
+        { headers: { Authorization: `Bearer ${token}`, "Content-type": "multipart/form-data" } }
       )
       .then((res) => {
+          console.log("HERE")
         this.setState({
           payPalMessageType: PayPalMessage.messageType.SUCCESS,
           payPalPaymentID: paymentData.orderID,
@@ -51,10 +53,14 @@ export default class BuyItem extends Component {
   };
 
   onError = (errorData) => {
-    this.setState({
-      payPalMessageType: PayPalMessage.messageType.ERROR,
-      redirectToPayPalMessage: true,
-    });
+    console.log({
+      "ERROR: ": errorData
+    })
+
+    // this.setState({
+    //   payPalMessageType: PayPalMessage.messageType.ERROR,
+    //   redirectToPayPalMessage: true,
+    // });
   };
 
   onCancel = (cancelData) => {
