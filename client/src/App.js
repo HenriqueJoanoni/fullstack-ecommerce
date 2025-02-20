@@ -90,6 +90,7 @@ export default class App extends Component {
                     />
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
+                    <Route exact path="/admin" component={AdminPage} />
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                 </Switch>
