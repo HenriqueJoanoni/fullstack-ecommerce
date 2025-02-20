@@ -1,29 +1,53 @@
-import React, { Component } from "react";
-import Header from "./Header";
-import PageFooter from "./PageFooter";
+import React, { Component } from "react"
+import Header from "./Header"
+import PageFooter from "./PageFooter"
 
 export default class FavoritesPage extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            favData: null,
-        };
-    }
-
-    componentDidMount() {
-        console.log("props location: ", this.props.location)
-        const { state } = this.props.location;
-
-        if (state && state.favorites) {
-            console.log("Favorites Data: ", state.favorites);
-            this.setState({ favData: state.favorites });
+            favorites: [],
+            loading: true
         }
     }
 
-    render() {
-        const { favData } = this.state;
+    componentDidMount() {
+        if (this.props.location.state?.userFavorites) {
+            this.setState({
+                favorites: this.props.location.state.userFavorites,
+                loading: false
+            })
+        } else {
+            this.setState({ loading: false })
+        }
+    }
 
-        // const isFavoritesValid = favData && typeof favData === "object" && Object.keys(favData).length > 0;
+    renderFavorites() {
+        const { favorites } = this.state
+
+        if (favorites.length === 0) {
+            return <p>No Favorites yet :(</p>
+        }
+
+        return (
+            <div className="favorites-grid">
+                {favorites.map((product) => (
+                    <div key={product._id} className="favorite-item">
+                        <img
+                            src={product.product_picture?.[0]}
+                            alt={product.product_name}
+                        />
+                        <h3>{product.product_name}</h3>
+                        <p>{product.product_description}</p>
+                        <p>€{product.product_price}</p>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    render() {
+        const { loading } = this.state
 
         return (
             <>
@@ -33,24 +57,17 @@ export default class FavoritesPage extends Component {
                     </div>
                     <section className="favorites-section">
                         <h1 className="favorites-title">Favorites</h1>
-
                         <div className="container">
-                            {/*{isFavoritesValid ? (*/}
-                            {/*    <div>*/}
-                            {/*        <h2>{favData.product_name}</h2>*/}
-                            {/*        <p>{favData.product_description}</p>*/}
-                            {/*        <p>Price: ${favData.product_price}</p>*/}
-                            {/*        <img src={favData.product_picture[0]} alt={favData.product_name} />*/}
-                            {/*        /!* Add more details as needed *!/*/}
-                            {/*    </div>*/}
-                            {/*) : (*/}
-                            {/*    <p>No Favorites yet :(</p>*/}
-                            {/*)}*/}
+                            {loading ? (
+                                <p>Loading favorites...</p>
+                            ) : (
+                                this.renderFavorites()
+                            )}
                         </div>
                     </section>
                 </div>
                 <PageFooter />
             </>
-        );
+        )
     }
 }

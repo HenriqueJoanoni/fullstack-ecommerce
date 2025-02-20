@@ -61,23 +61,24 @@ class Header extends Component {
         }
 
         try {
-            const response = await axios.get(`${SERVER_HOST}/favorites/${sessionStorage.getItem("email")}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            })
+            const response = await axios.get(
+                `${SERVER_HOST}/favorites/${sessionStorage.getItem("email")}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            )
 
             if (response.status === 200) {
                 this.props.history.push({
                     pathname: "/favorites",
-                    state: {favData: response.data},
+                    state: { userFavorites: response.data.favorites }
                 })
-                this.setState({errors: {}})
+                this.setState({ errors: {} })
             }
 
         } catch (error) {
             console.error("Error fetching favorites:", error)
-            this.setState({error: "Failed to fetch favorites"})
+            this.setState({ error: "Failed to fetch favorites" })
         }
     }
 
