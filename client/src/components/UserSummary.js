@@ -4,6 +4,7 @@ import PurchaseCard from "./PurchaseCard"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
 import { bin1 } from "../images"
 import { bin2 } from "../images"
+import { returnArrowIcon } from "../images"
 import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
 
@@ -12,7 +13,10 @@ export default class userSummary extends Component{
     constructor(props){
         super(props)
         this.state = {
-            confirmingDelete: false
+            confirmingDelete: false,
+            sortField: "purchase_total",
+            sortDirection: 1,
+            dateSearchQuery: ""
         }
         this.mockPurchases = [ 
             {
@@ -54,6 +58,65 @@ export default class userSummary extends Component{
 
     }
 
+    updateSort = val => {
+        console.log(val)
+
+        switch (val){
+            case "total_h_l":
+                this.setState({sortField: "purchase_total", sortDirection: -1})
+                break
+            case "total_l_h":
+                this.setState({sortField: "purchase_total", sortDirection: 1})
+                break
+        }
+    }
+
+    sortPurchases = purchases => {
+        let sortedPurchases = []
+        if (this.state.sortField === "purchase_total"){
+            sortedPurchases = [...purchases].sort((a, b) => {
+                let aTotal = Object.keys(a.items).reduce((total, item)=>
+                    total + (a.items[item].qty * a.items[item].price), 0)
+                console.log("aTotal: " + aTotal)
+
+                let bTotal = Object.keys(b.items).reduce((total, item)=>
+                    total + (b.items[item].qty * b.items[item].price), 0)
+                console.log("bTotal: " + bTotal)
+
+
+                return this.state.sortDirection * (aTotal - bTotal)
+            })
+        }
+        console.log(sortedPurchases)
+
+        return sortedPurchases
+    }
+
+    determineSelectedPurchases =()=>{
+        /*
+            This entire function is hot garbage,
+            but then again what function that deals with dates isn't?
+        */
+
+
+        let selectedPurchases = [...this.mockPurchases]
+        if (this.state.dateSearchQuery!== ""){
+            selectedPurchases = selectedPurchases.filter(purchase => {
+                //remove non digit chars to make comparing easier, requires global flag for some reason
+                console.log("dates:")
+                let date = purchase.purchaseDate
+                let editedDateString = `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`
+                let editedSearchString = this.state.dateSearchQuery.replaceAll(/\D/g, " ")
+                console.log(editedDateString)
+                console.log(editedSearchString)
+                return editedDateString.includes(editedSearchString)
+            })
+        }
+        return selectedPurchases
+    }
+
+    
+
     deleteUser = () => {
         axios.delete(`${SERVER_HOST}/delete/${this.props.user._id}`)
         .then(res => {
@@ -77,6 +140,9 @@ export default class userSummary extends Component{
                     null
                 }
                 <div className="userSummaryUserInfo">
+                        <button className="returnArrowButton" onClick={()=>{this.props.toggleUserSummary(null)}}>
+                            <img src={returnArrowIcon} alt="return arrow icon"/>
+                        </button>
                     <div>
                         <img src={loggedUser}/>
 
@@ -103,9 +169,26 @@ export default class userSummary extends Component{
                 </div>
                 <div className="purchaseSearchTools">
                     <h3>Purchase History</h3>
+                    <div>
+                        <label htmlFor="userSummarySort">Sort By:</label>
+                        <select onChange={(e)=>{this.updateSort(e.target.value)}}>
+                            <option value="total_l_h">Total Spent (low to High)</option>
+                            <option value="total_h_l">Total Spent (High to Low)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="purchaseDateSearch">Search Dates:</label>
+                        <input type="text" 
+                            value={this.state.dateSearchQuery}
+                            placeholder="date" 
+                            onChange={(e)=>{this.setState({dateSearchQuery: e.target.value})}}
+                        />
+                    </div>
                 </div>
                 <div className="userPurchaseResultsContainer">
-                    {this.mockPurchases.map(purchase => <PurchaseCard purchase={purchase} showUser={false}/>)}
+                    {this.sortPurchases(this.determineSelectedPurchases())
+                    .map(purchase => <PurchaseCard purchase={purchase} showUser={false}/>)}
                 </div>
             </div>
 

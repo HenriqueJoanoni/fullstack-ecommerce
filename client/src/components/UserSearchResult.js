@@ -8,7 +8,7 @@ export default class userSearchResult extends Component {
 
 
     getTotalPurchases = () =>{
-        return 4
+        return this.props.user.purchases_made
     }
 
     render(){
@@ -23,7 +23,15 @@ export default class userSearchResult extends Component {
                     </div>
                 </div>
 
-                <p className="userPurchaseSummary">Number of Purchases: {this.getTotalPurchases()}</p>
+                <div className="userSummaries">
+                    <p className="userPurchaseSummary">Number of Purchases: {this.getTotalPurchases()}</p>
+                    <p className="userSpendSummary">Total Spent: €{this.props.user.total_spent.toFixed(2)}</p>
+                    <p className="userJoined">Joined On: {`${new Date(this.props.user.join_date).getDate()}`}/
+                                                            {`${new Date(this.props.user.join_date).getMonth()+1}`}/
+                                                            {`${new Date(this.props.user.join_date).getYear()}`}
+
+                    </p>
+                </div>
 
                 
             </div>

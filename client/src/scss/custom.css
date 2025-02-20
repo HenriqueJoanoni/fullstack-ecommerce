@@ -655,7 +655,7 @@ button:hover {
   align-content: center;
 }
 #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails p {
-  margin: 5px 0;
+  margin: 1px 0;
 }
 #adminPageContainer #adminControlPanel #productsMain .adminSearchResult div img {
   width: 75px;
@@ -731,6 +731,14 @@ button:hover {
   border: 1px solid black;
   cursor: pointer;
 }
+.userSearchResult .userSummaries {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.userSearchResult .userSummaries p {
+  margin: 5px 0;
+}
 
 .userPurchaseSummaryContainer {
   position: absolute;
@@ -745,6 +753,22 @@ button:hover {
   width: 70%;
   margin: auto;
   display: flex;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .returnArrowButton {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 25px;
+  height: 25px;
+  margin-inline: 50px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .returnArrowButton img {
+  width: 25px;
 }
 .userPurchaseSummaryContainer .userSummaryUserInfo div {
   display: flex;
@@ -786,20 +810,21 @@ button:hover {
   margin: 0 auto 20px auto;
   text-align: center;
 }
-.userPurchaseSummaryContainer .purchaseCard {
+
+.purchaseCard {
   width: 60%;
   margin: 10px auto;
   border: 1px solid black;
   padding-inline: 50px;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseInfo {
+.purchaseCard .purchaseInfo {
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
   margin: auto;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseInfo .purchaseTimeTotal {
+.purchaseCard .purchaseInfo .purchaseTimeTotal {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -807,25 +832,25 @@ button:hover {
   padding: 0;
   font-weight: bold;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems table {
+.purchaseCard .purchaseItems table {
   width: 100%;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems table, .userPurchaseSummaryContainer .purchaseCard .purchaseItems tr, .userPurchaseSummaryContainer .purchaseCard .purchaseItems th, .userPurchaseSummaryContainer .purchaseCard .purchaseItems td {
+.purchaseCard .purchaseItems table, .purchaseCard .purchaseItems tr, .purchaseCard .purchaseItems th, .purchaseCard .purchaseItems td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems th {
+.purchaseCard .purchaseItems th {
   background-color: #333;
   color: white;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems th, .userPurchaseSummaryContainer .purchaseCard .purchaseItems td {
+.purchaseCard .purchaseItems th, .purchaseCard .purchaseItems td {
   padding: 10px 15px;
   text-align: center;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems .leftAligned {
+.purchaseCard .purchaseItems .leftAligned {
   text-align: left;
 }
-.userPurchaseSummaryContainer .purchaseCard .purchaseItems .purchaseTotalPrice {
+.purchaseCard .purchaseItems .purchaseTotalPrice {
   margin-block: 10px;
   margin-left: auto;
   text-align: right;

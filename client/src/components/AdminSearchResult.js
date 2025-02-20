@@ -14,6 +14,7 @@ export default class AdminSearchResult extends Component {
                     <div className="productDetails">
                         <p><b>{this.props.product.product_name}</b></p>
                         <p>{this.props.product.product_sku}</p>
+                        <p>€{this.props.product.product_price}</p>
                     </div>
                 </div>
                 <p>Qty in Stock: {this.props.product.qty_in_stock}</p>
