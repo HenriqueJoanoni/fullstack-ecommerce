@@ -8,9 +8,12 @@ export default class AdminPanelPurchases extends Component {
             allPurchases: [],
             searchQuery: "",
             sortField: "purchase_total",
-            sortDirection: 1
-
+            sortDirection: 1,
+            filterStartDate: null,
+            filterEndDate: new Date().toISOString().split("T")[0],
         }
+        // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
+
 
         this.purchases =  [
             {
@@ -34,7 +37,7 @@ export default class AdminPanelPurchases extends Component {
             {
                 purchaserID: "125",
                 purchaserName: "Jose Henrique",
-                purchaseDate: new Date(2025, 2, 1),
+                purchaseDate: new Date(2025, 0, 1),
                 items: [
                     {
                         product_name: "Marshall DSL40CR",
@@ -68,8 +71,6 @@ export default class AdminPanelPurchases extends Component {
 
     sortPurchases = purchases =>{
         let sortedPurchases = []
-        //console.log(this.state.sortField)
-        //console.log(this.state.sortDirection    )
 
         if (this.state.sortField === "purchase_total"){
             sortedPurchases = [...purchases].sort((a, b) => {
@@ -98,12 +99,24 @@ export default class AdminPanelPurchases extends Component {
             if (`${purchase.purchaserName}`.toLowerCase().includes(this.state.searchQuery.toLowerCase())){
                 include = true;
             } 
-            //console.log(purchase.purchaseDate)
 
             return include
         })
+        //filters
+
+        //start
+        if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
+            let startDate = new Date(this.state.filterStartDate)
+            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+        }
+
+        //end
+        if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
+            console.log("here2")
+            let endDate = new Date(this.state.filterEndDate)   
+            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
+        }
         
-        //console.log(selectedPurchases)
         return selectedPurchases
     }
 
@@ -122,6 +135,21 @@ export default class AdminPanelPurchases extends Component {
                                 value={this.state.searchQuery}
                                 placeholder="user or purchase date"
                         />
+                        <div className="dateFilters">
+                            <label htmlFor="startDate">Start Date</label>
+                            <input type="date" 
+                                value={this.state.filterStartDate}
+                                onChange={(e)=>{this.setState({filterStartDate: e.target.value})}}
+                            />
+
+                            <label htmlFor="endDate">End Date</label>
+                            <input type="date" 
+                                max={new Date().toISOString().split("T")[0]}
+                                value={this.state.filterEndDate}
+                                onChange={(e)=>{this.setState({filterEndDate: e.target.value})}}    
+                            />
+                            
+                        </div>
                     </div>
                     <div>
                         <label htmlFor="purchasesSortInput">Sort By:</label>

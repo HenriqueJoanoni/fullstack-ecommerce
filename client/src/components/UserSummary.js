@@ -16,8 +16,14 @@ export default class userSummary extends Component{
             confirmingDelete: false,
             sortField: "purchase_total",
             sortDirection: 1,
-            dateSearchQuery: ""
+            dateSearchQuery: "",
+            filterStartDate: null,
+            filterEndDate: new Date().toISOString().split("T")[0],
         }
+        // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
+        
+
+        
         this.mockPurchases = [ 
             {
                 purchaserName: "Christopher Healy",
@@ -38,7 +44,7 @@ export default class userSummary extends Component{
             },
             {
                 purchaserName: "Christopher Healy",
-                purchaseDate: new Date(2025, 2, 1),
+                purchaseDate: new Date(2025, 0, 1),
                 items: [
                     {
                         product_name: "Marshall DSL40CR",
@@ -107,10 +113,23 @@ export default class userSummary extends Component{
                 let date = purchase.purchaseDate
                 let editedDateString = `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`
                 let editedSearchString = this.state.dateSearchQuery.replaceAll(/\D/g, " ")
-                console.log(editedDateString)
-                console.log(editedSearchString)
                 return editedDateString.includes(editedSearchString)
             })
+        }
+
+        //filters
+        console.log(this.state.filterStartDate)
+        //start
+        if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
+            let startDate = new Date(this.state.filterStartDate)
+            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+        }
+
+        //end
+        if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
+            console.log("here2")
+            let endDate = new Date(this.state.filterEndDate)   
+            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
         }
         return selectedPurchases
     }
@@ -185,6 +204,22 @@ export default class userSummary extends Component{
                             onChange={(e)=>{this.setState({dateSearchQuery: e.target.value})}}
                         />
                     </div>
+
+                    <div className="dateFilters">
+                            <label htmlFor="startDate">Start Date</label>
+                            <input type="date" 
+                                value={this.state.filterStartDate}
+                                onChange={(e)=>{this.setState({filterStartDate: e.target.value})}}
+                            />
+
+                            <label htmlFor="endDate">End Date</label>
+                            <input type="date" 
+                                max={new Date().toISOString().split("T")[0]}
+                                value={this.state.filterEndDate}
+                                onChange={(e)=>{this.setState({filterEndDate: e.target.value})}}    
+                            />
+                            
+                        </div>
                 </div>
                 <div className="userPurchaseResultsContainer">
                     {this.sortPurchases(this.determineSelectedPurchases())
