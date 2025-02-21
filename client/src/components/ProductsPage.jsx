@@ -8,7 +8,10 @@ import {SERVER_HOST} from "../config/global_constants"
 
 export default class ProductsPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+
+
         this.state = {
             products: [],
             selectedTags: [],

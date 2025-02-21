@@ -622,6 +622,389 @@ button:hover {
   }
 }
 
+
+
+/*  ----- ADMIN PAGES ------- */
+#adminPageContainer {
+  width: 100%;
+  height: auto;
+  min-height: 80vh;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  box-sizing: border-box;
+
+
+  #adminControlPanel {
+    width: 80%;
+    box-shadow: 5px 11px 40px 13px rgba(0,0,0,0.75);
+    margin: auto;
+
+    #adminControlPanelHeader {
+      width: 100%;
+      height: 75px;
+      display: flex;
+      position: relative;
+
+      button {
+        margin: 0;
+        border-radius: 0;
+        font-size: 1rem;
+        background-color: $important-text-color1;
+        color: white;
+      }
+
+      .selected {
+        background-color: white;
+        color: $important-text-color1;
+      }
+    }
+
+
+    #productsHeader {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      h2 {
+        font-size: 1.75rem;
+        outline: none;
+        box-shadow: none;
+        border: none;
+      }
+
+      #addProductButton {
+        width: 200px;
+      }
+    }
+
+    #productsMain {
+      width: 90%;
+      margin: auto;
+      span {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 75%;
+        margin: auto;
+        font-weight: 200;
+
+        input {
+          padding: 2px 5px;
+          height: 1.5rem;
+          display: block;
+          margin-left: 30px;
+          min-width: 250px;
+          border-radius: 5px;
+          outline: none;
+          border: 1px solid black;
+        }
+      }
+
+      #searchResults {
+        width: 75%;
+        margin: auto;
+      }
+
+      /*   ADMIN SEARCH RESULT     */
+      .adminSearchResult {
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        border: 1px solid white;
+
+
+
+        div {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 10px 20px;
+
+          .productDetails {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            align-content: center;
+
+            p {
+              margin: 1px 0;
+            }
+          }
+
+          img {
+            width: 75px;
+            height: 75px;
+          }
+        }
+
+
+      &:hover {
+        background-color: #d6d6d6;
+
+        cursor: pointer;
+        color: $default-background-color;
+        border: 1px solid $default-background-color;
+        transition: 0.2s ease;
+
+      }
+    }
+  }
+}
+}
+
+
+
+/* ----------- edit modal ---------- */
+.modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  top: 0;
+  left: 0;
+  z-index: 10001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#productFormContainer {
+  width: 60%;
+  min-height: 400px;
+}
+
+
+
+/*   ---------- CONFIRM DELETE ------------- */
+.confirmDeleteModal {
+  width: 60%;
+  background-color: #eee;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  padding: 50px;
+}
+
+
+/*   -------- users panel -------- */
+#adminPanelUsers {
+  position: relative;
+}
+
+.userSearchResult {
+  width: 60%;
+  padding: 10px 15px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid white;
+
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .userInfo {
+      display: block;
+      p {
+        margin: 5px 20px;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: #d6d6d6;
+    border: 1px solid black;
+    cursor: pointer;
+  }
+
+  .userSummaries {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+
+}
+
+
+.userPurchaseSummaryContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  width: 100%;
+  min-height: 100%;
+  background-color: white;
+
+
+
+
+  .userSummaryUserInfo {
+    width: 70%;
+    margin: auto;
+    display: flex;
+
+    .returnArrowButton {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      width: 25px;
+      height: 25px;
+      margin-inline: 50px;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+
+      img {
+        width: 25px;
+      }
+  }
+
+
+    div {
+
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      margin: auto;
+      padding: 25px;
+
+      img {
+        width: 75px;
+      }
+
+      span p {
+        margin: 3px 10px;
+
+        &:first-of-type {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .flexCol {
+      flex-direction: column;
+
+      p {
+        margin: 5px 10px;
+      }
+    }
+
+    .userDeleteButton {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+  }
+
+
+  .purchaseSearchTools {
+    h3 {
+      margin: 0 auto 20px auto;
+      text-align: center;
+    }
+  }
+
+
+}
+
+
+
+.purchaseCard {
+  width: 60%;
+  margin: 10px auto;
+
+  border: 1px solid black;
+  padding-inline: 50px;
+
+  .purchaseInfo {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+
+    .purchaseTimeTotal{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+
+  }
+
+  .purchaseItems {
+
+    table {
+      width: 100%;
+    }
+
+    table, tr, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: $important-text-color1;
+      color: white;
+    }
+
+    th, td {
+      padding: 10px 15px;
+      text-align: center;
+    }
+
+    .leftAligned {
+      text-align: left;
+    }
+
+
+    .purchaseTotalPrice {
+      margin-block: 10px;
+      margin-left: auto;
+      text-align: right;
+      padding: 5px 5px;
+      width: min-content;
+      border-bottom: 1px solid black;
+      border-top: 1px solid black;
+
+    }
+  }
+}
+
+
+
+
+
 /* AVATAR DROPDOWN */
 .profile-menu {
   position: relative;
@@ -631,8 +1014,8 @@ button:hover {
     cursor: pointer;
 
     img {
-      width: 40px;
-      height: 40px;
+      // width: 40px;
+      // height: 40px;
       border-radius: 50%;
       object-fit: cover;
       transition: transform 0.2s ease-in-out;
@@ -685,6 +1068,10 @@ button:hover {
           text-decoration: none;
           color: inherit;
           font-size: inherit;
+        }
+        
+        .logoutspan{
+          font-family: Arial, sans-serif;
         }
 
         &:hover {
@@ -886,5 +1273,50 @@ button:hover {
   }
   to {
     opacity: 0;
+  }
+}
+
+/** FAVORITES PAGE */
+.favorites-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+  background: $profile-page-bg;
+
+  .favorites-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .favorite-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .favorite-item img {
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
   }
 }
