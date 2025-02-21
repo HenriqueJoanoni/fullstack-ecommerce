@@ -79,7 +79,6 @@ export default class App extends Component {
                                                                                            removeFromCart={this.removeFromCart}
                                                                                            updateCart={this.updateCart}
                                                                                            cart={this.state.cart}/>}/>
-                    {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
                     <Route exact path="/login" component={LoginForm}/>
 
                     <Route exact path="/cart" render={props =>
@@ -92,6 +91,8 @@ export default class App extends Component {
                     <Route exact path="/contact" component={ContactForm}/>
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+
+                    <Route exact path="/admin" component={AdminPage}/>
                 </Switch>
             </BrowserRouter>
         )

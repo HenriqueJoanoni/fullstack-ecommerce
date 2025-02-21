@@ -13,6 +13,7 @@ export default class userSummary extends Component{
     constructor(props){
         super(props)
         this.state = {
+            allPurchases: [],
             confirmingDelete: false,
             sortField: "purchase_total",
             sortDirection: 1,
@@ -104,8 +105,10 @@ export default class userSummary extends Component{
             but then again what function that deals with dates isn't?
         */
 
+        console.log(this.state.allPurchases)
+        let selectedPurchases = [...this.state.allPurchases]
 
-        let selectedPurchases = [...this.mockPurchases]
+        
         if (this.state.dateSearchQuery!== ""){
             selectedPurchases = selectedPurchases.filter(purchase => {
                 //remove non digit chars to make comparing easier, requires global flag for some reason
@@ -122,15 +125,17 @@ export default class userSummary extends Component{
         //start
         if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
             let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) >= startDate)
         }
 
         //end
         if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
             console.log("here2")
             let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) <= endDate )
         }
+
+        
         return selectedPurchases
     }
 
@@ -144,6 +149,17 @@ export default class userSummary extends Component{
             } else {
                 this.props.toggleUserSummary(null)
                 this.props.refreshUsers()
+            }
+        })
+    }
+
+    componentDidMount(){
+        axios.get(`${SERVER_HOST}/purchasesByUserID/${this.props.userID}`)
+        .then(res => {
+            if (res.data){
+                this.setState({allPurchases: res.data})
+            } else {
+                console.log(res.error)
             }
         })
     }
@@ -173,7 +189,7 @@ export default class userSummary extends Component{
                     </div>
 
                     <div className="flexCol">
-                        <p>Joined on: {"21/01/25"}</p>
+                        <p>Joined on: {new Date(this.props.user.join_date).toISOString().split("T")[0]}</p>
                         <p>Total Spent: {"€1240.50"}</p>
                     </div>
 

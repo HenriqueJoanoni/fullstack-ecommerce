@@ -24,11 +24,13 @@ export default class userSearchResult extends Component {
                 </div>
 
                 <div className="userSummaries">
-                    <p className="userPurchaseSummary">Number of Purchases: {this.getTotalPurchases()}</p>
-                    <p className="userSpendSummary">Total Spent: €{this.props.user.total_spent.toFixed(2)}</p>
+                    {console.log(this.props.user.purchases_made)}
+                    <p className="userPurchaseSummary">Number of Purchases: {this.props.user.purchases_made}</p>
+                    <p className="userSpendSummary">Total Spent: €{typeof this.props.user.total_spent !== "undefined" ?
+                                                                    this.props.user.total_spent.toFixed(2) : 0}</p>
                     <p className="userJoined">Joined On: {`${new Date(this.props.user.join_date).getDate()}`}/
                                                             {`${new Date(this.props.user.join_date).getMonth()+1}`}/
-                                                            {`${new Date(this.props.user.join_date).getYear()}`}
+                                                            {`${new Date(this.props.user.join_date).getFullYear()}`}
 
                     </p>
                 </div>

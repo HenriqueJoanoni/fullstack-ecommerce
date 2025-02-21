@@ -1,5 +1,7 @@
 import react, { Component} from "react"
 import PurchaseCard from "./PurchaseCard"
+import axios from  "axios"
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class AdminPanelPurchases extends Component {
     constructor(props){
@@ -93,39 +95,52 @@ export default class AdminPanelPurchases extends Component {
     }
 
     determineSelectedPurchases = () => {
-        let selectedPurchases = this.purchases.filter(purchase => {
-            let include = false;
-            //user
-            if (`${purchase.purchaserName}`.toLowerCase().includes(this.state.searchQuery.toLowerCase())){
-                include = true;
-            } 
+    
+        console.log(this.state.allPurchases)
+        let selectedPurchases = [...this.state.allPurchases]
 
-            return include
-        })
+        //search
+        if (this.state.searchQuery !== ""){
+            selectedPurchases = selectedPurchases.filter(purchase => `${purchase.user_first_name} ${purchase.user_last_name}`.toLowerCase()
+                                                                    .includes(this.state.searchQuery.toLowerCase()))
+        }
         //filters
 
         //start
         if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
             let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) >= startDate)
         }
 
         //end
         if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
             console.log("here2")
             let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) <= endDate )
         }
         
         return selectedPurchases
     }
 
 
+    componentDidMount(){
+        axios.get(`${SERVER_HOST}/allSales`)
+        .then(res => {
+            console.log(res.data)
+            console.log(res.error)
+            if (res.data){
+                this.setState({allPurchases: res.data})
+            } else {
+                console.log(res.error)
+            }
+        })
+    }
 
     render(){
         return (
             <div>
                 <h2>View Purchases</h2>
+                {console.log(this.state.allPurchases)}
                 <div className="purchasesSearchTools">
                     <div>
                         <label htmlFor="purchaseSearchBar">Search:</label>

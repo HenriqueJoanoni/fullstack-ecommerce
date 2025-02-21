@@ -6,6 +6,7 @@ require(`./config/dbconn`)
 /** Import Routes */
 const userRoutes = require('./routes/users')
 const productRoutes = require('./routes/products')
+const saleRoutes = require('./routes/sales')
 
 
 /** Express */
@@ -22,6 +23,7 @@ app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 /** Routes */
 app.use(userRoutes)
 app.use(productRoutes)
+app.use(saleRoutes)
 
 
 /** Start the Server */
