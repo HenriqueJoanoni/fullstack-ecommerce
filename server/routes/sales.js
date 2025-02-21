@@ -1,9 +1,10 @@
 const router = require(`express`).Router()
 const salesModel = require(`../models/Sale`)
+const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
-router.get(`/purchasesByUserID/:_id`, (req, res) => {   
+router.get(`/purchasesByUserID/:_id`, async (req, res) => {   
     console.log("here")
-    salesModel.find({userID:req.params._id}, async (error, data) => {
+    await salesModel.find({userID:req.params._id}, async (error, data) => {
         if (data){
             res.json(data)
         } else {

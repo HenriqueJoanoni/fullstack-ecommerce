@@ -14,10 +14,14 @@ import ProfilePage from "./components/ProfilePage";
 import { ACCESS_NORMAL_USER_LEVEL } from './config/global_constants';
 
 
+
+
 if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.firstName = "GUEST"
     sessionStorage.accessLevel = ACCESS_GUEST_LEVEL
 }
+
+
 
 export default class App extends Component {
     constructor(props) {

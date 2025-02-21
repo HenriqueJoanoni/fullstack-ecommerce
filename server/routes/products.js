@@ -1,5 +1,7 @@
 const router = require(`express`).Router()
 const productsModel = require(`../models/Product`)
+const multer  = require('multer')
+const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 
 
 

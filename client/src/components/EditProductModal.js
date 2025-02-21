@@ -21,6 +21,7 @@ export default class EditProductModal extends Component {
                 product_price: "",
                 product_tags: ""
             },
+            selectedFile: null,
 
             showConfirmModal: false
         }
@@ -52,9 +53,11 @@ export default class EditProductModal extends Component {
         this.validateFormValues()
         let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
 
+        let formData = new FormData()
+        formData.append("product_photo", this.state.selectedFile)
         //update if all error messages are empty
         if (allValid){
-            axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, this.state.formValues)
+            axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, [this.state.formValues, formData])
             .then(res => {
                 console.log(res)
                 if (!res.data){
@@ -80,6 +83,15 @@ export default class EditProductModal extends Component {
             this.props.setEditingState(null, false)
             this.props.refreshProducts()
         })
+    }
+
+    addImageFile = e => {
+        this.setState({selectedFile: e.target.files[0]})
+    }
+
+    uploadImage = () => {
+        this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, this.state.selectedFile]},
+                        selectedFile: null})
     }
 
 
@@ -219,6 +231,17 @@ export default class EditProductModal extends Component {
                                                             checked={this.props.product.product_tags.includes(tag.toLowerCase())}
                                                             toggleTag={this.toggleTag}/>)}
                             </div>
+                        </span>
+
+
+                        <span className="formRow">
+                            <p>Product Images:</p>
+                            <div className="imagesContainer">
+                                {console.log(this.state.formValues.product_images)}
+                                {this.state.formValues.product_images.map(imgSrc => <img src={imgSrc} key={imgSrc} />)}
+
+                            </div>
+                            <input type="file" name="fileInput" onChange={(e)=>this.addImageFile(e)} />
                         </span>
 
                         <div>

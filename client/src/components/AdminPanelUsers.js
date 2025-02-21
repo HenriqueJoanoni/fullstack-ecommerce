@@ -133,28 +133,42 @@ export default class AdminPanelUsers extends Component {
         let users = axios.get(`${SERVER_HOST}/allUsers`)
         .then(res => {
             if (res.data){
-                this.setState({allUsers: res.data})
+                res.data.forEach(user => {
+                    console.log(user)
+                    this.getUserPurchases(user._id)
+                    .then(userPurchases => {
+                        user.purchases_made = userPurchases.length
+                        user.total_spent = userPurchases.reduce((total, purchase) => {
+                            let purchaseTotal = Object.keys(purchase.items).reduce((total, item) => 
+                                total + (purchase.items[item].qty * purchase.items[item].price), 0)
+                            return total + purchaseTotal
+                        }, 0)
+                    })
+                    
+    
+                })
+            this.setState({allUsers: res.data})
             } else {
                 console.log(res.error)
             }
         })
         
+        
     }
 
     getUserPurchases = async (id) => {
-        let purchases =  await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`)
+        let purchases = await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`)
         .then(res => {
+            console.log(res.data)
             if (res.data){
                 console.log(res.data)
                 return res.data
             } else {
                 console.log(res.error)
             }
-        })
-
-        return purchases.value
-
         
+        })
+        return purchases
     }
 
     componentDidMount(){
