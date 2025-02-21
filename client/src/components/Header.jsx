@@ -1,11 +1,11 @@
 import React, {Component, createRef} from "react"
-import {Link, NavLink} from "react-router-dom"
+import {Link, NavLink, withRouter} from "react-router-dom"
 import {heartIcon, shoppingBagIcon, downArrowIcon} from '../images'
 import UserAvatarDropdown from "./UserAvatarDropdown"
-import axios from "axios";
-import {ACCESS_GUEST_LEVEL, SERVER_HOST} from "../config/global_constants";
+import axios from "axios"
+import {ACCESS_GUEST_LEVEL, SERVER_HOST} from "../config/global_constants"
 
-export default class Header extends Component {
+class Header extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -53,11 +53,40 @@ export default class Header extends Component {
         }
     }
 
+    handleUserFavorites = async () => {
+        const token = sessionStorage.getItem("authToken")
+        if (!token) {
+            console.error("No auth token found")
+            return
+        }
+
+        try {
+            const response = await axios.get(
+                `${SERVER_HOST}/favorites/${sessionStorage.getItem("email")}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            )
+
+            if (response.status === 200) {
+                this.props.history.push({
+                    pathname: "/favorites",
+                    state: { userFavorites: response.data.favorites }
+                })
+                this.setState({ errors: {} })
+            }
+
+        } catch (error) {
+            console.error("Error fetching favorites:", error)
+            this.setState({ error: "Failed to fetch favorites" })
+        }
+    }
+
     componentDidMount() {
         axios.get(`${SERVER_HOST}/new-products`)
             .then(res => {
                 if (res.data) {
-                    console.log(res.data)
+                    // console.log(res.data)
 
                     const newProducts = res.data.map(product => ({
                         ...product,
@@ -102,9 +131,9 @@ export default class Header extends Component {
                     <div className="icon-container">
                         {isLoggedIn && (
                             <div className="icon-wrapper">
-                                <Link to="/favorites">
+                                <a onClick={this.handleUserFavorites}>
                                     <img className="header-icon" src={heartIcon} alt="Heart"/>
-                                </Link>
+                                </a>
                             </div>
                         )}
                         <div className="icon-wrapper">
@@ -160,3 +189,5 @@ export default class Header extends Component {
         )
     }
 }
+
+export default withRouter(Header)

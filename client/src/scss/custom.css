@@ -851,4 +851,307 @@ button:hover {
 }
 #paypalButtonContainer #payPalPaymentIDButton .green-button {
   background-color: green;
-}/*# sourceMappingURL=custom.css.map */
+}
+
+/*  ----- ADMIN PAGES ------- */
+#adminPageContainer {
+    width: 100%;
+    height: auto;
+    min-height: 80vh;
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 25px;
+    box-sizing: border-box;
+}
+#adminPageContainer #adminControlPanel {
+    width: 80%;
+    box-shadow: 5px 11px 40px 13px rgba(0, 0, 0, 0.75);
+    margin: auto;
+}
+#adminPageContainer #adminControlPanel #adminControlPanelHeader {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    position: relative;
+}
+#adminPageContainer #adminControlPanel #adminControlPanelHeader button {
+    margin: 0;
+    border-radius: 0;
+    font-size: 1rem;
+    background-color: #333;
+    color: white;
+}
+#adminPageContainer #adminControlPanel #adminControlPanelHeader .selected {
+    background-color: white;
+    color: #333;
+}
+#adminPageContainer #adminControlPanel #productsHeader {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#adminPageContainer #adminControlPanel #productsHeader h2 {
+    font-size: 1.75rem;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+#adminPageContainer #adminControlPanel #productsHeader #addProductButton {
+    width: 200px;
+}
+#adminPageContainer #adminControlPanel #productsMain {
+    width: 90%;
+    margin: auto;
+    /*   ADMIN SEARCH RESULT     */
+}
+#adminPageContainer #adminControlPanel #productsMain span {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 75%;
+    margin: auto;
+    font-weight: 200;
+}
+#adminPageContainer #adminControlPanel #productsMain span input {
+    padding: 2px 5px;
+    height: 1.5rem;
+    display: block;
+    margin-left: 30px;
+    min-width: 250px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+}
+#adminPageContainer #adminControlPanel #productsMain #searchResults {
+    width: 75%;
+    margin: auto;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult {
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border: 1px solid white;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult div .productDetails p {
+    margin: 1px 0;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult div img {
+    width: 75px;
+    height: 75px;
+}
+#adminPageContainer #adminControlPanel #productsMain .adminSearchResult:hover {
+    background-color: #d6d6d6;
+    cursor: pointer;
+    color: #2c2c2c;
+    border: 1px solid #2c2c2c;
+    transition: 0.2s ease;
+}
+
+/* ----------- edit modal ---------- */
+.modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    top: 0;
+    left: 0;
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#productFormContainer {
+    width: 60%;
+    min-height: 400px;
+}
+
+/*   ---------- CONFIRM DELETE ------------- */
+.confirmDeleteModal {
+    width: 60%;
+    background-color: #eee;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100000;
+    padding: 50px;
+}
+
+/*   -------- users panel -------- */
+#adminPanelUsers {
+    position: relative;
+}
+
+.userSearchResult {
+    width: 60%;
+    padding: 10px 15px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid white;
+}
+.userSearchResult div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.userSearchResult div .userInfo {
+    display: block;
+}
+.userSearchResult div .userInfo p {
+    margin: 5px 20px;
+}
+.userSearchResult:hover {
+    background-color: #d6d6d6;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.userSearchResult .userSummaries {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.userSearchResult .userSummaries p {
+    margin: 5px 0;
+}
+
+.userPurchaseSummaryContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+    width: 100%;
+    min-height: 100%;
+    background-color: white;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo {
+    width: 70%;
+    margin: auto;
+    display: flex;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .returnArrowButton {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 25px;
+    height: 25px;
+    margin-inline: 50px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .returnArrowButton img {
+    width: 25px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: auto;
+    padding: 25px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div img {
+    width: 75px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div span p {
+    margin: 3px 10px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo div span p:first-of-type {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .flexCol {
+    flex-direction: column;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .flexCol p {
+    margin: 5px 10px;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .userDeleteButton {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+.userPurchaseSummaryContainer .userSummaryUserInfo .userDeleteButton img {
+    width: 50px;
+    height: 50px;
+}
+.userPurchaseSummaryContainer .purchaseSearchTools h3 {
+    margin: 0 auto 20px auto;
+    text-align: center;
+}
+
+.purchaseCard {
+    width: 60%;
+    margin: 10px auto;
+    border: 1px solid black;
+    padding-inline: 50px;
+}
+.purchaseCard .purchaseInfo {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+}
+.purchaseCard .purchaseInfo .purchaseTimeTotal {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.purchaseCard .purchaseItems table {
+    width: 100%;
+}
+.purchaseCard .purchaseItems table, .purchaseCard .purchaseItems tr, .purchaseCard .purchaseItems th, .purchaseCard .purchaseItems td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.purchaseCard .purchaseItems th {
+    background-color: #333;
+    color: white;
+}
+.purchaseCard .purchaseItems th, .purchaseCard .purchaseItems td {
+    padding: 10px 15px;
+    text-align: center;
+}
+.purchaseCard .purchaseItems .leftAligned {
+    text-align: left;
+}
+.purchaseCard .purchaseItems .purchaseTotalPrice {
+    margin-block: 10px;
+    margin-left: auto;
+    text-align: right;
+    padding: 5px 5px;
+    width: -moz-min-content;
+    width: min-content;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}

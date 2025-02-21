@@ -8,6 +8,18 @@ const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY, 'utf8')
 const logout = require("../middlewares/logoutMiddleware")
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
+/* Fetch all users */
+router.get(`/allUsers`, (req, res)=>{
+    User.find((error, data)=> {
+        if (data){
+            res.json(data)
+        } else {
+            console.log(data)
+            res.json(error)
+        }
+    })
+})
+
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
     try {
@@ -170,6 +182,36 @@ router.post("/profile-update", verifyTokenPassword, async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Internal server error"})
+    }
+})
+
+router.delete("/delete/:_id", (req, res) => {
+    User.findByIdAndRemove(req.params._id, (error, data)=>{
+        if (data){
+            res.json(data)
+        } else {
+            res.json(error)
+        }
+    })
+})
+
+/** DISPLAY FAVORITES */
+router.get("/favorites/:email", verifyTokenPassword, async (req, res) => {
+    try {
+        const user = await User.findOne({ user_email: req.params.email })
+            .populate("favorites")
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" })
+        }
+
+        res.status(200).json({
+            favorites: user.favorites,
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: "Internal server error" })
     }
 })
 

@@ -9,12 +9,12 @@ import RegisterForm from "./components/RegisterForm"
 import ContactForm from "./components/ContactForm"
 import ProfilePage from "./components/ProfilePage"
 import FavoritesPage from "./components/FavoritesPage"
+import AdminPage from "./components/AdminPage";
 import BuyItem from "./components/BuyItem"
 import PayPalMessage from "./components/PayPalMessage"
 
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
 import LoggedInRoute from "./components/LoggedInRoute"
-
 
 if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.firstName = "GUEST"
@@ -92,16 +92,17 @@ export default class App extends Component {
                     />
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
+                    <Route exact path="/admin" component={AdminPage} />
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                     <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
-                    
-                    <Route exact path="/BuyItem/:_id" component={BuyItem} />
-                    <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>                     
 
-                
-                
+                    <Route exact path="/BuyItem/:_id" component={BuyItem} />
+                    <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
+
+
+
                 </Switch>
             </BrowserRouter>
         )
