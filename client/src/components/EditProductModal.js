@@ -85,14 +85,28 @@ export default class EditProductModal extends Component {
         })
     }
 
-    addImageFile = e => {
+    setSelectedFile = e => {
+        console.log("event:")
+        console.log(e)
         this.setState({selectedFile: e.target.files[0]})
     }
 
-    uploadImage = () => {
-        this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, this.state.selectedFile]},
-                        selectedFile: null})
+    uploadImage =()=>{
+        let formData = new FormData()
+        formData.append("product_photo", this.state.selectedFile)
+        axios.post(`${SERVER_HOST}/products/imageUpload/${this.props.product._id}`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        .then(res => {
+            if (res.data){
+                console.log("success")
+                document.getElementById("editProductFileInput").value = ""
+            } else {
+                window.alert("Error - Could not upload image")
+            }
+        })
+        
     }
+
+
 
 
     validateFormValues = () => {
@@ -241,7 +255,8 @@ export default class EditProductModal extends Component {
                                 {this.state.formValues.product_images.map(imgSrc => <img src={imgSrc} key={imgSrc} />)}
 
                             </div>
-                            <input type="file" name="fileInput" onChange={(e)=>this.addImageFile(e)} />
+                            <input type="file" name="fileInput" id="editProductFileInput" onChange={(e)=>this.setSelectedFile(e)} />
+                            <button type="button" onClick={this.uploadImage}>Upload Image</button>
                         </span>
 
                         <div>
