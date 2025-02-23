@@ -144,16 +144,13 @@ export default class AdminPanelUsers extends Component {
                             return total + purchaseTotal
                         }, 0)
                     })
-                    
-    
+                this.setState({allUsers: users})
                 })
-            this.setState({allUsers: res.data})
+                
             } else {
                 console.log(res.error)
             }
         })
-        
-        
     }
 
     getUserPurchases = async (id) => {
