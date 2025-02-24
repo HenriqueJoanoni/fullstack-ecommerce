@@ -3,6 +3,7 @@ import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
 import TagCheckBox from "./TagCheckBox"
+import DeletableImageContainer from "./DeletableImageContainer"
 
 export default class EditProductModal extends Component {
     constructor(props){
@@ -252,7 +253,9 @@ export default class EditProductModal extends Component {
                             <p>Product Images:</p>
                             <div className="imagesContainer">
                                 {console.log(this.state.formValues.product_images)}
-                                {this.state.formValues.product_images.map(imgSrc => <img src={imgSrc} key={imgSrc} />)}
+                                {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
+                                                                                                        imageURL={url}
+                                                                                                        productID={this.props.product._id}/>)}
 
                             </div>
                             <input type="file" name="fileInput" id="editProductFileInput" onChange={(e)=>this.setSelectedFile(e)} />

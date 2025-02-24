@@ -2,6 +2,7 @@ const router = require(`express`).Router()
 const productsModel = require(`../models/Product`)
 const multer  = require('multer')
 const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
+const fs = require(`fs`)
 //const emptyFolder = require(`empty-folder`)
 
 
@@ -83,6 +84,8 @@ router.delete("/products/:_id", (req, res)=>{
 })
 
 
+/* image routes */
+
 router.post("/products/imageUpload/:_id", upload.single("product_photo"), (req, res) => {
     if (!req.file){
         res.json({errorMessage: "No file selected"})
@@ -106,6 +109,36 @@ router.post("/products/imageUpload/:_id", upload.single("product_photo"), (req, 
 
 })
 
+router.get("/products/image/:filename", (req, res) => {
+    fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, `base64`, (err, fileData) => {
+       if (fileData){
+        res.json({data: fileData})
+       } else {
+        res.json({errorMessage: err})
+       }
+    })
+})
+
+router.delete("/products/image/:_id/:filename", (req, res) => {
+    //delete file from server side
+    fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, (err) => {
+        if (err){
+            console.log("delete server error")
+            console.log(err)
+            res.json({errorMessage: err})
+        } 
+    })
+
+    //delete filename from DB
+    //learned from mongo docs: https://www.mongodb.com/docs/manual/reference/operator/update/pull/ 
+    productsModel.updateOne({_id: req.params._id}, {$pull: {product_images: req.params.filename}}, (deleteErr, deleteData) => {
+        if (deleteData){
+            res.json({data: deleteData})
+        } else {
+            res.json({errorMessage: deleteErr})
+        }
+    })
+})
 /*
 emptyFolder(process.env.UPLOADED_FILES_FOLDER, false, (result) =>
 {
