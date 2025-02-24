@@ -1,11 +1,24 @@
-const router = require(`express`).Router();
-const salesModel = require('../models/Sales');
-const productsModel = require('../models/Product');
-const { formatDate } = require("../utils/utils");
+const router = require(`express`).Router()
+const salesModel = require('../models/Sales')
+const userModel = require('../models/User')
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
-const createNewSaleDocument = (req, res, next) => {
-    let saleDetails = new Object();
+router.post('/sales', verifyTokenPassword, async (req, res, next) => {
+    const {orderID, productId, price, user_email} = req.body
+
+    let userPurchase = userModel.findOne({user_email: user_email})
+        .populate("user_data")
+
+    await salesModel.create({
+        paypalPaymentID: orderID,
+        product: productId,
+        sale_price: price,
+        sale_date: Date.now(),
+        user: userPurchase.user_data._id
+    })
+
+    return res.json({success: true})
+})
 
 router.get(`/purchasesByUserID/:_id`, async (req, res) => {
     console.log("here")
@@ -18,35 +31,6 @@ router.get(`/purchasesByUserID/:_id`, async (req, res) => {
     })
 })
 
-    saleDetails.paypalPaymentID = req.params.orderID;
-    saleDetails.productID = req.params.productId;
-    saleDetails.price = req.params.price;
-
-    productsModel.findById({ _id: req.params.productId }, { is_available: false }, (err, data) => {
-        if (err) {
-            return next(err);
-        }
-    });
-
-    salesModel.create({
-        paypalPaymentID: req.params.paypalPaymentID,
-        product: "",
-        sale_price: "",
-        sale_date: "",
-        user: ""
-    })
-
-    salesModel.create(saleDetails, (err, data) => {
-        if (err) {
-            return next(err);
-        }
-    });
-
-    return res.json({ success: true });
-};
-
-router.post('/sales/:orderID/:productId/:price', verifyTokenPassword, createNewSaleDocument);
-
 router.get(`/allSales`, (req, res) => {
     salesModel.find((error, data) => {
         if (data){
@@ -57,5 +41,4 @@ router.get(`/allSales`, (req, res) => {
     })
 })
 
-
-module.exports = router;
+module.exports = router

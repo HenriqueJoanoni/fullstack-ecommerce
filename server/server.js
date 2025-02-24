@@ -6,7 +6,7 @@ require(`./config/dbconn`)
 /** Import Routes */
 const userRoutes = require('./routes/users')
 const productRoutes = require('./routes/products')
- const salesRoutes = require('./routes/sales')
+const salesRoutes = require('./routes/sales')
 
 
 /** Express */
@@ -27,8 +27,7 @@ const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 /** Routes */
 app.use(userRoutes)
 app.use(productRoutes)
- app.use(salesRoutes)
-app.use(saleRoutes)
+app.use(salesRoutes)
 
 
 /** Start the Server */
