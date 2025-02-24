@@ -86,7 +86,7 @@ router.delete("/products/:_id", (req, res)=>{
 
 /* image routes */
 
-router.post("/products/imageUpload/:_id", upload.single("product_photo"), (req, res) => {
+router.post("/products/imageUpload", upload.single("product_photo"), (req, res) => {
     if (!req.file){
         res.json({errorMessage: "No file selected"})
     }
@@ -95,8 +95,10 @@ router.post("/products/imageUpload/:_id", upload.single("product_photo"), (req, 
     }
     //valid upload
     else {
+        res.json({url: req.file.filename})
         //learned from mongo docs
         //https://www.mongodb.com/docs/manual/reference/operator/update/push/#mongodb-update-up.-push
+        /*
         productsModel.updateOne({_id: req.params._id}, {$push: {product_images: req.file.filename}}, (updateErr, updateData) => {
             if (updateData){
                 res.json({data: updateData})
@@ -104,6 +106,7 @@ router.post("/products/imageUpload/:_id", upload.single("product_photo"), (req, 
                 res.json({errorMessage: updateErr})
             }
         })
+            */
     }
 
 
@@ -119,7 +122,7 @@ router.get("/products/image/:filename", (req, res) => {
     })
 })
 
-router.delete("/products/image/:_id/:filename", (req, res) => {
+router.delete("/products/image/:filename", (req, res) => {
     //delete file from server side
     fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, (err) => {
         if (err){
@@ -128,17 +131,9 @@ router.delete("/products/image/:_id/:filename", (req, res) => {
             res.json({errorMessage: err})
         } 
     })
-
-    //delete filename from DB
-    //learned from mongo docs: https://www.mongodb.com/docs/manual/reference/operator/update/pull/ 
-    productsModel.updateOne({_id: req.params._id}, {$pull: {product_images: req.params.filename}}, (deleteErr, deleteData) => {
-        if (deleteData){
-            res.json({data: deleteData})
-        } else {
-            res.json({errorMessage: deleteErr})
-        }
-    })
 })
+
+
 /*
 emptyFolder(process.env.UPLOADED_FILES_FOLDER, false, (result) =>
 {

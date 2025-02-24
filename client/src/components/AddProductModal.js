@@ -2,6 +2,7 @@ import react, { Component} from "react"
 import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
 import TagCheckBox from "./TagCheckBox"
+import DeletableImageContainer from "./DeletableImageContainer"
 
 
 export default class EditProductModal extends Component {
@@ -14,7 +15,7 @@ export default class EditProductModal extends Component {
                     discount_price: 1800,
                     deal_deadline: "2025-06-01T00:00:00.000+00:00"
                 },
-                product_picture: [],
+                product_images: [],
                 is_available: true,
                 product_sku: "",
                 product_name: "",
@@ -34,7 +35,8 @@ export default class EditProductModal extends Component {
                 product_brand: "",
                 product_price: "",
                 product_tags: ""
-            }
+            },
+            selectedFile: null
         }
 
         this.allTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"]
@@ -61,6 +63,30 @@ export default class EditProductModal extends Component {
         this.setState({formValues: newObj})
     }
 
+
+    setSelectedFile = e => {
+        this.setState({selectedFile: e.target.files[0]})
+    }
+
+    uploadImage = ()=>{
+        if (this.state.selectedFile === null || this.state.selectedFile === undefined){
+            return  
+        }
+        let formData = new FormData()
+        formData.append("product_photo", this.state.selectedFile)
+        axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        .then(res => {
+            if (res.data){
+                setTimeout(()=>{}, 100)
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
+                document.getElementById("editProductFileInput").value = ""
+            } else {
+                window.alert("Error - Could not upload image")
+            }
+        })
+        
+    }
+
     addProduct =()=>{
         this.validateFormValues()
         let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
@@ -75,6 +101,25 @@ export default class EditProductModal extends Component {
                 }
             })
         } 
+    }
+
+    deleteImage = url => {
+        axios.delete(`${SERVER_HOST}/products/image/${url}`)
+        .then(res => {
+            if (res.data){
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: this.state.formValues.product_images.filter(img => img !== url)}})
+            } else {
+                window.alert("Could not delete photo.")
+            }
+        })
+    }
+
+    cancelAdd = async () => {
+        //delete images if user cancels adding
+        await this.state.formValues.product_images.forEach(img => {
+            this.deleteImage(img)
+        })
+        this.props.setAddingState(false)
     }
 
 
@@ -227,14 +272,28 @@ export default class EditProductModal extends Component {
                             </div>
                         </span>
 
+
+                        <span className="formRow">
+                            <p>Product Images:</p>
+                            <div className="imagesContainer">
+                                {console.log(this.state.formValues.product_images)}
+                                {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
+                                                                                            imageURL={url}
+                                                                                            deleteImage={this.deleteImage}
+                                                                                            productID={null}/>)}
+
+                            </div>
+                            <input type="file" name="fileInput" id="editProductFileInput" onChange={(e)=>this.setSelectedFile(e)} />
+                            <button type="button" onClick={this.uploadImage}>Upload Image</button>
+                        </span>
+
                         <div>
-                            <button type="button" onClick={()=>{this.props.setAddingState(false)}}>Cancel</button>
+                            <button type="button" onClick={this.cancelAdd}>Cancel</button>
                             <button type="button" onClick={this.addProduct}>Add Product</button>
                         </div>
-
-                        
-
                     </form>
+
+
                 </div>
             </div>
         )

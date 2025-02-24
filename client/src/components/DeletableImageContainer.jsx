@@ -11,12 +11,7 @@ export default class DeletableImageContainer extends Component {
     }
 
     deleteImage = () => {
-        axios.delete(`${SERVER_HOST}/products/image/${this.props.productID}/${this.props.imageURL}`)
-        .then(res => {
-            if (res.data){
-
-            }
-        })
+        
     }
 
     getImage = (url) => {
@@ -39,7 +34,7 @@ export default class DeletableImageContainer extends Component {
     render(){
         return(
             <div className="deletableImageContainer">
-                <button type="button" onClick={this.deleteImage}>X</button>
+                <button type="button" onClick={(e)=>this.props.deleteImage(this.props.imageURL)}>X</button>
                 <img className="imageimageimage" src={this.state.imageData}
                     alt="Image Loading..."
                 />

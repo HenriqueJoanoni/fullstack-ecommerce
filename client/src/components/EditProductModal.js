@@ -20,7 +20,8 @@ export default class EditProductModal extends Component {
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: ""
+                product_tags: "",
+            
             },
             selectedFile: null,
 
@@ -54,11 +55,9 @@ export default class EditProductModal extends Component {
         this.validateFormValues()
         let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
 
-        let formData = new FormData()
-        formData.append("product_photo", this.state.selectedFile)
         //update if all error messages are empty
         if (allValid){
-            axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, [this.state.formValues, formData])
+            axios.put(`${SERVER_HOST}/products/${this.props.product._id}`, this.state.formValues)
             .then(res => {
                 console.log(res)
                 if (!res.data){
@@ -87,24 +86,39 @@ export default class EditProductModal extends Component {
     }
 
     setSelectedFile = e => {
-        console.log("event:")
-        console.log(e)
+        console.log("89")
+        console.log(e.target.files.length)
         this.setState({selectedFile: e.target.files[0]})
     }
 
-    uploadImage =()=>{
+    uploadImage = ()=>{
+        if (this.state.selectedFile === null || this.state.selectedFile === undefined){
+            return  
+        }
         let formData = new FormData()
         formData.append("product_photo", this.state.selectedFile)
-        axios.post(`${SERVER_HOST}/products/imageUpload/${this.props.product._id}`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => {
             if (res.data){
-                console.log("success")
+                setTimeout(()=>{}, 100)
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
                 document.getElementById("editProductFileInput").value = ""
             } else {
                 window.alert("Error - Could not upload image")
             }
         })
         
+    }
+
+    deleteImage = url => {
+        axios.delete(`${SERVER_HOST}/products/image/${url}`)
+        .then(res => {
+            if (res.data){
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: this.state.formValues.product_images.filter(img => img !== url)}})
+            } else {
+                window.alert("Could not delete photo.")
+            }
+        })
     }
 
 
@@ -255,6 +269,7 @@ export default class EditProductModal extends Component {
                                 {console.log(this.state.formValues.product_images)}
                                 {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
                                                                                                         imageURL={url}
+                                                                                                        deleteImage={this.deleteImage}
                                                                                                         productID={this.props.product._id}/>)}
 
                             </div>
