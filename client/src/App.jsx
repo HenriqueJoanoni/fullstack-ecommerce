@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {BrowserRouter, Switch, Route} from "react-router-dom"
-import Home from "./components/Home"
-import ProductsPage from "./components/ProductsPage"
+import Home from "./components/Home";
+import ProductsPage from "./components/ProductsPage";
 import ProductInfoPage from "./components/ProductInfoPage"
-import LoginForm from "./components/LoginForm"
+import LoginForm from "./components/LoginForm";
 import ShoppingCart from "./components/ShoppingCart"
 import RegisterForm from "./components/RegisterForm"
 import ContactForm from "./components/ContactForm"
@@ -13,8 +13,6 @@ import AdminPage from "./components/AdminPage";
 import BuyItem from "./components/BuyItem"
 import PayPalMessage from "./components/PayPalMessage"
 
-import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
-import LoggedInRoute from "./components/LoggedInRoute"
 
 if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.firstName = "GUEST"

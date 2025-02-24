@@ -9,8 +9,8 @@ const logout = require("../middlewares/logoutMiddleware")
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
 /* Fetch all users */
-router.get(`/allUsers`, (req, res)=>{
-    User.find((error, data)=> {
+router.get(`/allUsers`, async(req, res)=>{
+    await User.find((error, data)=> {
         if (data){
             res.json(data)
         } else {

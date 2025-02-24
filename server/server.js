@@ -19,11 +19,16 @@ app.use(express.json())
 app.use(require(`body-parser`).json())
 app.use(require(`cors`)({credentials: true, origin: process.env.LOCAL_HOST}))
 
+/** multer */
+const multer = require(`multer`)
+const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
+
 
 /** Routes */
 app.use(userRoutes)
 app.use(productRoutes)
  app.use(salesRoutes)
+app.use(saleRoutes)
 
 
 /** Start the Server */

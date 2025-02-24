@@ -15,7 +15,7 @@ export default class PurchaseCard extends Component {
                         <p>{this.props.showUser ? <p>Purchased by: {this.props.purchase.purchaserName}</p> : null}</p>
                     </div>
                     <div className="purchaseTimeTotal"> 
-                        <p>Purchased on: {this.props.purchase.purchaseDate.toLocaleString() || "null"}</p>
+                        <p>Purchased on: {this.props.purchase.sale_date.toLocaleString().split("T")[0] || "null"}</p>
                         <p>Total: {Object.keys(this.props.purchase.items).reduce((total, item)=>
                             total + (this.props.purchase.items[item].qty * this.props.purchase.items[item].price), 0)}</p> 
                     </div>

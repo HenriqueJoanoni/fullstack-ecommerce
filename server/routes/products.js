@@ -1,6 +1,9 @@
 const router = require(`express`).Router()
 const productsModel = require(`../models/Product`)
-const {formatDate} = require("../utils/utils")
+const multer  = require('multer')
+const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
+
+
 
 //read all records of products
 router.get(`/products`, (req, res) => 
@@ -105,7 +108,7 @@ router.put("/products/:_id", (req, res)=>{
 router.delete("/products/:_id", (req, res)=>{
     console.log(req.params._id)
     productsModel.findByIdAndRemove(req.params._id, (error, data) => {
-        if (error){
+        if (error){ 
             res.json(error)
         } else {
             res.json(data)
