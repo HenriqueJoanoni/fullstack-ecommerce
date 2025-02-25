@@ -3,7 +3,7 @@ import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
 import TagCheckBox from "./TagCheckBox"
 import DeletableImageContainer from "./DeletableImageContainer"
-
+import {MAX_PRODUCT_IMAGES} from "../config/global_constants"   
 
 export default class EditProductModal extends Component {
     constructor(props){
@@ -181,9 +181,14 @@ export default class EditProductModal extends Component {
 
 
         //product tags
-        console.log(this.state.formValues.product_tags)
+        //console.log(this.state.formValues.product_tags)
         if (this.state.formValues.product_tags.length === 0){
             newErrorMessages.product_tags = "Product must have at least one tag."
+        }
+
+        //images
+        if (this.state.formValues.product_images.length === 0){
+            newErrorMessages.product_images = "Product must have at least one image"
         }
 
 
@@ -283,7 +288,11 @@ export default class EditProductModal extends Component {
                                                                                             productID={null}/>)}
 
                             </div>
-                            <input type="file" name="fileInput" id="editProductFileInput" onChange={(e)=>this.setSelectedFile(e)} />
+                            <input type="file" 
+                                name="fileInput"
+                                id="editProductFileInput" 
+                                onChange={(e)=>this.setSelectedFile(e)}
+                                disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
                             <button type="button" onClick={this.uploadImage}>Upload Image</button>
                         </span>
 

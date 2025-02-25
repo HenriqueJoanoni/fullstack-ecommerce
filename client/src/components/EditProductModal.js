@@ -1,6 +1,7 @@
 import react, { Component} from "react"
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
+import { MAX_PRODUCT_IMAGES } from "../config/global_constants"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
 import TagCheckBox from "./TagCheckBox"
 import DeletableImageContainer from "./DeletableImageContainer"
@@ -177,6 +178,12 @@ export default class EditProductModal extends Component {
             newErrorMessages.product_tags = "Product must have at least one tag."
         }
 
+        //images
+        if (this.state.formValues.product_images.length === 0){
+            newErrorMessages.product_images = "Product must have at least one image"
+        }
+
+
 
 
         //update all
@@ -273,7 +280,12 @@ export default class EditProductModal extends Component {
                                                                                                         productID={this.props.product._id}/>)}
 
                             </div>
-                            <input type="file" name="fileInput" id="editProductFileInput" onChange={(e)=>this.setSelectedFile(e)} />
+                            <p className="errorMessage">{this.state.errorMessages.product_images}</p>
+                            <input type="file" 
+                                    name="fileInput" 
+                                    id="editProductFileInput"
+                                    onChange={(e)=>this.setSelectedFile(e)}
+                                    disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
                             <button type="button" onClick={this.uploadImage}>Upload Image</button>
                         </span>
 
