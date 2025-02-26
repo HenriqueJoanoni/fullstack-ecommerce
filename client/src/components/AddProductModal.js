@@ -88,8 +88,8 @@ export default class EditProductModal extends Component {
     }
 
     addProduct =()=>{
-        this.validateFormValues()
-        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+        let errorMessages = this.validateFormValues()
+        let allValid = Object.keys(errorMessages).every(key => errorMessages[key] === "")
         console.log(allValid)
 
         if (allValid){
@@ -195,6 +195,7 @@ export default class EditProductModal extends Component {
 
         //update all
         this.setState({errorMessages: newErrorMessages})
+        return newErrorMessages
     }
 
 
@@ -281,13 +282,13 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <p>Product Images:</p>
                             <div className="imagesContainer">
-                                {console.log(this.state.formValues.product_images)}
                                 {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
                                                                                             imageURL={url}
                                                                                             deleteImage={this.deleteImage}
                                                                                             productID={null}/>)}
 
                             </div>
+                            <p className="errorMessage">{this.state.errorMessages.product_images}</p>
                             <input type="file" 
                                 name="fileInput"
                                 id="editProductFileInput" 

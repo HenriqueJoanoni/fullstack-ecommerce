@@ -53,8 +53,11 @@ export default class EditProductModal extends Component {
     }
 
     saveChanges =()=>{
-        this.validateFormValues()
-        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+        let errorMessages = this.validateFormValues()
+
+        console.log(this.state.formValues)
+        console.log(this.state.errorMessages)
+        let allValid = Object.keys(errorMessages).every(key => errorMessages[key] === "")
 
         //update if all error messages are empty
         if (allValid){
@@ -87,8 +90,6 @@ export default class EditProductModal extends Component {
     }
 
     setSelectedFile = e => {
-        console.log("89")
-        console.log(e.target.files.length)
         this.setState({selectedFile: e.target.files[0]})
     }
 
@@ -152,7 +153,9 @@ export default class EditProductModal extends Component {
             newErrorMessages.qty_in_stock = "Quantity must be at least 0."
         } else if (/\D/.test(this.state.formValues.qty_in_stock)){
             newErrorMessages.qty_in_stock = "Quantity must be a number."
-        } 
+        } else if (this.state.formValues.qty_in_stock === ""){
+            newErrorMessages.qty_in_stock = "Quantity in stock is mandatory."
+        }
 
         //product description
         if (this.state.formValues.product_description.length < 10){
@@ -183,11 +186,13 @@ export default class EditProductModal extends Component {
             newErrorMessages.product_images = "Product must have at least one image"
         }
 
-
-
+        console.log("new Error messages")
+        console.log(newErrorMessages)
 
         //update all
         this.setState({errorMessages: newErrorMessages})
+
+        return newErrorMessages
     }
 
 
@@ -273,7 +278,6 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <p>Product Images:</p>
                             <div className="imagesContainer">
-                                {console.log(this.state.formValues.product_images)}
                                 {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
                                                                                                         imageURL={url}
                                                                                                         deleteImage={this.deleteImage}
