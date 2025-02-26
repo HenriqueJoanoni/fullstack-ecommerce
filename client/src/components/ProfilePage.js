@@ -13,6 +13,8 @@ export default class ProfilePage extends Component {
             lastName: sessionStorage.getItem("lastName") || "",
             email: sessionStorage.getItem("email") || "",
             phone: sessionStorage.getItem("phone") || "",
+            photoURL: sessionStorage.getItem("profile_photo_url" || ""),
+            photoData: localStorage.profilePhoto,
             password: "",
             errors: {},
             showToast: false,
@@ -73,6 +75,24 @@ export default class ProfilePage extends Component {
         }, 3000)
     }
 
+
+    updateProfilePhoto = e => {
+        let oldPhotoURL = this.state.photoData
+        let formData = new FormData()
+        formData.append("profile_photo", e.target.files[0])
+        axios.post(`${SERVER_HOST}/profile/imgUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        .then(res => {
+            if (res.data){
+                axios.get(`${SERVER_HOST}/profile/photo/${res.data.url}`)
+                .then(photoRes => {
+                    localStorage.setItem("profilePhoto",  `data:;base64, ${photoRes.data.profilePhoto}`)
+                    this.setState({photoData: localStorage.profilePhoto, photoURL: res.data.url})
+                })
+            }
+        })
+        
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -93,6 +113,7 @@ export default class ProfilePage extends Component {
             email: this.state.email,
             phone: this.state.phone,
             password: (this.state.password === "") ? sessionStorage.getItem("password") : this.state.password,
+            photoURL: this.state.photoURL
         }
 
         try {
@@ -113,7 +134,10 @@ export default class ProfilePage extends Component {
                 sessionStorage.setItem("lastName", updatedUser.last_name)
                 sessionStorage.setItem("email", updatedUser.user_email)
                 sessionStorage.setItem("phone", updatedUser.user_phone)
+                localStorage.setItem("profilePhoto",  this.state.photoData)
                 this.setState({errors: {}})
+                
+                
             }
         } catch (error) {
             if (error.response?.data?.error) {
@@ -210,9 +234,13 @@ export default class ProfilePage extends Component {
                         <div className="card-profile-user">
                             <img
                                 className="profile-img"
-                                src={loggedUser}
+                                src={this.state.photoData}
                                 alt="User profile icon"
                             />
+                            <div>
+                                <p>Change photo:</p>
+                                <input type="file" onChange={(e)=>{this.updateProfilePhoto(e)}}/>
+                            </div>
                             <div className="user-name">
                                 <span>{this.state.firstName.toUpperCase()}</span>
                             </div>

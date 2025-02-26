@@ -15,6 +15,21 @@ export default class LoginForm extends Component {
         }
     }
 
+
+    getProfilePhoto = url => {
+        console.log(url)
+        axios.get(`${SERVER_HOST}/profile/photo/${url}`)
+        .then(res => {
+            console.log("profile photo res:")
+            console.log(res.data.profilePhoto)
+            if (res.data.profilePhoto){
+                localStorage.profilePhoto =  `data:;base64, ${res.data.profilePhoto}`
+            } else {
+                console.log(res.errorMessage)
+            }
+        })
+    }
+
     handleChange = (e) => {
         this.setState((prevState) => ({
             [e.target.name]: e.target.value,
@@ -66,6 +81,7 @@ export default class LoginForm extends Component {
         try {
             const res = await axios.post(`${SERVER_HOST}/login`, credentials)
             if (res.status === 200) {
+                console.log(res.data)
                 sessionStorage.setItem("authToken", res.data.token)
 
                 sessionStorage.firstName = res.data.firstName
@@ -73,7 +89,26 @@ export default class LoginForm extends Component {
                 sessionStorage.email = res.data.email
                 sessionStorage.phone = res.data.phone
                 sessionStorage.accessLevel = res.data.accessLevel
+                sessionStorage.profileURL = res.data.profileURL
+                
+                if (res.data.profileURL != ""){
+                    axios.get(`${SERVER_HOST}/profile/photo/${res.data.profileURL}`, (req, res)=>{
+                        if (res.data){
+                            localStorage.setItem("profilePhoto", `data:;base64, ${res.data.profilePhoto}`)
+                        } 
+                    })
+                } else {
+                    localStorage.setItem("profilePhoto", null)
+                    
+                }
+                
+    
+
+                this.getProfilePhoto(res.data.profileURL)
+                
+                //profilePhoto
                 this.setState({isLoggedIn: true})
+                
             }
         } catch (error) {
             if (error.response?.data?.error) {

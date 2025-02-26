@@ -112,8 +112,8 @@ router.post("/products/imageUpload", upload.single("product_photo"), (req, res) 
 
 })
 
-router.get("/products/image/:filename", (req, res) => {
-    fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, `base64`, (err, fileData) => {
+router.get("/products/image/:filename", async (req, res) => {
+    await fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, `base64`, (err, fileData) => {
        if (fileData){
         res.json({data: fileData})
        } else {

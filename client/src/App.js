@@ -21,6 +21,10 @@ if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.accessLevel = ACCESS_GUEST_LEVEL
 }
 
+if (typeof localStorage.profilePhoto === "undefined"){
+    localStorage.profilePhoto = null
+}
+
 
 
 export default class App extends Component {

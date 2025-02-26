@@ -20,6 +20,7 @@ export default class userSummary extends Component{
             dateSearchQuery: "",
             filterStartDate: null,
             filterEndDate: new Date().toISOString().split("T")[0],
+            profilePhotoData: ""
         }
         // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
         
@@ -153,7 +154,23 @@ export default class userSummary extends Component{
         })
     }
 
+    
+
     componentDidMount(){
+        //PROFILE PHOTO
+        if (this.props.user.user_profile_picture != ""){
+            axios.get(`${SERVER_HOST}/profile/photo/${this.props.user.user_profile_picture}`)
+            .then(res => {
+                if (res.data){
+                    this.setState({profilePhotoData: `data:;base64, ${res.data.profilePhoto}`})
+                }
+            })
+        }
+        else {
+            this.setState({profilePhotoData: loggedUser})
+        }
+
+        //PURCHASE DATA
         axios.get(`${SERVER_HOST}/purchasesByUserID/${this.props.userID}`)
         .then(res => {
             if (res.data){
@@ -162,6 +179,7 @@ export default class userSummary extends Component{
                 console.log(res.error)
             }
         })
+        
     }
 
 
@@ -179,7 +197,7 @@ export default class userSummary extends Component{
                             <img src={returnArrowIcon} alt="return arrow icon"/>
                         </button>
                     <div>
-                        <img src={loggedUser}/>
+                        <img src={this.state.profilePhotoData}/>
 
                         <span>
                             <p>{this.props.user.first_name} {this.props.user.last_name}</p>
@@ -190,7 +208,7 @@ export default class userSummary extends Component{
 
                     <div className="flexCol">
                         <p>Joined on: {new Date(this.props.user.join_date).toISOString().split("T")[0]}</p>
-                        <p>Total Spent: {"€1240.50"}</p>
+                        <p>Total Spent: {this.props.user.total_spent}</p>
                     </div>
 
                     <div>

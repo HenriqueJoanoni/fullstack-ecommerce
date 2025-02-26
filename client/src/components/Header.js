@@ -51,6 +51,8 @@ export default class Header extends Component {
         }
     }
 
+    
+
     componentDidMount() {
         document.addEventListener('click', this.handleClickOutside)
     }
