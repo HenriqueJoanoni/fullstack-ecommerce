@@ -302,6 +302,7 @@ a:hover {
     /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); */
     border-radius: 0px;
     overflow: hidden;
+    border:none;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -320,6 +321,7 @@ a:hover {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    border:none;
 }
 
 .card-content {
@@ -436,6 +438,7 @@ a:hover {
 .productCard {
     max-width: 400px;
     margin: 20px;
+    height:600px;
 }
 
 /* ----------shopping cart */
@@ -674,7 +677,6 @@ h2 {
 /* ---------product cards */
 .productCard {
     background: #f8f8f8;
-    border: 1px solid #dadada;
     border-radius: 10px;
     overflow: hidden;
     transition: 0.4s ease;
@@ -688,7 +690,7 @@ h2 {
 
 .card-image img {
     width: 100%;
-    height: 200px;
+    height: 170px;
     object-fit: cover;
     border-bottom: 1px solid #eee;
 }
@@ -706,7 +708,7 @@ h2 {
 .card-content p {
     font-size: 0.9rem;
     color: #666;
-    line-height: 1.4;
+    line-height: 1.2;
 }
 
 /* ---------searchtools */
