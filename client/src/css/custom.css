@@ -60,6 +60,7 @@ a:hover {
     margin-left: 4px;
 }
 
+
 /* --------------firestrings*/
 #firestrings-logo {
     font-family: "Cormorant SC", serif;
@@ -126,7 +127,7 @@ a:hover {
 }
 
 .header-icon {
-    width: 1.5vw;
+    width: 25px;
     height: auto;
     cursor: pointer;
 }
