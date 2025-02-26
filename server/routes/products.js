@@ -131,7 +131,7 @@ router.delete("/products/image/:filename", (req, res) => {
             res.json({errorMessage: err})
         } 
     })
-})
+})  
 
 
 /*
