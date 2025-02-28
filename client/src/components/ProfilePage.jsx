@@ -60,7 +60,7 @@ export default class ProfilePage extends Component {
             errors.phone = "Invalid phone number"
         }
 
-        if (!email || typeof email === "string" && email.trim() && !email.match(validateEmail)) {
+        if (!email || (typeof email === "string" && email.trim() && !email.match(validateEmail))) {
             errors.email = "Please, enter a valid email address"
         }
 

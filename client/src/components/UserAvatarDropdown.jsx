@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import {userIcon, loggedUser} from '../images'
-import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
+import {ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
 
 export default class UserAvatarDropdown extends Component {
     constructor(props) {
@@ -47,7 +47,7 @@ export default class UserAvatarDropdown extends Component {
 
     render() {
         const {isOpen, positionLeft} = this.state
-        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
+        // const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
         const isAdmin = sessionStorage.accessLevel > ACCESS_NORMAL_USER_LEVEL
 
         return (
@@ -63,7 +63,7 @@ export default class UserAvatarDropdown extends Component {
                     )}
                 </div>
 
-                {isLoggedIn && (
+                {this.props.logged && (
                     <div
                         ref={this.dropdownRef}
                         className={`dropdown-menu ${isOpen ? "open" : ""}`}
@@ -80,7 +80,7 @@ export default class UserAvatarDropdown extends Component {
                                 </li>
                             )}
                             <li onClick={this.handleLogout}>
-                                <span>Logout</span>
+                                <span class="logoutspan">Logout</span>
                             </li>
                         </ul>
                     </div>

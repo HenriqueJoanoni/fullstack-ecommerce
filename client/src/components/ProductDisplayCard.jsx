@@ -1,7 +1,6 @@
 import React, {Component} from "react"
 import {Redirect} from "react-router-dom"
 import '../css/custom.css';
-// import {guitarSample} from '../images';
 import {guitarPlay} from '../images';
 import axios from "axios";
 import { SERVER_HOST } from "../config/global_constants";
@@ -37,8 +36,19 @@ export default class ProductDisplayCard extends Component {
                 </div>
                 <div className="card-content">
                     <h2>{this.props.product.product_name}</h2>
-                    <p>€{this.props.product.product_price}</p>
+
+                    {this.props.product.product_deal.is_deal === true ?
+                        <p style={{display: "flex", gap: "5px"}}>
+                            Was: <s>€{this.props.product.product_price}</s>
+                            Now: €{this.props.product.product_deal.discount_price}
+                        </p> :
+                        <p>€{this.props.product.product_price}</p>
+                    }
+
                     <p>{this.props.product.product_description}</p>
+                    {this.props.product.product_deal.is_deal === true ?
+                        <p><strong>Deal valid until: </strong>{this.props.product.product_deal.deal_deadline}</p>
+                        : ""}
                 </div>
             </div>
         )

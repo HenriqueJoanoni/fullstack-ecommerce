@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     user_profile_picture: {type: String},
     user_access_level: {type: Number},
     token: {type: String, default: ""},
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }],
     join_date: {type: Date}
 }, {
     collection: 'users'

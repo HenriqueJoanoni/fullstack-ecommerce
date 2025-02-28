@@ -1041,8 +1041,8 @@ button:hover {
     cursor: pointer;
 
     img {
-      width: 40px;
-      height: 40px;
+      // width: 40px;
+      // height: 40px;
       border-radius: 50%;
       object-fit: cover;
       transition: transform 0.2s ease-in-out;
@@ -1095,6 +1095,10 @@ button:hover {
           text-decoration: none;
           color: inherit;
           font-size: inherit;
+        }
+        
+        .logoutspan{
+          font-family: Arial, sans-serif;
         }
 
         &:hover {
@@ -1296,5 +1300,50 @@ button:hover {
   }
   to {
     opacity: 0;
+  }
+}
+
+/** FAVORITES PAGE */
+.favorites-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+  background: $profile-page-bg;
+
+  .favorites-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .favorite-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .favorite-item img {
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
   }
 }

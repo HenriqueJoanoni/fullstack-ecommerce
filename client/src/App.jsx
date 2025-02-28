@@ -1,18 +1,17 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {BrowserRouter, Switch, Route} from "react-router-dom"
-import Home from "./components/Home";
-import ProductsPage from "./components/ProductsPage";
+import Home from "./components/Home"
+import ProductsPage from "./components/ProductsPage"
 import ProductInfoPage from "./components/ProductInfoPage"
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/LoginForm"
 import ShoppingCart from "./components/ShoppingCart"
-import RegisterForm from "./components/RegisterForm";
-import ContactForm from "./components/ContactForm";
-import { ACCESS_GUEST_LEVEL } from './config/global_constants';
+import RegisterForm from "./components/RegisterForm"
+import ContactForm from "./components/ContactForm"
+import ProfilePage from "./components/ProfilePage"
+import FavoritesPage from "./components/FavoritesPage"
 import AdminPage from "./components/AdminPage";
-import LoggedInRoute from './components/LoggedInRoute';
-import ProfilePage from "./components/ProfilePage";
-import { ACCESS_NORMAL_USER_LEVEL } from './config/global_constants';
-
+import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
+import LoggedInRoute from "./components/LoggedInRoute"
 
 
 
@@ -101,7 +100,11 @@ export default class App extends Component {
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
 
-                    <Route exact path="/admin" component={AdminPage}/>
+
+
+                    <Route exact path="/admin" component={AdminPage}/>  
+                    <LoggedInRoute exact path="/favorites" component={FavoritesPage}
+                                   allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                 </Switch>
             </BrowserRouter>
         )

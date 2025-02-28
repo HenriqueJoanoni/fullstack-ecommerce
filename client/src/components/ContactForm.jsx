@@ -30,7 +30,7 @@ export default class ContactForm extends Component {
                 body: JSON.stringify({name, email, message, status})
             })
 
-            const result = await response.json()
+            await response.json()
 
             if (response.ok) {
                 this.setState({status: "Success", name: "", email: "", message: ""})
