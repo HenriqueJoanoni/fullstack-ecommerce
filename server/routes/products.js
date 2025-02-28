@@ -122,6 +122,25 @@ router.get("/products/image/:filename", async (req, res) => {
     })
 })
 
+router.get("/products/productFirstImage/:_id", async (req, res) => {
+    productsModel.findOne({_id: req.params._id}, (dbErr, dbData)=> {
+        console.log(dbData)
+        console.log(dbErr)
+        if (dbData){
+            console.log(dbData)
+            fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${dbData.product_images[0]}`, `base64`, (fileErr, fileData) => {
+                if (fileData){
+                    res.json(fileData)
+                } else {
+                    res.json(fileErr)
+                } 
+            })
+        } else {
+            res.json(dbErr)
+        }
+    })
+})
+
 router.delete("/products/image/:filename", (req, res) => {
     //delete file from server side
     fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, (err) => {

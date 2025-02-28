@@ -2,10 +2,28 @@ import React, { Component } from "react";
 import bin1 from "../images/bin1.png"; 
 import bin2 from "../images/bin2.png";
 import { guitarPlay } from "../images";
+import axios from "axios" 
+import { SERVER_HOST} from "../config/global_constants"
 
 export default class CartItem extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      productImageData: ""
+    }
+  }
+
+
+  getImage =()=>{
+    axios.get(`${SERVER_HOST}/products/productFirstImage/${this.props.productID}`)
+    .then(res => {
+      if (res.data){
+        this.setState({productImageData: `data:;base64, ${res.data}`})
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   handleUpdate = (newVal) => {
@@ -14,7 +32,11 @@ export default class CartItem extends Component {
     } else {
       this.props.updateCart(this.props.productID, newVal);
     }
-  };
+  }
+
+  componentDidMount(){
+    this.getImage()
+  }
 
   render() {
     return (
@@ -22,7 +44,7 @@ export default class CartItem extends Component {
         <td className="cartItemDetails">
           <img
             className="cartItemImg"
-            src={guitarPlay}
+            src={this.state.productImageData}
             alt={this.props.product.name}
           />
           <div>
