@@ -9,6 +9,7 @@ import { SERVER_HOST } from "../config/global_constants";
 export default class ProductDisplayCard extends Component {
     constructor(props) {
         super(props)
+        console.log(this.props)
         this.state = {
             redirectToProduct: false,
             imageData: ""
@@ -16,6 +17,9 @@ export default class ProductDisplayCard extends Component {
     }
 
     getImage = () => {
+        if (!this.props.product.product_images){
+            return null
+        }
         return axios.get(`${SERVER_HOST}/products/image/${this.props.product.product_images[0]}`)
         .then(res => {
             console.log(res)

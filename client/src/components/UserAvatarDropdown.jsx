@@ -2,13 +2,14 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import {userIcon, loggedUser} from '../images'
 import {ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
+import { ACCESS_GUEST_LEVEL } from "../config/global_constants"
 
 export default class UserAvatarDropdown extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isOpen: false,
-            positionLeft: false,
+            positionLeft: false
         }
         this.dropdownRef = React.createRef()
     }
@@ -47,7 +48,7 @@ export default class UserAvatarDropdown extends Component {
 
     render() {
         const {isOpen, positionLeft} = this.state
-        // const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
+        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
         const isAdmin = sessionStorage.accessLevel > ACCESS_NORMAL_USER_LEVEL
 
         return (

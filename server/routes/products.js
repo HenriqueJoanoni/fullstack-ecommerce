@@ -10,6 +10,7 @@ const {formatDate} = require("../utils/utils")
 router.get(`/products`, (req, res) => 
 {
     productsModel.find((error, data) => {
+        console.log(data)
         if (data){
             res.json(data)
         } else {

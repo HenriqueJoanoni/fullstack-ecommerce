@@ -9,6 +9,7 @@ import PageFooter from "./PageFooter";
 export default class ProductInfoPage extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
 
         
 
@@ -95,11 +96,12 @@ export default class ProductInfoPage extends Component {
                         </h2>
                     </span>
                     <div className="productInfo">
+                        
                         <div className="slideshow">
                             <button type="button" onClick={() => {
                                 this.setState(
                                     {
-                                        slideshowIndex: this.state.slideshowIndex === 0 ?
+                                            slideshowIndex: this.state.slideshowIndex === 0 ?
                                             this.props.product.product_images.length - 1 : this.state.slideshowIndex - 1
                                     }
                                 )
@@ -121,6 +123,7 @@ export default class ProductInfoPage extends Component {
                                 <img className="slideshowArrow" src={rightArrowIcon} alt="right arrow"/>
                             </button>
                         </div>
+                        
                         <div className="productStats">
                             <p>
                                 €{typeof this.state.product.product_price !== "undefined" ?
