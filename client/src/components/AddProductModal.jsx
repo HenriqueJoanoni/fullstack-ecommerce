@@ -2,7 +2,8 @@ import react, { Component} from "react"
 import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
 import TagCheckBox from "./TagCheckBox"
-
+import DeletableImageContainer from "./DeletableImageContainer"
+import {MAX_PRODUCT_IMAGES} from "../config/global_constants"   
 
 export default class EditProductModal extends Component {
     constructor(props){
@@ -14,7 +15,7 @@ export default class EditProductModal extends Component {
                     discount_price: 1800,
                     deal_deadline: "2025-06-01T00:00:00.000+00:00"
                 },
-                product_picture: [],
+                product_images: [],
                 is_available: true,
                 product_sku: "",
                 product_name: "",
@@ -33,8 +34,10 @@ export default class EditProductModal extends Component {
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: ""
-            }
+                product_tags: "",
+                product_images: ""
+            },
+            selectedFile: null
         }
 
         this.allTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"]
@@ -61,9 +64,36 @@ export default class EditProductModal extends Component {
         this.setState({formValues: newObj})
     }
 
+
+    setSelectedFile = e => {
+        this.setState({selectedFile: e.target.files[0]})
+    }
+
+    uploadImage = ()=>{
+        let formData = new FormData()
+        formData.append("product_photo", this.state.selectedFile)
+        axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        .then(res => {
+            if (res.data){
+                if (res.data.errorMessage){
+                    this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: res.data.errorMessage}})
+                    document.getElementById("addProductFileInput").value = ""
+                } else {
+                    setTimeout(()=>{}, 100)
+                    this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
+                    document.getElementById("addProductFileInput").value = ""
+                }   
+            } else {
+                this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: "An occurred uploading file"}})
+                document.getElementById("addProductFileInput").value = ""
+            }
+        })
+        
+    }
+
     addProduct =()=>{
-        this.validateFormValues()
-        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+        let errorMessages = this.validateFormValues()
+        let allValid = Object.keys(errorMessages).every(key => errorMessages[key] === "")
         console.log(allValid)
 
         if (allValid){
@@ -77,6 +107,25 @@ export default class EditProductModal extends Component {
         } 
     }
 
+    deleteImage = url => {
+        axios.delete(`${SERVER_HOST}/products/image/${url}`)
+        .then(res => {
+            if (res.data){
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: this.state.formValues.product_images.filter(img => img !== url)}})
+            } else {
+                window.alert("Could not delete photo.")
+            }
+        })
+    }
+
+    cancelAdd = async () => {
+        //delete images if user cancels adding
+        await this.state.formValues.product_images.forEach(img => {
+            this.deleteImage(img)
+        })
+        this.props.setAddingState(false)
+    }
+
 
     validateFormValues = () => {
         let newErrorMessages  = {
@@ -86,7 +135,8 @@ export default class EditProductModal extends Component {
             product_brand: "",
             product_price: "",
             product_tags: "",
-            product_sku: ""
+            product_sku: "",
+            product_images: ""
         }
 
         //product sku
@@ -136,15 +186,21 @@ export default class EditProductModal extends Component {
 
 
         //product tags
-        console.log(this.state.formValues.product_tags)
+        //console.log(this.state.formValues.product_tags)
         if (this.state.formValues.product_tags.length === 0){
             newErrorMessages.product_tags = "Product must have at least one tag."
+        }
+
+        //images
+        if (this.state.formValues.product_images.length === 0){
+            newErrorMessages.product_images = "Product must have at least one image"
         }
 
 
 
         //update all
         this.setState({errorMessages: newErrorMessages})
+        return newErrorMessages
     }
 
 
@@ -227,14 +283,32 @@ export default class EditProductModal extends Component {
                             </div>
                         </span>
 
+
+                        <span className="formRow">
+                            <p>Product Images:</p>
+                            <div className="imagesContainer">
+                                {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
+                                                                                            imageURL={url}
+                                                                                            deleteImage={this.deleteImage}
+                                                                                            productID={null}/>)}
+
+                            </div>
+                            <p className="errorMessage">{this.state.errorMessages.product_images}</p>
+                            <input type="file" 
+                                name="fileInput"
+                                id="addProductFileInput" 
+                                onChange={(e)=>this.setSelectedFile(e)}
+                                disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
+                            <button type="button" onClick={this.uploadImage}>Upload Image</button>
+                        </span>
+
                         <div>
-                            <button type="button" onClick={()=>{this.props.setAddingState(false)}}>Cancel</button>
+                            <button type="button" onClick={this.cancelAdd}>Cancel</button>
                             <button type="button" onClick={this.addProduct}>Add Product</button>
                         </div>
-
-                        
-
                     </form>
+
+
                 </div>
             </div>
         )

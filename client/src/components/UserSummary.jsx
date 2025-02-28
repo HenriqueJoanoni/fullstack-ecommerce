@@ -13,12 +13,14 @@ export default class userSummary extends Component{
     constructor(props){
         super(props)
         this.state = {
+            allPurchases: [],
             confirmingDelete: false,
             sortField: "purchase_total",
             sortDirection: 1,
             dateSearchQuery: "",
             filterStartDate: null,
             filterEndDate: new Date().toISOString().split("T")[0],
+            profilePhotoData: ""
         }
         // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
         
@@ -104,8 +106,10 @@ export default class userSummary extends Component{
             but then again what function that deals with dates isn't?
         */
 
+        console.log(this.state.allPurchases)
+        let selectedPurchases = [...this.state.allPurchases]
 
-        let selectedPurchases = [...this.mockPurchases]
+        
         if (this.state.dateSearchQuery!== ""){
             selectedPurchases = selectedPurchases.filter(purchase => {
                 //remove non digit chars to make comparing easier, requires global flag for some reason
@@ -122,15 +126,17 @@ export default class userSummary extends Component{
         //start
         if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
             let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) >= startDate)
         }
 
         //end
         if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
             console.log("here2")
             let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
+            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) <= endDate )
         }
+
+        
         return selectedPurchases
     }
 
@@ -148,6 +154,34 @@ export default class userSummary extends Component{
         })
     }
 
+    
+
+    componentDidMount(){
+        //PROFILE PHOTO
+        if (this.props.user.user_profile_picture != ""){
+            axios.get(`${SERVER_HOST}/profile/photo/${this.props.user.user_profile_picture}`)
+            .then(res => {
+                if (res.data){
+                    this.setState({profilePhotoData: `data:;base64, ${res.data.profilePhoto}`})
+                }
+            })
+        }
+        else {
+            this.setState({profilePhotoData: loggedUser})
+        }
+
+        //PURCHASE DATA
+        axios.get(`${SERVER_HOST}/purchasesByUserID/${this.props.userID}`)
+        .then(res => {
+            if (res.data){
+                this.setState({allPurchases: res.data})
+            } else {
+                console.log(res.error)
+            }
+        })
+        
+    }
+
 
     render(){
         return (
@@ -163,7 +197,7 @@ export default class userSummary extends Component{
                             <img src={returnArrowIcon} alt="return arrow icon"/>
                         </button>
                     <div>
-                        <img src={loggedUser}/>
+                        <img src={this.state.profilePhotoData}/>
 
                         <span>
                             <p>{this.props.user.first_name} {this.props.user.last_name}</p>
@@ -173,8 +207,8 @@ export default class userSummary extends Component{
                     </div>
 
                     <div className="flexCol">
-                        <p>Joined on: {"21/01/25"}</p>
-                        <p>Total Spent: {"€1240.50"}</p>
+                        <p>Joined on: {new Date(this.props.user.join_date).toISOString().split("T")[0]}</p>
+                        <p>Total Spent: {this.props.user.total_spent}</p>
                     </div>
 
                     <div>

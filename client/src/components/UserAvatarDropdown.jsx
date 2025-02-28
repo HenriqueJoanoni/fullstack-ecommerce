@@ -8,10 +8,12 @@ export default class UserAvatarDropdown extends Component {
         super(props)
         this.state = {
             isOpen: false,
-            positionLeft: false
+            positionLeft: false,
         }
         this.dropdownRef = React.createRef()
     }
+
+    
 
     toggleDropdown = () => {
         this.setState(
@@ -37,8 +39,11 @@ export default class UserAvatarDropdown extends Component {
 
     handleLogout = () => {
         sessionStorage.clear()
+        localStorage.clear()
         window.location.reload()
     }
+
+    
 
     render() {
         const {isOpen, positionLeft} = this.state
@@ -48,8 +53,9 @@ export default class UserAvatarDropdown extends Component {
         return (
             <div className="profile-menu">
                 <div className="icon-wrapper" onClick={this.toggleDropdown}>
-                    {this.props.logged ? (
-                        <img className="header-icon" src={loggedUser} alt="User profile icon"/>
+                    {isLoggedIn ? (
+                        
+                        <img className="header-icon" id="headerProfileImg" src={localStorage.profilePhoto} alt=""/>
                     ) : (
                         <Link to="/login">
                             <img className="header-icon" src={userIcon} alt="Default profile icon"/>

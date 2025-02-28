@@ -24,8 +24,10 @@ export default class AdminPanelUsers extends Component {
 
     determineSelectedUsers = () =>{
         let selectedUsers = [...this.state.allUsers]
+        //setTimeout(()=>console.log(selectedUsers), 1000)
 
 
+        /*
         //search query
         if (this.state.searchQuery!==""){
             selectedUsers = selectedUsers.filter(user => `${user.first_name.toLowerCase()} ${user.last_name.toLowerCase()}`.includes(this.state.searchQuery))
@@ -51,6 +53,8 @@ export default class AdminPanelUsers extends Component {
             //selectedUsers = selectedUsers.filter(user)
         }
 
+
+        */
         
 
 
@@ -126,19 +130,44 @@ export default class AdminPanelUsers extends Component {
     }
 
     refreshUsers = () => {
-        axios.get(`${SERVER_HOST}/allUsers`)
+        let users = axios.get(`${SERVER_HOST}/allUsers`)
         .then(res => {
             if (res.data){
-                res.data[0].purchases_made = 3
-                res.data[0].total_spent = 115.20
-
-                res.data[1].purchases_made = 5
-                res.data[1].total_spent = 80.15
-                this.setState({allUsers: res.data})
+                res.data.forEach(user => {
+                    console.log(user)
+                    this.getUserPurchases(user._id)
+                    .then(userPurchases => {
+                        user.purchases_made = userPurchases.length
+                        user.total_spent = userPurchases.reduce((total, purchase) => {
+                            let purchaseTotal = Object.keys(purchase.items).reduce((total, item) => 
+                                total + (purchase.items[item].qty * purchase.items[item].price), 0)
+                            return total + purchaseTotal    
+                        }, 0)
+                    })
+                
+                })
+                console.log(res.data)
+                setTimeout((()=>this.setState({allUsers: res.data})), 100)
+                //this.setState({allUsers: res.data})
             } else {
                 console.log(res.error)
             }
         })
+    }
+
+    getUserPurchases = async (id) => {
+        let purchases = await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`)
+        .then(res => {
+            console.log(res.data)
+            if (res.data){
+                console.log(res.data)
+                return res.data
+            } else {
+                console.log(res.error)
+            }
+        
+        })
+        return purchases
     }
 
     componentDidMount(){
@@ -148,6 +177,7 @@ export default class AdminPanelUsers extends Component {
 
     render(){
         return (
+            
             <div id="adminPanelUsers">
                 {this.state.showingSummary ? 
                     <UserSummary user={this.state.selectedUser}
@@ -159,6 +189,7 @@ export default class AdminPanelUsers extends Component {
                 }
                 <h2 id="usersHeader">View Users</h2>
                 <div id="usersMain">
+                    {console.log(this.state.allUsers)}
                 <div>
                     <div>
                         <div>

@@ -13,10 +13,18 @@ import AdminPage from "./components/AdminPage";
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
 import LoggedInRoute from "./components/LoggedInRoute"
 
+
+
 if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.firstName = "GUEST"
     sessionStorage.accessLevel = ACCESS_GUEST_LEVEL
 }
+
+if (typeof localStorage.profilePhoto === "undefined"){
+    localStorage.profilePhoto = null
+}
+
+
 
 export default class App extends Component {
     constructor(props) {
@@ -78,7 +86,6 @@ export default class App extends Component {
                                                                                            removeFromCart={this.removeFromCart}
                                                                                            updateCart={this.updateCart}
                                                                                            cart={this.state.cart}/>}/>
-                    {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
                     <Route exact path="/login" component={LoginForm}/>
 
                     <Route exact path="/cart" render={props =>
@@ -92,6 +99,10 @@ export default class App extends Component {
                     <Route exact path="/admin" component={AdminPage} />
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+
+
+
+                    <Route exact path="/admin" component={AdminPage}/>  
                     <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
                 </Switch>
