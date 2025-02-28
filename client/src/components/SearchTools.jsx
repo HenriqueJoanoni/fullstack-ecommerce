@@ -13,7 +13,7 @@ export default class SearchTools extends Component {
                 newItems: false
             }
         };
-        this.itemTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"];
+        this.itemTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks",  "Other"];
         this.productBrands = ["Gibson", "Fender", "Ernie Ball", "Ibanez", "D'addario", "Dunlop", "Marshall"];
     }
 
