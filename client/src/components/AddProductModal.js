@@ -34,7 +34,8 @@ export default class EditProductModal extends Component {
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: ""
+                product_tags: "",
+                product_images: ""
             },
             selectedFile: null
         }
@@ -69,19 +70,22 @@ export default class EditProductModal extends Component {
     }
 
     uploadImage = ()=>{
-        if (this.state.selectedFile === null || this.state.selectedFile === undefined){
-            return  
-        }
         let formData = new FormData()
         formData.append("product_photo", this.state.selectedFile)
         axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => {
             if (res.data){
-                setTimeout(()=>{}, 100)
-                this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
-                document.getElementById("editProductFileInput").value = ""
+                if (res.data.errorMessage){
+                    this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: res.data.errorMessage}})
+                    document.getElementById("addProductFileInput").value = ""
+                } else {
+                    setTimeout(()=>{}, 100)
+                    this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
+                    document.getElementById("addProductFileInput").value = ""
+                }   
             } else {
-                window.alert("Error - Could not upload image")
+                this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: "An occurred uploading file"}})
+                document.getElementById("addProductFileInput").value = ""
             }
         })
         
@@ -131,7 +135,8 @@ export default class EditProductModal extends Component {
             product_brand: "",
             product_price: "",
             product_tags: "",
-            product_sku: ""
+            product_sku: "",
+            product_images: ""
         }
 
         //product sku
@@ -291,7 +296,7 @@ export default class EditProductModal extends Component {
                             <p className="errorMessage">{this.state.errorMessages.product_images}</p>
                             <input type="file" 
                                 name="fileInput"
-                                id="editProductFileInput" 
+                                id="addProductFileInput" 
                                 onChange={(e)=>this.setSelectedFile(e)}
                                 disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
                             <button type="button" onClick={this.uploadImage}>Upload Image</button>

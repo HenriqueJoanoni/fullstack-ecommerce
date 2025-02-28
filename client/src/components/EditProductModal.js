@@ -22,6 +22,7 @@ export default class EditProductModal extends Component {
                 product_brand: "",
                 product_price: "",
                 product_tags: "",
+                product_images: ""
             
             },
             selectedFile: null,
@@ -94,19 +95,22 @@ export default class EditProductModal extends Component {
     }
 
     uploadImage = ()=>{
-        if (this.state.selectedFile === null || this.state.selectedFile === undefined){
-            return  
-        }
         let formData = new FormData()
         formData.append("product_photo", this.state.selectedFile)
         axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => {
             if (res.data){
-                setTimeout(()=>{}, 100)
-                this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
-                document.getElementById("editProductFileInput").value = ""
+                if (res.data.errorMessage){
+                    this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: res.data.errorMessage}})
+                    document.getElementById("editProductFileInput").value = ""
+                } else {
+                    setTimeout(()=>{}, 100)
+                    this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
+                    document.getElementById("editProductFileInput").value = ""
+                }   
             } else {
-                window.alert("Error - Could not upload image")
+                this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: "An occurred uploading file"}})
+                document.getElementById("editProductFileInput").value = ""
             }
         })
         
@@ -133,7 +137,8 @@ export default class EditProductModal extends Component {
             product_description: "",
             product_brand: "",
             product_price: "",
-            product_tags: ""
+            product_tags: "",
+            product_images: ""
         }
 
         //product_name

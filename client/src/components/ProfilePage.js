@@ -83,11 +83,17 @@ export default class ProfilePage extends Component {
         axios.post(`${SERVER_HOST}/profile/imgUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => {
             if (res.data){
-                axios.get(`${SERVER_HOST}/profile/photo/${res.data.url}`)
-                .then(photoRes => {
-                    localStorage.setItem("profilePhoto",  `data:;base64, ${photoRes.data.profilePhoto}`)
-                    this.setState({photoData: localStorage.profilePhoto, photoURL: res.data.url})
-                })
+                if (res.data.errorMessage){
+                    this.showToast(res.data.errorMessage, "error")
+                    document.getElementById("profilePictureUpload").value = ""
+                } else {
+                    axios.get(`${SERVER_HOST}/profile/photo/${res.data.url}`)
+                    .then(photoRes => {
+                        localStorage.setItem("profilePhoto",  `data:;base64, ${photoRes.data.profilePhoto}`)
+                        this.setState({photoData: localStorage.profilePhoto, photoURL: res.data.url})
+                    })
+                }
+                
             }
         })
         
@@ -239,7 +245,7 @@ export default class ProfilePage extends Component {
                             />
                             <div>
                                 <p>Change photo:</p>
-                                <input type="file" onChange={(e)=>{this.updateProfilePhoto(e)}}/>
+                                <input type="file" id="profilePictureUpload" onChange={(e)=>{this.updateProfilePhoto(e)}}/>
                             </div>
                             <div className="user-name">
                                 <span>{this.state.firstName.toUpperCase()}</span>
