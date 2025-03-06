@@ -18,6 +18,7 @@ export default class BuyItem extends Component {
     createOrder = (data, actions) => {
         console.log('Product ID in createOrder:', this.props.productID);
         console.log("Creating order with price:", this.props.price);
+        // console.log(localStorage)
         return actions.order.create({
             purchase_units: [
                 {
@@ -29,7 +30,7 @@ export default class BuyItem extends Component {
 
     onApprove = (paymentData) => {
         const token = sessionStorage.getItem('authToken');
-        console.log('Product ID in onApprove:', this.props.productID);
+        // console.log('Product ID in onApprove:', this.props.productID);
 
         const parameters = {
             orderID: paymentData.orderID,
@@ -86,14 +87,6 @@ export default class BuyItem extends Component {
                 ) : null}
 
                 <PayPalScriptProvider options={{currency: "EUR", "client-id": SANDBOX_CLIENT_ID}}>
-                    <PayPalButtons
-                        style={{layout: "horizontal"}}
-                        fundingSource="paypal"
-                        createOrder={this.createOrder}
-                        onApprove={this.onApprove}
-                        onError={this.onError}
-                        onCancel={this.onCancel}
-                    />
                     <PayPalButtons
                         style={{layout: "horizontal"}}
                         fundingSource="card"

@@ -4,21 +4,28 @@ const userModel = require('../models/User')
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
 router.post('/sales', verifyTokenPassword, async (req, res, next) => {
-    const {orderID, productId, price, user_email} = req.body
+    try {
+        const { orderID, productId, price, user_email } = req.body;
 
-    let userPurchase = userModel.findOne({user_email: user_email})
-        .populate("user_data")
+        const user = await userModel.findOne({ user_email: user_email });
 
-    await salesModel.create({
-        paypalPaymentID: orderID,
-        product: productId,
-        sale_price: price,
-        sale_date: Date.now(),
-        user: userPurchase.user_data._id
-    })
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
 
-    return res.json({success: true})
-})
+        const newSale = await salesModel.create({
+            paypalPaymentID: orderID,
+            product: productId,
+            sale_price: price,
+            sale_date: Date.now().toString(),
+            user: user._id
+        });
+
+        return res.json({ success: true, sale: newSale });
+    } catch (error) {
+        next(error);
+    }
+});
 
 router.get(`/purchasesByUserID/:_id`, async (req, res) => {
     console.log("here")
