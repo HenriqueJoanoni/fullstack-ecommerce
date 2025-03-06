@@ -12,13 +12,17 @@ export default class ShoppingCart extends Component {
                 (sum, key) =>
                     sum + parseFloat(this.props.cart[key].price) * parseInt(this.props.cart[key].qty),
                 0
-            )
-            .toFixed(2);
+            );
     }
 
     resetCart = () => {
         this.props.updateCart({});
-        localStorage.removeItem('cart');
+        sessionStorage.removeItem('cart');
+    };
+
+    updateCart = (newCart) => {
+        this.setState({cart: newCart});
+        sessionStorage.setItem('cart', JSON.stringify(newCart));
     };
 
     render() {
@@ -60,14 +64,16 @@ export default class ShoppingCart extends Component {
                                 </tbody>
                             </table>
                             <div id="cartTotalContainer">
-                                <p>
-                                    <strong>Total: </strong>€{total}
-                                </p>
+                                <p><strong>Total: </strong>€{this.calculateTotal().toFixed(2)}</p>
                             </div>
                             <div id="paypalButtonContainer">
-                                {Object.keys(cart).map((itemID) => (
-                                    <BuyItem key={itemID} productID={itemID} price={total}/>
-                                ))}
+                                {!isCartEmpty &&
+                                    <BuyItem
+                                        cart={cart}
+                                        total={total}
+                                        resetCart={this.resetCart}
+                                    />
+                                }
                             </div>
                         </>
                     )}

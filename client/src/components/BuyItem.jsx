@@ -16,26 +16,41 @@ export default class BuyItem extends Component {
     }
 
     createOrder = (data, actions) => {
-        console.log('Product ID in createOrder:', this.props.productID);
-        console.log("Creating order with price:", this.props.price);
-        // console.log(localStorage)
         return actions.order.create({
-            purchase_units: [
-                {
-                    amount: {value: this.props.price},
+            purchase_units: [{
+                amount: {
+                    value: this.props.total,
+                    breakdown: {
+                        item_total: {
+                            value: this.props.total,
+                            currency_code: "EUR"
+                        }
+                    }
                 },
-            ],
+                items: Object.values(this.props.cart).map(item => ({
+                    name: item.name,
+                    quantity: item.qty,
+                    unit_amount: {
+                        value: item.price,
+                        currency_code: "EUR"
+                    }
+                }))
+            }]
         });
     };
 
     onApprove = (paymentData) => {
         const token = sessionStorage.getItem('authToken');
-        // console.log('Product ID in onApprove:', this.props.productID);
+        const cartItems = Object.values(this.props.cart);
 
         const parameters = {
             orderID: paymentData.orderID,
-            productId: this.props.productID,
-            price: this.props.price,
+            products: cartItems.map(item => ({
+                productId: item._id,
+                quantity: item.qty,
+                price: item.price
+            })),
+            total: Number(this.props.total),
             user_email: sessionStorage.getItem('email'),
         };
 

@@ -5,23 +5,42 @@ const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
 router.post('/sales', verifyTokenPassword, async (req, res, next) => {
     try {
-        const { orderID, productId, price, user_email } = req.body;
+        const { orderID, products, total, user_email } = req.body;
 
-        const user = await userModel.findOne({ user_email: user_email });
-
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+        if (!orderID || !products || !total || !user_email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields'
+            });
         }
+
+        const user = await userModel.findOne({ user_email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        const saleProducts = products.map(product => ({
+            product: product.productId,
+            quantity: product.quantity,
+            price: product.price
+        }));
 
         const newSale = await salesModel.create({
             paypalPaymentID: orderID,
-            product: productId,
-            sale_price: price,
-            sale_date: Date.now().toString(),
+            products: saleProducts,
+            total: parseFloat(total),
+            sale_date: new Date().toISOString(),
             user: user._id
         });
 
-        return res.json({ success: true, sale: newSale });
+        return res.status(201).json({
+            success: true,
+            sale: newSale
+        });
+
     } catch (error) {
         next(error);
     }
