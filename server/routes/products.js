@@ -44,7 +44,7 @@ router.get(`/new-products`, async (req, res) => {
 /** DEAL PRODUCTS */
 router.get('/deal-products', async (req, res) => {
     try {
-        const products = await productsModel.find({"product_deal.is_deal": true})
+        const products = await productsModel.find({"product_deal.is_deal": true}).limit(4)
         const options = {day: 'numeric', year: 'numeric', month: 'numeric'};
 
         if (!products) {

@@ -19,6 +19,7 @@ import upload from "./upload.png"
 import loggedUser from './userLogged.png'
 import bin1 from "./bin1.png"
 import bin2 from "./bin2.png"
+import hamburger from "./hamburger.png"
 
 export {
     guitarFootage,
@@ -40,5 +41,6 @@ export {
     upload,
     loggedUser,
     bin1,
-    bin2
+    bin2,
+    hamburger
 };
