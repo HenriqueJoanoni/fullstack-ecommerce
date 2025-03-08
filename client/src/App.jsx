@@ -12,7 +12,8 @@ import FavoritesPage from "./components/FavoritesPage"
 import AdminPage from "./components/AdminPage";
 import {ACCESS_GUEST_LEVEL, ACCESS_NORMAL_USER_LEVEL} from "./config/global_constants"
 import LoggedInRoute from "./components/LoggedInRoute"
-
+import BuyItem from "./components/BuyItem"
+import PayPalMessage from "./components/PayPalMessage"
 
 
 if (typeof sessionStorage.accessLevel === "undefined") {
@@ -86,6 +87,7 @@ export default class App extends Component {
                                                                                            removeFromCart={this.removeFromCart}
                                                                                            updateCart={this.updateCart}
                                                                                            cart={this.state.cart}/>}/>
+                    {/*  ^^ Syntax taken from stack overflow to fix issue passing props through Route Components */}
                     <Route exact path="/login" component={LoginForm}/>
 
                     <Route exact path="/cart" render={props =>
@@ -96,15 +98,13 @@ export default class App extends Component {
                     />
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
-                    <Route exact path="/admin" component={AdminPage} />
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
-
-
-
-                    <Route exact path="/admin" component={AdminPage}/>  
+                    <Route exact path="/admin" component={AdminPage}/>
                     <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+                    <Route exact path="/BuyItem/:_id" component={BuyItem} />
+                    <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
                 </Switch>
             </BrowserRouter>
         )

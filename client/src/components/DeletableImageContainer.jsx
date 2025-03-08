@@ -10,10 +10,6 @@ export default class DeletableImageContainer extends Component {
         }
     }
 
-    deleteImage = () => {
-        
-    }
-
     getImage = (url) => {
         axios.get(`${SERVER_HOST}/products/image/${url}`)
         .then(res => {
@@ -24,8 +20,6 @@ export default class DeletableImageContainer extends Component {
             }
         })
     }
-
-    
 
     componentDidMount(){
         this.getImage(this.props.imageURL)
