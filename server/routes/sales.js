@@ -47,7 +47,6 @@ router.post('/sales', verifyTokenPassword, async (req, res, next) => {
 });
 
 router.get(`/purchasesByUserID/:_id`, async (req, res) => {
-    console.log("here")
     await salesModel.find({userID:req.params._id}, async (error, data) => {
         if (data){
             res.json(data)

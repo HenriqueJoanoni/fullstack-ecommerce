@@ -9,22 +9,16 @@ import PageFooter from "./PageFooter";
 export default class ProductInfoPage extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
 
-        this.testObject = {
-            id: 5,
-            name: "Epiphone Les Paul Special II",
-            description: "A light, crisp sounding guitar, ideal for beginners and experienced players alike",
-            price: 1500,
-            mainImage: "./guitarPlay.jpg",
-            photos: [guitarPlay, guitarSample, gibson],
-            brand: "Epiphone Les Paul"
-        }
+        
 
 
         this.state = {
             _id: this.props.match.params._id,
             slideshowIndex: 0,
             product: {},
+            imageDatas: {}
             
         }
     }
@@ -49,16 +43,41 @@ export default class ProductInfoPage extends Component {
         }
     }
 
+
+    changeSlideShowImage = change => {
+        //left 
+        if (this.change === 1){
+            if (this.state.slideshowIndex + 1 >= this.state.product.product_images.length){
+                
+                this.setState({slideshowIndex: 0})
+            }
+        }
+    }
+
     componentDidMount() {
         axios.get(`${SERVER_HOST}/products/${this.props.match.params._id}`)
-            .then(res => {
-                if (res.data) {
-                    //console.log("found")
-                    this.setState({product: res.data})
-                } else {
-                    console.log("not found")
-                }
-            })
+        .then(res => {
+            if (res.data) {
+                this.setState({product: res.data})
+                //get image data for each product
+                res.data.product_images.forEach((image, index) => {
+                    axios.get(`${SERVER_HOST}/products/image/${image}`)
+                    .then(res => {
+                        if (res.data){
+                            this.setState({
+                                imageDatas: {...this.state.imageDatas, [index]: `data:;base64, ${res.data.data}`}
+                            })
+                        }
+                    })
+                })
+            } else {
+                console.log("not found")
+            }
+        })
+        
+        
+
+        
     }
 
     render() {
@@ -77,12 +96,13 @@ export default class ProductInfoPage extends Component {
                         </h2>
                     </span>
                     <div className="productInfo">
+                        
                         <div className="slideshow">
                             <button type="button" onClick={() => {
                                 this.setState(
                                     {
-                                        slideshowIndex: this.state.slideshowIndex === 0 ?
-                                            this.testObject.photos.length - 1 : this.state.slideshowIndex - 1
+                                            slideshowIndex: this.state.slideshowIndex === 0 ?
+                                            this.props.product.product_images.length - 1 : this.state.slideshowIndex - 1
                                     }
                                 )
                             }}>
@@ -90,21 +110,20 @@ export default class ProductInfoPage extends Component {
                             </button>
 
                             <img className="slideshowImage"
-                                 src={typeof this.testObject.photos[this.state.slideshowIndex] !== "undefined"
-                                     ? this.testObject.photos[this.state.slideshowIndex]
-                                     : ""
-                                 } alt="slideshow content"/>
+                                 src={this.state.imageDatas[this.state.slideshowIndex]} 
+                                 alt="slideshow content"/>
                             <button type="button" onClick={() => {
                                 this.setState(
                                     {
                                         slideshowIndex: parseInt(this.state.slideshowIndex + 1) %
-                                            this.testObject.photos.length
+                                            this.state.product.product_images.length
                                     }
                                 )
                             }}>
                                 <img className="slideshowArrow" src={rightArrowIcon} alt="right arrow"/>
                             </button>
                         </div>
+                        
                         <div className="productStats">
                             <p>
                                 €{typeof this.state.product.product_price !== "undefined" ?

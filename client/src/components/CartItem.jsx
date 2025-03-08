@@ -1,16 +1,39 @@
-import React, {Component} from "react"
-import bin1 from "../images/bin1.png"
-import bin2 from "../images/bin2.png"
-import {guitarPlay} from "../images"
+import React, {Component} from "react";
+import bin1 from "../images/bin1.png";
+import bin2 from "../images/bin2.png";
+import axios from "axios"
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class CartItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            productImageData: ""
+        }
+    }
+
+    getImage = () => {
+        axios.get(`${SERVER_HOST}/products/productFirstImage/${this.props.productID}`)
+            .then(res => {
+                if (res.data) {
+                    this.setState({productImageData: `data:;base64, ${res.data}`})
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     handleUpdate = (newVal) => {
         if (parseInt(newVal) === 0) {
-            this.props.removeFromCart(this.props.productID)
+            this.props.removeFromCart(this.props.productID);
         } else {
-            this.props.updateCart(this.props.productID, newVal)
+            this.props.updateCart(this.props.productID, newVal);
         }
+    }
+
+    componentDidMount() {
+        this.getImage()
     }
 
     render() {
@@ -19,7 +42,7 @@ export default class CartItem extends Component {
                 <td className="cartItemDetails">
                     <img
                         className="cartItemImg"
-                        src={guitarPlay}
+                        src={this.state.productImageData}
                         alt={this.props.product.name}
                     />
                     <div>
@@ -52,6 +75,6 @@ export default class CartItem extends Component {
                     </button>
                 </td>
             </tr>
-        )
+        );
     }
 }

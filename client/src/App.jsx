@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {BrowserRouter, Switch, Route} from "react-router-dom"
-import Home from "./components/Home";
-import ProductsPage from "./components/ProductsPage";
+import Home from "./components/Home"
+import ProductsPage from "./components/ProductsPage"
 import ProductInfoPage from "./components/ProductInfoPage"
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/LoginForm"
 import ShoppingCart from "./components/ShoppingCart"
 import RegisterForm from "./components/RegisterForm"
 import ContactForm from "./components/ContactForm"
@@ -20,6 +20,12 @@ if (typeof sessionStorage.accessLevel === "undefined") {
     sessionStorage.firstName = "GUEST"
     sessionStorage.accessLevel = ACCESS_GUEST_LEVEL
 }
+
+if (typeof localStorage.profilePhoto === "undefined"){
+    localStorage.profilePhoto = null
+}
+
+
 
 export default class App extends Component {
     constructor(props) {
@@ -92,17 +98,13 @@ export default class App extends Component {
                     />
                     <Route exact path="/register" component={RegisterForm}/>
                     <Route exact path="/contact" component={ContactForm}/>
-                    <Route exact path="/admin" component={AdminPage} />
                     <LoggedInRoute exact path="/profile" component={ProfilePage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
+                    <Route exact path="/admin" component={AdminPage}/>
                     <LoggedInRoute exact path="/favorites" component={FavoritesPage}
                                    allowedAccessLevel={ACCESS_NORMAL_USER_LEVEL}/>
-
                     <Route exact path="/BuyItem/:_id" component={BuyItem} />
                     <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
-
-
-
                 </Switch>
             </BrowserRouter>
         )

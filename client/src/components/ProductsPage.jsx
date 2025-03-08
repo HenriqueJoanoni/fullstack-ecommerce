@@ -9,6 +9,7 @@ import {SERVER_HOST} from "../config/global_constants"
 export default class ProductsPage extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props)
 
 
 
@@ -114,6 +115,7 @@ export default class ProductsPage extends Component {
     componentDidMount() {
         axios.get(`${SERVER_HOST}/products`)
             .then(res => {
+                console.log(res.data)
                 if (res.data) {
                     const safeProducts = res.data.map(product => ({
                         tags: [],

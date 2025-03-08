@@ -1,21 +1,41 @@
 import react, {Component} from "react"
 import { loggedUser } from "../images"
+import {SERVER_HOST} from "../config/global_constants"
+import axios from "axios"
+
 
 export default class userSearchResult extends Component {
     constructor(props){
         super(props)
+        this.state = {
+            profilePhotoData: ""
+        }
     }
+
+
 
 
     getTotalPurchases = () =>{
         return this.props.user.purchases_made
+    }   
+
+    componentDidMount() {
+        axios.get(`${SERVER_HOST}/profile/photo/${this.props.user.user_profile_picture}`)
+        .then(res => {
+            console.log(res)
+            if (res.data){
+                this.setState({profilePhotoData: `data:;base64, ${res.data.profilePhoto}`})
+            } else {
+                this.setState({profilePhoto: loggedUser})
+            }
+        })
     }
 
     render(){
         return (
             <div className="userSearchResult" onClick={e=>{this.props.toggleUserSummary(this.props.user._id)}}>
                 <div className="userResultOverview">
-                    <img className="userSearchProfilePic" style={{width:50}} src={loggedUser}/>
+                    <img className="userSearchProfilePic" style={{width:50}} src={this.state.profilePhotoData}/>
 
                     <div className="userInfo">
                         <p className="name">{this.props.user.first_name} {this.props.user.last_name}</p>

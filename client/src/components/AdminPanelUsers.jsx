@@ -141,19 +141,18 @@ export default class AdminPanelUsers extends Component {
                         user.total_spent = userPurchases.reduce((total, purchase) => {
                             let purchaseTotal = Object.keys(purchase.items).reduce((total, item) => 
                                 total + (purchase.items[item].qty * purchase.items[item].price), 0)
-                            return total + purchaseTotal
+                            return total + purchaseTotal    
                         }, 0)
                     })
-                    
-    
+                
                 })
-            this.setState({allUsers: res.data})
+                console.log(res.data)
+                setTimeout((()=>this.setState({allUsers: res.data})), 100)
+                //this.setState({allUsers: res.data})
             } else {
                 console.log(res.error)
             }
         })
-        
-        
     }
 
     getUserPurchases = async (id) => {

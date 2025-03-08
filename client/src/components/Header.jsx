@@ -53,6 +53,7 @@ class Header extends Component {
         }
     }
 
+    
     handleUserFavorites = async () => {
         const token = sessionStorage.getItem("authToken")
         if (!token) {
