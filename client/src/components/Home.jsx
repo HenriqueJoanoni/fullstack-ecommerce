@@ -83,13 +83,13 @@ export default class Home extends Component {
                         <h1>LATEST DEALS</h1>
                     </section>
 
-                    <section className="card-section" ref={this.cardSectionRef}>
-                        <div className="card-container">
+                    <div className="card-section" ref={this.cardSectionRef}>
+                        <div className="products-grid">
                             {this.state.products.map(product => (
                                 <ProductDisplayCard key={product._id} product={product}/>
                             ))}
+                            </div>
                         </div>
-                    </section>
                     <PageFooter/>
                 </div>
             </>
