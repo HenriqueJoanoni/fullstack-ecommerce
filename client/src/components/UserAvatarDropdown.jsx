@@ -72,7 +72,7 @@ export default class UserAvatarDropdown extends Component {
                             <li><Link to="/profile">Profile</Link></li>
                             {isAdmin && (
                                 <li>
-                                    <Link to="/settings">Settings</Link>
+                                    <Link to="/admin">Admin Page</Link>
                                 </li>
                             )}
                             <li onClick={this.handleLogout}>
