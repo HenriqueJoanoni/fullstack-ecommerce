@@ -1,4 +1,4 @@
-import react, { Component} from "react"
+import React, {Component} from "react"
 import {SERVER_HOST} from "../config/global_constants"
 import axios from "axios"
 import UserSearchResult from "./UserSearchResult"
@@ -6,7 +6,7 @@ import UserSummary from "./UserSummary"
 import TagCheckBox from "./TagCheckBox"
 
 export default class AdminPanelUsers extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             searchQuery: "",
@@ -22,7 +22,7 @@ export default class AdminPanelUsers extends Component {
         this.userFilterTags = ["New Users", "At Least One Purchase", "Total Spend > €100"]
     }
 
-    determineSelectedUsers = () =>{
+    determineSelectedUsers = () => {
         let selectedUsers = [...this.state.allUsers]
         //setTimeout(()=>console.log(selectedUsers), 1000)
 
@@ -55,18 +55,12 @@ export default class AdminPanelUsers extends Component {
 
 
         */
-        
-
-
-
-
 
         return selectedUsers
-
     }
 
     updateSort = val => {
-        switch (val){
+        switch (val) {
             case "name_a_z":
                 this.setState({sortField: "user_name", sortDirection: 1})
                 break
@@ -85,161 +79,157 @@ export default class AdminPanelUsers extends Component {
             case "total_spent_h_l":
                 this.setState({sortField: "total_spent", sortDirection: -1})
                 break
-                    
+
 
         }
     }
-
 
     sortUsers = users => {
         let sortedUsers = []
         console.log(users)
         //name
-        if (this.state.sortField === "user_name"){
-            sortedUsers = [...users].sort((a, b) => 
+        if (this.state.sortField === "user_name") {
+            sortedUsers = [...users].sort((a, b) =>
                 `${a.first_name} ${a.last_name}}` > `${b.first_name} ${b.last_name}}` ?
-                this.state.sortDirection :
-                -this.state.sortDirection
+                    this.state.sortDirection :
+                    -this.state.sortDirection
             )
         }
-
         //purchases made
         else {
-            sortedUsers = [...users].sort((a, b) => 
+            sortedUsers = [...users].sort((a, b) =>
                 a[this.state.sortField] > b[this.state.sortField] ?
-                this.state.sortDirection :
-                -this.state.sortDirection
+                    this.state.sortDirection :
+                    -this.state.sortDirection
             )
         }
         console.log(sortedUsers)
         return sortedUsers
     }
 
-    toggleUserSummary = id =>{
-        this.setState({showingSummary: !this.state.showingSummary,
-                        summaryID: id,
-                        selectedUser: this.state.allUsers.filter(user=>user._id===id)[0]})
+    toggleUserSummary = id => {
+        this.setState({
+            showingSummary: !this.state.showingSummary,
+            summaryID: id,
+            selectedUser: this.state.allUsers.filter(user => user._id === id)[0]
+        })
     }
 
     toggleTag = tag => {
-        if (!this.state.selectedTags.includes(tag)){
+        if (!this.state.selectedTags.includes(tag)) {
             this.setState({selectedTags: [...this.state.selectedTags, tag]})
         } else {
-            this.setState({selectedTags: this.state.selectedTags.filter(oldTag => oldTag !==tag)})
+            this.setState({selectedTags: this.state.selectedTags.filter(oldTag => oldTag !== tag)})
         }
     }
 
-    refreshUsers = () => {
-        let users = axios.get(`${SERVER_HOST}/allUsers`)
-        .then(res => {
-            if (res.data){
-                res.data.forEach(user => {
-                    console.log(user)
-                    this.getUserPurchases(user._id)
-                    .then(userPurchases => {
-                        user.purchases_made = userPurchases.length
-                        user.total_spent = userPurchases.reduce((total, purchase) => {
-                            let purchaseTotal = Object.keys(purchase.items).reduce((total, item) => 
-                                total + (purchase.items[item].qty * purchase.items[item].price), 0)
-                            return total + purchaseTotal    
-                        }, 0)
-                    })
-                
-                })
-                console.log(res.data)
-                setTimeout((()=>this.setState({allUsers: res.data})), 100)
-                //this.setState({allUsers: res.data})
-            } else {
-                console.log(res.error)
+    refreshUsers = async () => {
+        try {
+            const res = await axios.get(`${SERVER_HOST}/allUsers`);
+            if (res.data) {
+                const updatedUsers = await Promise.all(res.data.map(async (user) => {
+                    const userPurchases = await this.getUserPurchases(user._id);
+
+                    /** Calculate purchases made (count) */
+                    user.purchases_made = userPurchases?.length || 0;
+
+                    /** Calculate total spent */
+                    user.total_spent = userPurchases?.reduce((totalAccumulator, purchase) => {
+                        const purchaseTotal = purchase.products?.reduce((productAccumulator, product) => {
+                            return productAccumulator +
+                                (Number(product.quantity) || 0) *
+                                (Number(product.price) || 0);
+                        }, 0) || 0;
+                        return totalAccumulator + purchaseTotal;
+                    }, 0) || 0;
+
+                    return user;
+                }));
+
+                this.setState({ allUsers: updatedUsers });
             }
-        })
+        } catch (error) {
+            console.error("Error refreshing users:", error);
+        }
     }
 
     getUserPurchases = async (id) => {
-        let purchases = await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`)
-        .then(res => {
-            console.log(res.data)
-            if (res.data){
-                console.log(res.data)
-                return res.data
-            } else {
-                console.log(res.error)
-            }
-        
-        })
-        return purchases
+        try {
+            const res = await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`);
+            return res.data || [];
+        } catch (error) {
+            console.error("Error fetching purchases:", error);
+            return [];
+        }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.refreshUsers()
     }
 
-
-    render(){
+    render() {
         return (
-            
             <div id="adminPanelUsers">
-                {this.state.showingSummary ? 
+                {this.state.showingSummary ?
                     <UserSummary user={this.state.selectedUser}
-                        toggleUserSummary={this.toggleUserSummary} 
-                        userID={this.state.summaryID} 
-                        refreshUsers={this.refreshUsers}
+                                 toggleUserSummary={this.toggleUserSummary}
+                                 userID={this.state.summaryID}
+                                 refreshUsers={this.refreshUsers}
                     />
                     : null
                 }
                 <h2 id="usersHeader">View Users</h2>
                 <div id="usersMain">
                     {console.log(this.state.allUsers)}
-                <div>
                     <div>
                         <div>
-                            <label htmlFor="usersInput">Search Users:</label>
-                            <input type="text"
-                                value={this.state.searchQuery}
-                                onChange={e=>{this.setState({searchQuery: e.target.value})}}
-                            />
-                        </div>
+                            <div>
+                                <label htmlFor="usersInput">Search Users:</label>
+                                <input type="text"
+                                       value={this.state.searchQuery}
+                                       onChange={e => {
+                                           this.setState({searchQuery: e.target.value})
+                                       }}
+                                />
+                            </div>
 
+                            <div>
+                                <label htmlFor="userSortInput">Sort By:</label>
+                                <select onChange={(e) => {
+                                    this.updateSort(e.target.value)
+                                }}>
+                                    <option value="name_a_z">Name (A-Z)</option>
+                                    <option value="name_z_a">Name (Z-A)</option>
+                                    <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
+                                    <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
+                                    <option value="total_spent_l_h">Total Spent (Low to High)</option>
+                                    <option value="total_spent_h_l">Total Spent (High to Low)</option>
+                                </select>
+                            </div>
+                        </div>
                         <div>
-                            <label htmlFor="userSortInput">Sort By:</label>
-                            <select onChange={(e)=>{this.updateSort(e.target.value)}}>
-                                <option value="name_a_z">Name (A-Z)</option>
-                                <option value="name_z_a">Name (Z-A)</option>
-                                <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
-                                <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
-                                <option value="total_spent_l_h">Total Spent (Low to High)</option>
-                                <option value="total_spent_h_l">Total Spent (High to Low)</option>
-                            </select>
+                            <h3>Filter Users By:</h3>
+                            <div>
+                                {this.userFilterTags.map(tag => <TagCheckBox
+                                    key={tag}
+                                    tagName={tag}
+                                    name={tag}
+                                    toggleTag={this.toggleTag}
+                                />)}
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <h3>Filter Users By:</h3>
-                        <div>
-                            {this.userFilterTags.map(tag => <TagCheckBox 
-                                                                key={tag}
-                                                                tagName={tag} 
-                                                                name={tag} 
-                                                                toggleTag={this.toggleTag}
-                                                                />)}
-                        </div>
-                    </div>
-                    
-                </div>
 
                     <div id="usersSearchResults">
                         {this.sortUsers(this.determineSelectedUsers())
-                            .map(user => <UserSearchResult 
-                                            id={user._id} 
-                                            user={user}
-                                            toggleUserSummary={this.toggleUserSummary}
-                                        />)}
-                    </div>  
-                
+                            .map(user => <UserSearchResult
+                                id={user._id}
+                                user={user}
+                                toggleUserSummary={this.toggleUserSummary}
+                            />)}
+                    </div>
                 </div>
-                
             </div>
-
-
         )
     }
 }

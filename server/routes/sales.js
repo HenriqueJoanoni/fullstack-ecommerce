@@ -46,14 +46,13 @@ router.post('/sales', verifyTokenPassword, async (req, res, next) => {
 });
 
 router.get(`/purchasesByUserID/:_id`, async (req, res) => {
-    await salesModel.find({userID:req.params._id}, async (error, data) => {
-        if (data){
-            res.json(data)
-        } else {
-            res.json(error)
-        }
-    })
-})
+    try {
+        const data = await salesModel.find({ user: req.params._id });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 router.get("/detailedPurchasesByUserID/:_id", async (req, res) => {
     try {
