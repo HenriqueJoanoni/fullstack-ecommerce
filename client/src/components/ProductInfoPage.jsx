@@ -144,7 +144,7 @@ class ProductInfoPage extends Component {
                                 {
                                     typeof this.props.cart[this.state._id] !== "undefined" ?
                                         <div className="cartControls">
-                                            <input type="number" min="0" value={this.props.cart[this.state._id].qty}
+                                            <input id="prodcount" type="number" min="0" value={this.props.cart[this.state._id].qty}
                                                 onChange={(e) => { this.handleUpdateQuantity(e.target.value) }} />
                                         </div> : null}
                             </div>

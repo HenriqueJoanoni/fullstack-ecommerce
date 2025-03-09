@@ -89,53 +89,69 @@ export default class AdminPanelPurchases extends Component {
 
     render(){
         return (
-            <div>
-                <h2>View Purchases</h2>
-                {console.log(this.state.allPurchases)}
-                <div className="purchasesSearchTools">
-                    <div>
-                        <label htmlFor="purchaseSearchBar">Search:</label>
-                        <input type="text" 
-                                name="purchaseSearchBar" 
-                                onChange={(e)=>{this.setState({searchQuery: e.target.value})}}
-                                value={this.state.searchQuery}
-                                placeholder="user or purchase date"
-                        />
-                        <div className="dateFilters">
-                            <label htmlFor="startDate">Start Date</label>
-                            <input type="date" 
-                                value={this.state.filterStartDate}
-                                onChange={(e)=>{this.setState({filterStartDate: e.target.value})}}
-                            />
+<div className="purchases-section">
+    <h2 className="purchases-header">View Purchases</h2>
+    {console.log(this.state.allPurchases)}
 
-                            <label htmlFor="endDate">End Date</label>
-                            <input type="date" 
-                                max={new Date().toISOString().split("T")[0]}
-                                value={this.state.filterEndDate}
-                                onChange={(e)=>{this.setState({filterEndDate: e.target.value})}}    
-                            />
-                            
-                        </div>
-                    </div>
-                    <div>
-                        <label htmlFor="purchasesSortInput">Sort By:</label>
-                        <select onChange={(e)=>{this.updateSort(e.target.value)}}>
-                            <option value="total_l_h">Total (Low to High)</option>
-                            <option value="total_h_l">Total (High to Low)</option>
-                        </select>
-                    </div>
-                </div>
 
-                {this.state.loading ? (
-                    <div>Loading purchases...</div>
-                ) : (
-                    <div className="adminPurchaseResults">
-                        {/*console.log(this.sortPurchases(this.determineSelectedPurchases()))*/}
-                        {this.sortPurchases(this.determineSelectedPurchases())
-                            .map(purchase => <PurchaseCard key={purchase._id} purchase={purchase} showUser={true}/>)}
-                    </div>
-                )}
+    <div className="purchases-search-container">
+    <div className="purchases-search-tools">
+        <div className="purchases-search-box">
+            <label htmlFor="purchaseSearchBar">Search:</label>
+            <input 
+                type="text" 
+                name="purchaseSearchBar" 
+                className="purchases-search-input"
+                onChange={(e) => this.setState({ searchQuery: e.target.value })}
+                value={this.state.searchQuery}
+                placeholder="User or purchase date"
+            />
+
+            <div className="purchases-date-filters">
+                <label htmlFor="startDate">Start Date</label>
+                <input 
+                    type="date" 
+                    className="purchases-date-input"
+                    value={this.state.filterStartDate}
+                    onChange={(e) => this.setState({ filterStartDate: e.target.value })}
+                />
+
+                <label htmlFor="endDate">End Date</label>
+                <input 
+                    type="date" 
+                    className="purchases-date-input"
+                    max={new Date().toISOString().split("T")[0]}
+                    value={this.state.filterEndDate}
+                    onChange={(e) => this.setState({ filterEndDate: e.target.value })}    
+                />
             </div>
+        </div>
+
+        <div className="purchases-sort-box">
+            <label htmlFor="purchasesSortInput">Sort By:</label>
+            <select 
+                className="purchases-sort-select"
+                onChange={(e) => this.updateSort(e.target.value)}
+            >
+                <option value="total_l_h">Total (Low to High)</option>
+                <option value="total_h_l">Total (High to Low)</option>
+            </select>
+        </div>
+    </div>
+    </div>
+
+
+    {this.state.loading ? (
+        <div className="purchases-loading">Loading purchases...</div>
+    ) : (
+        <div className="purchases-results">
+            {this.sortPurchases(this.determineSelectedPurchases()).map(purchase => (
+                <PurchaseCard key={purchase._id} purchase={purchase} showUser={true} />
+            ))}
+        </div>
+    )}
+</div>
+
         )
     }
 }

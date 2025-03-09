@@ -187,44 +187,50 @@ export default class AdminPanelUsers extends Component {
                     />
                     : null
                 }
-                <h2 id="usersHeader">View Users</h2>
-                <div id="usersMain">
-                    {console.log(this.state.allUsers)}
-                <div>
-                    <div>
-                        <div>
-                            <label htmlFor="usersInput">Search Users:</label>
-                            <input type="text"
-                                value={this.state.searchQuery}
-                                onChange={e=>{this.setState({searchQuery: e.target.value})}}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="userSortInput">Sort By:</label>
-                            <select onChange={(e)=>{this.updateSort(e.target.value)}}>
-                                <option value="name_a_z">Name (A-Z)</option>
-                                <option value="name_z_a">Name (Z-A)</option>
-                                <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
-                                <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
-                                <option value="total_spent_l_h">Total Spent (Low to High)</option>
-                                <option value="total_spent_h_l">Total Spent (High to Low)</option>
-                            </select>
-                        </div>
+<div id="adminPanelUsers">
+    <h2 id="usersHeader">View Users</h2>
+    <div id="usersMain">
+        {console.log(this.state.allUsers)}
+        <div id="usersSearchTools">
+            <div className="filters-column-adm">
+                <div className="filters-section">
+                    {/* <label htmlFor="usersInput">Search Users:</label> */}
+                    <input 
+                        type="text"
+                        value={this.state.searchQuery}
+                        placeholder="Search Users"
+                        onChange={e => this.setState({ searchQuery: e.target.value })}
+                    />
+                    <div className="sort-header">
+                        <label htmlFor="userSortInput">Sort:</label>
+                        <select onChange={(e) => this.updateSort(e.target.value)}>
+                            <option value="name_a_z">Name (A-Z)</option>
+                            <option value="name_z_a">Name (Z-A)</option>
+                            <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
+                            <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
+                            <option value="total_spent_l_h">Total Spent (Low to High)</option>
+                            <option value="total_spent_h_l">Total Spent (High to Low)</option>
+                        </select>
                     </div>
-                    <div>
-                        <h3>Filter Users By:</h3>
-                        <div>
-                            {this.userFilterTags.map(tag => <TagCheckBox 
-                                                                key={tag}
-                                                                tagName={tag} 
-                                                                name={tag} 
-                                                                toggleTag={this.toggleTag}
-                                                                />)}
-                        </div>
-                    </div>
-                    
                 </div>
+
+                <div className="productFilters">
+                    <p classname="h3-adm">Filter Users By:</p>
+                    <div>
+                        {this.userFilterTags.map(tag => (
+                            <TagCheckBox 
+                                key={tag}
+                                tagName={tag} 
+                                name={tag} 
+                                toggleTag={this.toggleTag}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
                     <div id="usersSearchResults">
                         {this.sortUsers(this.determineSelectedUsers())
