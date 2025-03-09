@@ -1,13 +1,11 @@
-import react, {Component} from "react"
-import { loggedUser } from "../images"
-import PurchaseCard from "./PurchaseCard"
+import React, {Component} from "react"
+import {loggedUser} from "../images"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
-import { bin1 } from "../images"
-import { bin2 } from "../images"
-import { returnArrowIcon } from "../images"
+import {bin1} from "../images"
+import {returnArrowIcon} from "../images"
 import axios from "axios"
-import { SERVER_HOST } from "../config/global_constants"
-
+import PurchaseCard from "./PurchaseCard"
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class userSummary extends Component{
     constructor(props){
@@ -19,51 +17,10 @@ export default class userSummary extends Component{
             sortDirection: 1,
             dateSearchQuery: "",
             filterStartDate: null,
-            filterEndDate: new Date().toISOString().split("T")[0],
+            filterEndDate: null,
             profilePhotoData: ""
         }
         // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
-        
-
-        
-        this.mockPurchases = [ 
-            {
-                purchaserName: "Christopher Healy",
-                purchaseDate: new Date(2025, 1, 20),
-                items: [
-                     {
-                        product_name: "Ibanez RG Series",
-                        price: 1000,
-                        qty: 2
-                    },
-                    {
-                        product_name: "Fender Medium Picks (Pack of 12)",
-                        price: 5.99,
-                        qty: 3
-    
-                    }
-                ]
-            },
-            {
-                purchaserName: "Christopher Healy",
-                purchaseDate: new Date(2025, 0, 1),
-                items: [
-                    {
-                        product_name: "Marshall DSL40CR",
-                        price: 800,
-                        qty: 1,
-                    },
-                    {
-                        product_name: "D'addario NYXL (10-46)",
-                        price: 12.99,
-                        qty: 1
-                    }
-                ]
-
-            }
-
-            ]
-
     }
 
     updateSort = val => {
@@ -80,67 +37,35 @@ export default class userSummary extends Component{
     }
 
     sortPurchases = purchases => {
-        let sortedPurchases = []
-        if (this.state.sortField === "purchase_total"){
-            sortedPurchases = [...purchases].sort((a, b) => {
-                let aTotal = Object.keys(a.items).reduce((total, item)=>
-                    total + (a.items[item].qty * a.items[item].price), 0)
-                console.log("aTotal: " + aTotal)
-
-                let bTotal = Object.keys(b.items).reduce((total, item)=>
-                    total + (b.items[item].qty * b.items[item].price), 0)
-                console.log("bTotal: " + bTotal)
-
-
-                return this.state.sortDirection * (aTotal - bTotal)
-            })
+        if (this.state.sortField === "purchase_total") {
+            return [...purchases].sort((a, b) => {
+                const aTotal = a.items.reduce((total, item) => total + (item.qty * item.price), 0);
+                const bTotal = b.items.reduce((total, item) => total + (item.qty * item.price), 0);
+                return this.state.sortDirection * (aTotal - bTotal);
+            });
         }
-        console.log(sortedPurchases)
-
-        return sortedPurchases
+        return purchases;
     }
 
-    determineSelectedPurchases =()=>{
-        /*
-            This entire function is hot garbage,
-            but then again what function that deals with dates isn't?
-        */
+    determineSelectedPurchases = () => {
+        let selectedPurchases = [...this.state.allPurchases];
 
-        console.log(this.state.allPurchases)
-        let selectedPurchases = [...this.state.allPurchases]
+        const currentEndDate = this.state.filterEndDate || new Date().toISOString().split("T")[0];
+        const currentStartDate = this.state.filterStartDate;
 
-        
-        if (this.state.dateSearchQuery!== ""){
-            selectedPurchases = selectedPurchases.filter(purchase => {
-                //remove non digit chars to make comparing easier, requires global flag for some reason
-                console.log("dates:")
-                let date = purchase.purchaseDate
-                let editedDateString = `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`
-                let editedSearchString = this.state.dateSearchQuery.replaceAll(/\D/g, " ")
-                return editedDateString.includes(editedSearchString)
-            })
-        }
+        selectedPurchases = selectedPurchases.filter(purchase => {
+            if (!purchase.sale_date) return false;
 
-        //filters
-        console.log(this.state.filterStartDate)
-        //start
-        if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
-            let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) >= startDate)
-        }
+            const saleDate = purchase.sale_date.toISOString().split("T")[0];
 
-        //end
-        if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
-            console.log("here2")
-            let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) <= endDate )
-        }
+            let isValid = true;
+            if (currentStartDate) isValid = isValid && (saleDate >= currentStartDate);
+            if (currentEndDate) isValid = isValid && (saleDate <= currentEndDate);
+            return isValid;
+        });
 
-        
-        return selectedPurchases
+        return selectedPurchases;
     }
-
-    
 
     deleteUser = () => {
         axios.delete(`${SERVER_HOST}/delete/${this.props.user._id}`)
@@ -153,8 +78,6 @@ export default class userSummary extends Component{
             }
         })
     }
-
-    
 
     componentDidMount(){
         //PROFILE PHOTO
@@ -170,20 +93,52 @@ export default class userSummary extends Component{
             this.setState({profilePhotoData: loggedUser})
         }
 
-        //PURCHASE DATA
-        axios.get(`${SERVER_HOST}/purchasesByUserID/${this.props.userID}`)
-        .then(res => {
-            if (res.data){
-                this.setState({allPurchases: res.data})
-            } else {
-                console.log(res.error)
-            }
-        })
-        
+        // PURCHASE DATA
+        this.setState({ loadingPurchases: true }, () => {
+            axios.get(`${SERVER_HOST}/detailedPurchasesByUserID/${this.props.userID}`)
+                .then(res => {
+                    if (res.data?.length > 0) {
+                        const transformedPurchases = res.data.map(sale => {
+                            if (!sale.products || !Array.isArray(sale.products)) {
+                                console.warn('Invalid sale:', sale);
+                                return null;
+                            }
+
+                            return {
+                                _id: sale._id,
+                                purchaserName: `${this.props.user.first_name} ${this.props.user.last_name}`,
+                                sale_date: new Date(sale.sale_date),
+                                items: sale.products.map(product => ({
+                                    product_name: product.product_name || 'Unnamed Product',
+                                    price: product.price || 0,
+                                    qty: product.quantity || 1
+                                }))
+                            };
+                        }).filter(Boolean);
+
+                        const sortedSales = transformedPurchases.sort(
+                            (a, b) => b.sale_date - a.sale_date
+                        );
+
+                        this.setState({
+                            allPurchases: sortedSales,
+                            filterEndDate: sortedSales[0]?.sale_date.toISOString().split("T")[0],
+                            loadingPurchases: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    this.setState({ loadingPurchases: false });
+                    console.error(error);
+                });
+        });
     }
 
-
     render(){
+        const processedPurchases = this.sortPurchases(this.determineSelectedPurchases());
+        console.log('Debug - All Purchases:', this.state.allPurchases);
+        console.log('Debug - Processed Purchases:', processedPurchases);
+
         return (
             <div className="userPurchaseSummaryContainer">
                 {this.state.confirmingDelete ? 
@@ -203,7 +158,6 @@ export default class userSummary extends Component{
                             <p>{this.props.user.first_name} {this.props.user.last_name}</p>
                             <p>{this.props.user.user_email}</p>
                         </span>
-
                     </div>
 
                     <div className="flexCol">
@@ -245,23 +199,30 @@ export default class userSummary extends Component{
                                 value={this.state.filterStartDate}
                                 onChange={(e)=>{this.setState({filterStartDate: e.target.value})}}
                             />
-
                             <label htmlFor="endDate">End Date</label>
                             <input type="date" 
                                 max={new Date().toISOString().split("T")[0]}
                                 value={this.state.filterEndDate}
                                 onChange={(e)=>{this.setState({filterEndDate: e.target.value})}}    
                             />
-                            
                         </div>
                 </div>
                 <div className="userPurchaseResultsContainer">
-                    {this.sortPurchases(this.determineSelectedPurchases())
-                    .map(purchase => <PurchaseCard purchase={purchase} showUser={false}/>)}
+                    {this.state.loadingPurchases ? (
+                        <div>Loading purchases...</div>
+                    ) : processedPurchases.length > 0 ? (
+                        processedPurchases.map(purchase => (
+                            <PurchaseCard key={purchase._id} purchase={purchase} />
+                        ))
+                    ) : (
+                        <div className="no-purchases-message">
+                            {this.state.allPurchases.length === 0
+                                ? "No purchases found for this user"
+                                : "No purchases match current filters"}
+                        </div>
+                    )}
                 </div>
             </div>
-
-            
         )
     }
 }

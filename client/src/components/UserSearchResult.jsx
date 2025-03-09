@@ -1,8 +1,7 @@
-import react, {Component} from "react"
+import React, {Component} from "react"
 import { loggedUser } from "../images"
 import {SERVER_HOST} from "../config/global_constants"
 import axios from "axios"
-
 
 export default class userSearchResult extends Component {
     constructor(props){
@@ -11,9 +10,6 @@ export default class userSearchResult extends Component {
             profilePhotoData: ""
         }
     }
-
-
-
 
     getTotalPurchases = () =>{
         return this.props.user.purchases_made
@@ -54,8 +50,6 @@ export default class userSearchResult extends Component {
 
                     </p>
                 </div>
-
-                
             </div>
         )
     }

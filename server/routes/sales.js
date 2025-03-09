@@ -55,6 +55,17 @@ router.get(`/purchasesByUserID/:_id`, async (req, res) => {
     })
 })
 
+router.get("/detailedPurchasesByUserID/:_id", async (req, res) => {
+    try {
+        const sales = await salesModel.find({ user: req.params._id })
+            .sort({ sale_date: -1 })
+            .exec();
+        res.status(200).json(sales);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get(`/allSales`, (req, res) => {
     salesModel.find()
         .populate('user', 'first_name last_name')

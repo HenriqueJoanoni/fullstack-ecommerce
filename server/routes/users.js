@@ -10,18 +10,6 @@ const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 const multer = require('multer')
 const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 
-/* Fetch all users */
-router.get(`/allUsers`, async (req, res) => {
-    await User.find((error, data) => {
-        if (data) {
-            res.json(data)
-        } else {
-            console.log(data)
-            res.json(error)
-        }
-    })
-})
-
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
     try {
@@ -138,6 +126,17 @@ router.get("/profile/photo/:url", async (req, res) => {
     })
 })
 
+/* Fetch all users */
+router.get(`/allUsers`, async (req, res) => {
+    await User.find((error, data) => {
+        if (data) {
+            res.json(data)
+        } else {
+            console.log(data)
+            res.json(error)
+        }
+    })
+})
 
 /** OPEN USER PROFILE */
 router.get("/profile", verifyTokenPassword, async (req, res) => {

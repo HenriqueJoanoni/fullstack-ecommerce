@@ -1,5 +1,4 @@
-import react, {Component} from "react"
-import PurchaseCardTableRow from "./PurchaseCardTableRow"
+import React, {Component} from "react"
 
 export default class PurchaseCard extends Component {
     formatCurrency = (amount) => {
