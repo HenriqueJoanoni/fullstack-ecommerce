@@ -13,46 +13,48 @@ export default class AdminPage extends Component {
         }
 
         this.modeComponentsMap = {
-            "products": <AdminPanelProducts />,
-            "users": <AdminPanelUsers />,
-            "purchases": <AdminPanelPurchases />
+            "products": <AdminPanelProducts/>,
+            "users": <AdminPanelUsers/>,
+            "purchases": <AdminPanelPurchases/>
         }
-
-        
     }
 
-    render(){
+    render() {
         return (
             <div>
-                <Header />
+                <Header/>
                 <div id="adminPageContainer">
                     <div id="adminControlPanel">
                         <div id="adminControlPanelHeader">
-                            <button type="button" 
-                                onClick={()=>{this.setState({controlPanelMode: "products"})}}
-                                className={this.state.controlPanelMode==="products" ? "selected" : ""}>
+                            <button type="button"
+                                    onClick={() => {
+                                        this.setState({controlPanelMode: "products"})
+                                    }}
+                                    className={this.state.controlPanelMode === "products" ? "selected" : ""}>
                                 Products
-                            </button> 
+                            </button>
 
-                            <button type="button" 
-                                onClick={()=>{this.setState({controlPanelMode: "users"})}}
-                                className={this.state.controlPanelMode==="users" ? "selected" : ""}>
+                            <button type="button"
+                                    onClick={() => {
+                                        this.setState({controlPanelMode: "users"})
+                                    }}
+                                    className={this.state.controlPanelMode === "users" ? "selected" : ""}>
                                 Users
-                            </button> 
+                            </button>
 
-                            <button type="button" 
-                                onClick={()=>{this.setState({controlPanelMode: "purchases"})}}
-                                className={this.state.controlPanelMode==="purchases" ? "selected" : ""}>
+                            <button type="button"
+                                    onClick={() => {
+                                        this.setState({controlPanelMode: "purchases"})
+                                    }}
+                                    className={this.state.controlPanelMode === "purchases" ? "selected" : ""}>
                                 Purchases
-                            </button> 
+                            </button>
                         </div>
                         {
                             this.modeComponentsMap[this.state.controlPanelMode]
                         }
-
                     </div>
                 </div>
-
             </div>
         )
     }

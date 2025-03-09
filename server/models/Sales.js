@@ -15,7 +15,9 @@ const saleSchema = new mongoose.Schema({
     sale_date: {type: Date, default: Date.now},
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: false,
+        default: null,
     }
 }, {collection: 'sales'})
 

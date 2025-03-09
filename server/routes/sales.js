@@ -1,23 +1,14 @@
 const router = require(`express`).Router()
 const salesModel = require('../models/Sales')
 const userModel = require('../models/User')
-const formatDate = require('../utils/utils')
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
-router.post('/sales', verifyTokenPassword, async (req, res, next) => {
+router.post('/sales', async (req, res, next) => {
     try {
         const { orderID, products, total, user_email } = req.body;
 
-        if (!orderID || !products || !total || !user_email) {
+        if (!orderID || !products || !total) {
             return res.status(400).json({ success: false, message: 'Missing required fields' });
-        }
-
-        const user = await userModel.findOne({ user_email });
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
         }
 
         const saleProducts = products.map(product => ({
@@ -27,19 +18,34 @@ router.post('/sales', verifyTokenPassword, async (req, res, next) => {
             product_name: product.productName,
         }));
 
-        const newSale = await salesModel.create({
-            paypalPaymentID: orderID,
-            products: saleProducts,
-            total: parseFloat(total),
-            sale_date: new Date().toISOString(),
-            user: user._id
-        });
+        const user = await userModel.findOne({ user_email });
+        if (user) {
+            const newSale = await salesModel.create({
+                paypalPaymentID: orderID,
+                products: saleProducts,
+                total: parseFloat(total),
+                sale_date: new Date().toISOString(),
+                user: user._id
+            });
 
-        return res.status(201).json({
-            success: true,
-            sale: newSale
-        });
+            return res.status(201).json({
+                success: true,
+                sale: newSale
+            });
+        } else {
+            const newSale = await salesModel.create({
+                paypalPaymentID: orderID,
+                products: saleProducts,
+                total: parseFloat(total),
+                sale_date: new Date().toISOString(),
+                user: null
+            });
 
+            return res.status(201).json({
+                success: true,
+                sale: newSale
+            });
+        }
     } catch (error) {
         next(error);
     }
@@ -75,7 +81,7 @@ router.get(`/allSales`, (req, res) => {
             const transformedData = plainData.map(sale => ({
                 purchaserID: sale.user?._id || null,
                 purchaserName: sale.user ?
-                    `${sale.user.first_name} ${sale.user.last_name}` : 'Deleted User',
+                    `${sale.user.first_name} ${sale.user.last_name}` : 'Guest User',
                 sale_date: new Date(sale.sale_date).toISOString(),
                 items: sale.products.map(product => ({
                     product_name: product.product_name,
