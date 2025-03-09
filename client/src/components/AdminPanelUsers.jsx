@@ -6,7 +6,7 @@ import UserSummary from "./UserSummary"
 import TagCheckBox from "./TagCheckBox"
 
 export default class AdminPanelUsers extends Component {
-    constructor(props) {
+    constructor(props){
         super(props)
         this.state = {
             searchQuery: "",
@@ -22,7 +22,7 @@ export default class AdminPanelUsers extends Component {
         this.userFilterTags = ["New Users", "At Least One Purchase", "Total Spend > €100"]
     }
 
-    determineSelectedUsers = () => {
+    determineSelectedUsers = () =>{
         let selectedUsers = [...this.state.allUsers]
         //setTimeout(()=>console.log(selectedUsers), 1000)
 
@@ -60,7 +60,7 @@ export default class AdminPanelUsers extends Component {
     }
 
     updateSort = val => {
-        switch (val) {
+        switch (val){
             case "name_a_z":
                 this.setState({sortField: "user_name", sortDirection: 1})
                 break
@@ -88,38 +88,36 @@ export default class AdminPanelUsers extends Component {
         let sortedUsers = []
         console.log(users)
         //name
-        if (this.state.sortField === "user_name") {
-            sortedUsers = [...users].sort((a, b) =>
+        if (this.state.sortField === "user_name"){
+            sortedUsers = [...users].sort((a, b) => 
                 `${a.first_name} ${a.last_name}}` > `${b.first_name} ${b.last_name}}` ?
-                    this.state.sortDirection :
-                    -this.state.sortDirection
+                this.state.sortDirection :
+                -this.state.sortDirection
             )
         }
         //purchases made
         else {
-            sortedUsers = [...users].sort((a, b) =>
+            sortedUsers = [...users].sort((a, b) => 
                 a[this.state.sortField] > b[this.state.sortField] ?
-                    this.state.sortDirection :
-                    -this.state.sortDirection
+                this.state.sortDirection :
+                -this.state.sortDirection
             )
         }
         console.log(sortedUsers)
         return sortedUsers
     }
 
-    toggleUserSummary = id => {
-        this.setState({
-            showingSummary: !this.state.showingSummary,
-            summaryID: id,
-            selectedUser: this.state.allUsers.filter(user => user._id === id)[0]
-        })
+    toggleUserSummary = id =>{
+        this.setState({showingSummary: !this.state.showingSummary,
+                        summaryID: id,
+                        selectedUser: this.state.allUsers.filter(user=>user._id===id)[0]})
     }
 
     toggleTag = tag => {
-        if (!this.state.selectedTags.includes(tag)) {
+        if (!this.state.selectedTags.includes(tag)){
             this.setState({selectedTags: [...this.state.selectedTags, tag]})
         } else {
-            this.setState({selectedTags: this.state.selectedTags.filter(oldTag => oldTag !== tag)})
+            this.setState({selectedTags: this.state.selectedTags.filter(oldTag => oldTag !==tag)})
         }
     }
 
@@ -178,47 +176,50 @@ export default class AdminPanelUsers extends Component {
                     />
                     : null
                 }
-                <h2 id="usersHeader">View Users</h2>
-                <div id="usersMain">
-                    {console.log(this.state.allUsers)}
-                    <div>
-                        <div>
-                            <div>
-                                <label htmlFor="usersInput">Search Users:</label>
-                                <input type="text"
-                                       value={this.state.searchQuery}
-                                       onChange={e => {
-                                           this.setState({searchQuery: e.target.value})
-                                       }}
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="userSortInput">Sort By:</label>
-                                <select onChange={(e) => {
-                                    this.updateSort(e.target.value)
-                                }}>
-                                    <option value="name_a_z">Name (A-Z)</option>
-                                    <option value="name_z_a">Name (Z-A)</option>
-                                    <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
-                                    <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
-                                    <option value="total_spent_l_h">Total Spent (Low to High)</option>
-                                    <option value="total_spent_h_l">Total Spent (High to Low)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <h3>Filter Users By:</h3>
-                            <div>
-                                {this.userFilterTags.map(tag => <TagCheckBox
-                                    key={tag}
-                                    tagName={tag}
-                                    name={tag}
-                                    toggleTag={this.toggleTag}
-                                />)}
-                            </div>
-                        </div>
+<div id="adminPanelUsers">
+    <h2 id="usersHeader">View Users</h2>
+    <div id="usersMain">
+        {console.log(this.state.allUsers)}
+        <div id="usersSearchTools">
+            <div className="filters-column-adm">
+                <div className="filters-section">
+                    {/* <label htmlFor="usersInput">Search Users:</label> */}
+                    <input
+                        type="text"
+                        value={this.state.searchQuery}
+                        placeholder="Search Users"
+                        onChange={e => this.setState({ searchQuery: e.target.value })}
+                    />
+                    <div className="sort-header">
+                        <label htmlFor="userSortInput">Sort:</label>
+                        <select onChange={(e) => this.updateSort(e.target.value)}>
+                            <option value="name_a_z">Name (A-Z)</option>
+                            <option value="name_z_a">Name (Z-A)</option>
+                            <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
+                            <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
+                            <option value="total_spent_l_h">Total Spent (Low to High)</option>
+                            <option value="total_spent_h_l">Total Spent (High to Low)</option>
+                        </select>
                     </div>
+                </div>
+
+                <div className="productFilters">
+                    <p classname="h3-adm">Filter Users By:</p>
+                    <div>
+                        {this.userFilterTags.map(tag => (
+                            <TagCheckBox
+                                key={tag}
+                                tagName={tag}
+                                name={tag}
+                                toggleTag={this.toggleTag}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
                     <div id="usersSearchResults">
                         {this.sortUsers(this.determineSelectedUsers())

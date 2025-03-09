@@ -707,7 +707,7 @@ h2 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.2vh;
-    padding-left: 25px;
+    /* padding-left: 25px; */
     color: #515151;
 }
 

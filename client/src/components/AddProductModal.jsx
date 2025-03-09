@@ -11,7 +11,7 @@ export default class EditProductModal extends Component {
         this.state = {
             formValues: {
                 product_deal: {
-                    is_deal: false,
+                is_deal: false,
                     discount_price: 1800,
                     deal_deadline: "2025-06-01T00:00:00.000+00:00"
                 },
@@ -228,7 +228,7 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_sku">Product SKU:</label>
-                                <input type="text" name="product_sku" value={this.state.formValues["product_sku"]}/>
+                                <input type="text" className="inputnam" name="product_sku" value={this.state.formValues["product_sku"]}/>
                                 <p class="errorMessage">{this.state.errorMessages.product_sku}</p>
                             </div>
                         </span>
@@ -236,20 +236,20 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_name">Name:</label>
-                                <input type="text" name="product_name" value={this.state.formValues["product_name"]}/>
+                                <input type="text" name="product_name" className="inputnam" value={this.state.formValues["product_name"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.product_name}</p>
                             </div>
 
                             <div className="formItem">
                                 <label htmlFor="qty_in_stock">Quantity In Stock:</label>
-                                <input type="text" name="qty_in_stock" value={this.state.formValues["qty_in_stock"]}/>
+                                <input type="text" name="qty_in_stock" className="inputnam" value={this.state.formValues["qty_in_stock"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.qty_in_stock}</p>
                             </div>
                         </span>
 
                         <span className="formRow">
                             <label htmlFor="product_description">Product Description</label>
-                            <textarea name="product_description" value={this.state.formValues["product_description"]}></textarea>
+                            <textarea name="product_description" className="inputnam" value={this.state.formValues["product_description"]}></textarea>
                             <p className="errorMessage">{this.state.errorMessages.product_description}</p>
 
                         </span>
@@ -257,14 +257,14 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_brand">Product Brand:</label>
-                                <input type="text" name="product_brand" value={this.state.formValues["product_brand"]} />
+                                <input type="text" name="product_brand" className="inputnam" value={this.state.formValues["product_brand"]} />
                                 <p className="errorMessage">{this.state.errorMessages.product_brand}</p>
 
                             </div>
 
                             <div className="formItem">
                                 <label htmlFor="product_price">Product Price:</label>
-                                <input type="text" name="product_price" value={this.state.formValues["product_price"]}/>
+                                <input type="text" name="product_price" className="inputnam"  value={this.state.formValues["product_price"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.product_price}</p>
 
                             </div>
@@ -299,12 +299,12 @@ export default class EditProductModal extends Component {
                                 id="addProductFileInput" 
                                 onChange={(e)=>this.setSelectedFile(e)}
                                 disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
-                            <button type="button" onClick={this.uploadImage}>Upload Image</button>
+                            <button type="button" className="buttonnam" onClick={this.uploadImage}>Upload Image</button>
                         </span>
 
                         <div>
-                            <button type="button" onClick={this.cancelAdd}>Cancel</button>
-                            <button type="button" onClick={this.addProduct}>Add Product</button>
+                            <button type="button" className="buttonnam" onClick={this.cancelAdd}>Cancel</button>
+                            <button type="button" className="buttonnam" onClick={this.addProduct}>Add Product</button>
                         </div>
                     </form>
 
