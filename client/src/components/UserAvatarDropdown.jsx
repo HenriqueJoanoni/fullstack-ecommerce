@@ -40,6 +40,7 @@ export default class UserAvatarDropdown extends Component {
         sessionStorage.clear()
         localStorage.clear()
         window.location.reload()
+        window.location.href="/"
     }
 
     render() {

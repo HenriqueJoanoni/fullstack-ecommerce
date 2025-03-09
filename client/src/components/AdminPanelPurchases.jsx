@@ -13,48 +13,9 @@ export default class AdminPanelPurchases extends Component {
             sortDirection: 1,
             filterStartDate: null,
             filterEndDate: new Date().toISOString().split("T")[0],
+            loading: true
         }
         // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
-
-
-        this.purchases =  [
-            {
-                purchaserID: "123",
-                purchaserName: "Christopher Healy",
-                purchaseDate: new Date(2025, 1, 20),
-                items: [
-                     {
-                        product_name: "Ibanez RG Series",
-                        price: 1000,
-                        qty: 2
-                    },
-                    {
-                        product_name: "Fender Medium Picks (Pack of 12)",
-                        price: 5.99,
-                        qty: 3
-    
-                    }
-                ]
-            },
-            {
-                purchaserID: "125",
-                purchaserName: "Jose Henrique",
-                purchaseDate: new Date(2025, 0, 1),
-                items: [
-                    {
-                        product_name: "Marshall DSL40CR",
-                        price: 800,
-                        qty: 1,
-                    },
-                    {
-                        product_name: "D'addario NYXL (10-46)",
-                        price: 12.99,
-                        qty: 1
-                    }
-                ]
-
-            }
-        ]
     }
 
 
@@ -71,69 +32,59 @@ export default class AdminPanelPurchases extends Component {
         }
     }
 
-    sortPurchases = purchases =>{
+    sortPurchases = purchases => {
         let sortedPurchases = []
 
-        if (this.state.sortField === "purchase_total"){
+        if (this.state.sortField === "purchase_total") {
             sortedPurchases = [...purchases].sort((a, b) => {
-                let aTotal = Object.keys(a.items).reduce((total, item)=>
-                    total + (a.items[item].qty * a.items[item].price), 0)
-                //console.log("aTotal: " + aTotal)
-
-                let bTotal = Object.keys(b.items).reduce((total, item)=>
-                    total + (b.items[item].qty * b.items[item].price), 0)
-                //console.log("bTotal: " + bTotal)
-
-
+                const aTotal = a.items.reduce((total, item) => total + ((item.qty || 0) * (item.price || 0)), 0)
+                const bTotal = b.items.reduce((total, item) => total + ((item.qty || 0) * (item.price || 0)), 0)
                 return this.state.sortDirection * (aTotal - bTotal)
             })
         }
-        //console.log(sortedPurchases)
-
         return sortedPurchases
-
     }
 
     determineSelectedPurchases = () => {
-    
-        console.log(this.state.allPurchases)
-        let selectedPurchases = [...this.state.allPurchases]
+        let selectedPurchases = [...this.state.allPurchases];
 
-        //search
-        if (this.state.searchQuery !== ""){
-            selectedPurchases = selectedPurchases.filter(purchase => `${purchase.user_first_name} ${purchase.user_last_name}`.toLowerCase()
-                                                                    .includes(this.state.searchQuery.toLowerCase()))
-        }
-        //filters
-
-        //start
-        if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
-            let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) >= startDate)
+        if (this.state.searchQuery) {
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                purchase.purchaserName.toLowerCase().includes(this.state.searchQuery.toLowerCase())
+            );
         }
 
-        //end
-        if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
-            console.log("here2")
-            let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => new Date(purchase.sale_date) <= endDate )
+        if (this.state.filterStartDate) {
+            const startDate = new Date(this.state.filterStartDate);
+            startDate.setHours(0, 0, 0, 0);
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                new Date(purchase.sale_date) >= startDate
+            );
         }
-        
-        return selectedPurchases
+
+        if (this.state.filterEndDate) {
+            const endDate = new Date(this.state.filterEndDate);
+            endDate.setHours(23, 59, 59, 999);
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                new Date(purchase.sale_date) <= endDate
+            );
+        }
+
+        return selectedPurchases;
     }
 
 
     componentDidMount(){
         axios.get(`${SERVER_HOST}/allSales`)
-        .then(res => {
-            console.log(res.data)
-            console.log(res.error)
-            if (res.data){
-                this.setState({allPurchases: res.data})
-            } else {
-                console.log(res.error)
-            }
-        })
+            .then(res => {
+                if (res.data) {
+                    this.setState({allPurchases: res.data, loading: false})
+                }
+            })
+            .catch(error => {
+                this.setState({loading: false})
+                console.error(error)
+            })
     }
 
     render(){
@@ -173,18 +124,18 @@ export default class AdminPanelPurchases extends Component {
                             <option value="total_h_l">Total (High to Low)</option>
                         </select>
                     </div>
-                    
-                 
                 </div>
 
-                <div className="adminPurchaseResults">
-                    {/*console.log(this.sortPurchases(this.determineSelectedPurchases()))*/}
-                    {this.sortPurchases(this.determineSelectedPurchases())
-                    .map(purchase => <PurchaseCard purchase={purchase} showUser={true}/>)}
-                </div>
-
+                {this.state.loading ? (
+                    <div>Loading purchases...</div>
+                ) : (
+                    <div className="adminPurchaseResults">
+                        {/*console.log(this.sortPurchases(this.determineSelectedPurchases()))*/}
+                        {this.sortPurchases(this.determineSelectedPurchases())
+                            .map(purchase => <PurchaseCard key={purchase._id} purchase={purchase} showUser={true}/>)}
+                    </div>
+                )}
             </div>
-            
         )
     }
 }

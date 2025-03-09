@@ -1,6 +1,7 @@
 const router = require(`express`).Router()
 const salesModel = require('../models/Sales')
 const userModel = require('../models/User')
+const formatDate = require('../utils/utils')
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
 
 router.post('/sales', verifyTokenPassword, async (req, res, next) => {
@@ -8,10 +9,7 @@ router.post('/sales', verifyTokenPassword, async (req, res, next) => {
         const { orderID, products, total, user_email } = req.body;
 
         if (!orderID || !products || !total || !user_email) {
-            return res.status(400).json({
-                success: false,
-                message: 'Missing required fields'
-            });
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
         }
 
         const user = await userModel.findOne({ user_email });
@@ -25,7 +23,8 @@ router.post('/sales', verifyTokenPassword, async (req, res, next) => {
         const saleProducts = products.map(product => ({
             product: product.productId,
             quantity: product.quantity,
-            price: product.price
+            price: product.price,
+            product_name: product.productName,
         }));
 
         const newSale = await salesModel.create({
@@ -57,13 +56,29 @@ router.get(`/purchasesByUserID/:_id`, async (req, res) => {
 })
 
 router.get(`/allSales`, (req, res) => {
-    salesModel.find((error, data) => {
-        if (data){
-            res.json(data)
-        } else {
-            res.json(error)
-        }
-    })
-})
+    salesModel.find()
+        .populate('user', 'first_name last_name')
+        .exec((error, data) => {
+            if (error) return res.status(500).json({ error });
+            const plainData = data.map(doc => doc.toObject());
+
+            const transformedData = plainData.map(sale => ({
+                purchaserID: sale.user?._id || null,
+                purchaserName: sale.user ?
+                    `${sale.user.first_name} ${sale.user.last_name}` : 'Deleted User',
+                sale_date: new Date(sale.sale_date).toISOString(),
+                items: sale.products.map(product => ({
+                    product_name: product.product_name,
+                    price: product.price,
+                    qty: product.quantity
+                })),
+                purchase_total: sale.total,
+                _id: sale._id,
+                paypalPaymentID: sale.paypalPaymentID
+            }));
+
+            res.json(transformedData);
+        });
+});
 
 module.exports = router

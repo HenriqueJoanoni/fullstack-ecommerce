@@ -48,7 +48,8 @@ export default class BuyItem extends Component {
             products: cartItems.map(item => ({
                 productId: item._id,
                 quantity: item.qty,
-                price: item.price
+                price: item.price,
+                productName: item.name,
             })),
             total: Number(this.props.total),
             user_email: sessionStorage.getItem('email'),

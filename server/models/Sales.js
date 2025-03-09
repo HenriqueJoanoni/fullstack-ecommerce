@@ -8,7 +8,8 @@ const saleSchema = new mongoose.Schema({
             ref: 'Product'
         },
         quantity: Number,
-        price: Number
+        price: Number,
+        product_name: String,
     }],
     total: {type: Number, required: true},
     sale_date: {type: Date, default: Date.now},
