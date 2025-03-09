@@ -143,10 +143,10 @@ export default class EditProductModal extends Component {
 
         //product_name
         if (this.state.formValues.product_name.length === 0){
-            newErrorMessages.productName = "Product Name is mandatory"
+            newErrorMessages.product_name = "Product Name is mandatory"
         }
         else if (this.state.formValues.product_name.length < 8){
-            newErrorMessages.productName = "Product Name must be at least eight characters"
+            newErrorMessages.product_name = "Product Name must be at least eight characters"
         } 
 
 

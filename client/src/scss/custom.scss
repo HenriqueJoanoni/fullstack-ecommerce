@@ -2007,3 +2007,15 @@ button:hover {
     margin-bottom:1px;
     margin-top:5px;
   }
+
+
+  //error messages
+
+  #addProductModal .errorMessage, #editProductModal .errorMessage{
+   color: #dc3545;
+   font-weight: bold;
+   margin-bottom:20px;
+    
+  }
+
+  

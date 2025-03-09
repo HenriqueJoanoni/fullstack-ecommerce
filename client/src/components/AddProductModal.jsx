@@ -147,11 +147,12 @@ export default class EditProductModal extends Component {
         } 
 
         //product_name
-        if (this.state.formValues.product_name.length === 0){
-            newErrorMessages.productName = "Product Name is mandatory"
+        
+        if (this.state.formValues.product_name.length === 0 || this.state.formValues.product_name === ""){
+            newErrorMessages.product_name = "Product Name is mandatory"
         }
         else if (this.state.formValues.product_name.length < 8){
-            newErrorMessages.productName = "Product Name must be at least eight characters"
+            newErrorMessages.product_name = "Product Name must be at least eight characters"
         } 
 
 
@@ -237,6 +238,7 @@ export default class EditProductModal extends Component {
                             <div className="formItem">
                                 <label htmlFor="product_name">Name:</label>
                                 <input type="text" name="product_name" className="inputnam" value={this.state.formValues["product_name"]}/>
+                                {console.log("product error: " + this.state.errorMessages.product_name)}
                                 <p className="errorMessage">{this.state.errorMessages.product_name}</p>
                             </div>
 

@@ -18,9 +18,11 @@ export default class LoginForm extends Component {
 
     getProfilePhoto = url => {
         console.log(url)
+        console.log("here")
         axios.get(`${SERVER_HOST}/profile/photo/${url}`)
         .then(res => {
             console.log("profile photo res:")
+            console.log(res)
             console.log(res.data.profilePhoto)
             if (res.data.profilePhoto){
                 localStorage.profilePhoto =  `data:;base64, ${res.data.profilePhoto}`
