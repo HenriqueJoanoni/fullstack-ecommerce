@@ -3,22 +3,12 @@ const router = express.Router()
 const User = require("../models/User")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const fs = require("fs")
+const fs = require(`fs`)
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY, 'utf8')
 const logout = require("../middlewares/logoutMiddleware")
 const verifyTokenPassword = require("../middlewares/verifyUserJWTPassword")
-
-/* Fetch all users */
-router.get(`/allUsers`, (req, res)=>{
-    User.find((error, data)=> {
-        if (data){
-            res.json(data)
-        } else {
-            console.log(data)
-            res.json(error)
-        }
-    })
-})
+const multer = require('multer')
+const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 
 /** REGISTER ROUTE */
 router.post('/register', async (req, res) => {
@@ -42,9 +32,10 @@ router.post('/register', async (req, res) => {
             user_email: email,
             user_phone: "",
             user_password: hash,
-            user_profile_picture: "",
+            user_profile_picture: "blank_profile_pic.png",
             user_access_level: 1,
             token: "",
+            join_date: new Date()
         })
 
         newUser.token = jwt.sign(
@@ -62,6 +53,7 @@ router.post('/register', async (req, res) => {
             email: newUser.user_email,
             accessLevel: newUser.user_access_level,
             token: newUser.token,
+            profileURL: newUser.user_profile_picture,
             redirect: redirect || "/login",
         })
     } catch (err) {
@@ -106,6 +98,7 @@ router.post("/login", async (req, res) => {
             phone: user.user_phone,
             accessLevel: user.user_access_level,
             token: token,
+            profileURL: user.user_profile_picture,
             redirect: redirect || "/",
         })
     } catch (error) {
@@ -120,6 +113,30 @@ router.post("/logout", logout)
 /***********************************
  *          PROTECTED ROUTES       *
  * *********************************/
+
+
+//get user profile photo
+router.get("/profile/photo/:url", async (req, res) => {
+    await fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.url}`, `base64`, (err, fileData) => {
+        if (fileData) {
+            res.json({profilePhoto: fileData})
+        } else {
+            res.json({errorMessage: err})
+        }
+    })
+})
+
+/* Fetch all users */
+router.get(`/allUsers`, async (req, res) => {
+    await User.find((error, data) => {
+        if (data) {
+            res.json(data)
+        } else {
+            console.log(data)
+            res.json(error)
+        }
+    })
+})
 
 /** OPEN USER PROFILE */
 router.get("/profile", verifyTokenPassword, async (req, res) => {
@@ -150,7 +167,7 @@ router.get("/profile", verifyTokenPassword, async (req, res) => {
 /** UPDATE USER INFO */
 router.post("/profile-update", verifyTokenPassword, async (req, res) => {
     try {
-        const {firstName, lastName, phone, email, password} = req.body
+        const {firstName, lastName, phone, email, password, photoURL} = req.body
         const user = await User.findOne({user_email: req.decodedToken.email})
 
         if (!user) {
@@ -162,6 +179,7 @@ router.post("/profile-update", verifyTokenPassword, async (req, res) => {
             last_name: lastName,
             user_phone: phone,
             user_email: email,
+            user_profile_picture: photoURL
         }
 
         if (password) {
@@ -173,7 +191,7 @@ router.post("/profile-update", verifyTokenPassword, async (req, res) => {
             {$set: updateFields}
         )
 
-        const  updatedUserData = await User.findOne({user_email: email}, "-password")
+        const updatedUserData = await User.findOne({user_email: email}, "-password")
 
         res.status(200).json({
             message: "Profile Updated Successfully",
@@ -185,9 +203,31 @@ router.post("/profile-update", verifyTokenPassword, async (req, res) => {
     }
 })
 
+//update profile picture
+router.post("/profile/imgUpload", upload.single("profile_photo"), (req, res) => {
+    if (!req.file) {
+        res.json({errorMessage: "No file selected"})
+    } else if (req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/jpeg") {
+        fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`, (error) => {
+            res.json({errorMessage: `Only .png, .jpg and .jpeg format accepted`})
+        })
+    } else {
+        //successful
+        res.json({url: req.file.filename})
+    }
+})
+
+router.delete("/profile/imgDelete/:filename", (req, res) => {
+    fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.params.filename}`, (err) => {
+        console.log(err);
+        res.json({errorMessage: err})
+    })
+})
+
+
 router.delete("/delete/:_id", (req, res) => {
-    User.findByIdAndRemove(req.params._id, (error, data)=>{
-        if (data){
+    User.findByIdAndRemove(req.params._id, (error, data) => {
+        if (data) {
             res.json(data)
         } else {
             res.json(error)
@@ -198,11 +238,11 @@ router.delete("/delete/:_id", (req, res) => {
 /** DISPLAY FAVORITES */
 router.get("/favorites/:email", verifyTokenPassword, async (req, res) => {
     try {
-        const user = await User.findOne({ user_email: req.params.email })
+        const user = await User.findOne({user_email: req.params.email})
             .populate("favorites")
 
         if (!user) {
-            return res.status(404).json({ error: "User not found" })
+            return res.status(404).json({error: "User not found"})
         }
 
         res.status(200).json({
@@ -211,7 +251,7 @@ router.get("/favorites/:email", verifyTokenPassword, async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: "Internal server error" })
+        res.status(500).json({error: "Internal server error"})
     }
 })
 

@@ -143,26 +143,29 @@ export default class AdminPanelProducts extends Component {
                 </div>
                 <div id="productsMain">
                     <div id="productsSearchTools">
-                        <div>
-                            <h3>Search for a product</h3>
+                    <div className="filters-column-adm">
+                        <div className="filters-section">
+                            {/* <h3>Search for a product</h3> */}
                             <input type="text" 
+                                placeholder="Search Products"
                                 value={this.state.searchQuery}
                                 onChange={e=>{this.setState({searchQuery: e.target.value})}}
                             />
-                        </div>
-                        <div>
-                            <label htmlFor="productSort">Sort By:</label>
-                            <select onChange={(e)=>{this.updateSortField(e.target.value)}}>
+                        <div className="sort-header">
+                        <label htmlFor="productSort">Sort:</label>
+                            <select className="unique-select" onChange={(e)=>{this.updateSortField(e.target.value)}}>
                                 <option value="name_a_z">Name (A-Z)</option>
                                 <option value="name_z_a">Name (Z-A)</option>
                                 <option value="price_l_h">Price (Lowest to Highest)</option>
                                 <option value="price_h_l">Price (Highest to Lowest)</option>
                             </select>
-                        </div>
-                    </div>
+                            </div>
+                            </div>
 
                     <div className="productFilters">
                         {this.allFilters.map(tag => <TagCheckBox toggleTag={this.toggleTag} name={tag} tagName={tag}/>)}
+                    </div>
+                    </div>
                     </div>
 
                     <div id="searchResults">

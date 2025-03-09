@@ -1,5 +1,7 @@
 import react, { Component} from "react"
 import PurchaseCard from "./PurchaseCard"
+import axios from  "axios"
+import {SERVER_HOST} from "../config/global_constants"
 
 export default class AdminPanelPurchases extends Component {
     constructor(props){
@@ -11,48 +13,9 @@ export default class AdminPanelPurchases extends Component {
             sortDirection: 1,
             filterStartDate: null,
             filterEndDate: new Date().toISOString().split("T")[0],
+            loading: true
         }
         // to limit date to today {/*  https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today  */}
-
-
-        this.purchases =  [
-            {
-                purchaserID: "123",
-                purchaserName: "Christopher Healy",
-                purchaseDate: new Date(2025, 1, 20),
-                items: [
-                     {
-                        product_name: "Ibanez RG Series",
-                        price: 1000,
-                        qty: 2
-                    },
-                    {
-                        product_name: "Fender Medium Picks (Pack of 12)",
-                        price: 5.99,
-                        qty: 3
-    
-                    }
-                ]
-            },
-            {
-                purchaserID: "125",
-                purchaserName: "Jose Henrique",
-                purchaseDate: new Date(2025, 0, 1),
-                items: [
-                    {
-                        product_name: "Marshall DSL40CR",
-                        price: 800,
-                        qty: 1,
-                    },
-                    {
-                        product_name: "D'addario NYXL (10-46)",
-                        price: 12.99,
-                        qty: 1
-                    }
-                ]
-
-            }
-        ]
     }
 
 
@@ -69,107 +32,126 @@ export default class AdminPanelPurchases extends Component {
         }
     }
 
-    sortPurchases = purchases =>{
+    sortPurchases = purchases => {
         let sortedPurchases = []
 
-        if (this.state.sortField === "purchase_total"){
+        if (this.state.sortField === "purchase_total") {
             sortedPurchases = [...purchases].sort((a, b) => {
-                let aTotal = Object.keys(a.items).reduce((total, item)=>
-                    total + (a.items[item].qty * a.items[item].price), 0)
-                //console.log("aTotal: " + aTotal)
-
-                let bTotal = Object.keys(b.items).reduce((total, item)=>
-                    total + (b.items[item].qty * b.items[item].price), 0)
-                //console.log("bTotal: " + bTotal)
-
-
+                const aTotal = a.items.reduce((total, item) => total + ((item.qty || 0) * (item.price || 0)), 0)
+                const bTotal = b.items.reduce((total, item) => total + ((item.qty || 0) * (item.price || 0)), 0)
                 return this.state.sortDirection * (aTotal - bTotal)
             })
         }
-        //console.log(sortedPurchases)
-
         return sortedPurchases
-
     }
 
     determineSelectedPurchases = () => {
-        let selectedPurchases = this.purchases.filter(purchase => {
-            let include = false;
-            //user
-            if (`${purchase.purchaserName}`.toLowerCase().includes(this.state.searchQuery.toLowerCase())){
-                include = true;
-            } 
+        let selectedPurchases = [...this.state.allPurchases];
 
-            return include
-        })
-        //filters
-
-        //start
-        if (this.state.filterStartDate != null && this.state.filterStartDate != ""){
-            let startDate = new Date(this.state.filterStartDate)
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate >= startDate)
+        if (this.state.searchQuery) {
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                purchase.purchaserName.toLowerCase().includes(this.state.searchQuery.toLowerCase())
+            );
         }
 
-        //end
-        if (this.state.filterEndDate != null && this.state.filterEndDate != ""){
-            console.log("here2")
-            let endDate = new Date(this.state.filterEndDate)   
-            selectedPurchases = selectedPurchases.filter(purchase => purchase.purchaseDate <= endDate )
+        if (this.state.filterStartDate) {
+            const startDate = new Date(this.state.filterStartDate);
+            startDate.setHours(0, 0, 0, 0);
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                new Date(purchase.sale_date) >= startDate
+            );
         }
-        
-        return selectedPurchases
+
+        if (this.state.filterEndDate) {
+            const endDate = new Date(this.state.filterEndDate);
+            endDate.setHours(23, 59, 59, 999);
+            selectedPurchases = selectedPurchases.filter(purchase =>
+                new Date(purchase.sale_date) <= endDate
+            );
+        }
+
+        return selectedPurchases;
     }
 
 
+    componentDidMount(){
+        axios.get(`${SERVER_HOST}/allSales`)
+            .then(res => {
+                if (res.data) {
+                    this.setState({allPurchases: res.data, loading: false})
+                }
+            })
+            .catch(error => {
+                this.setState({loading: false})
+                console.error(error)
+            })
+    }
 
     render(){
         return (
-            <div>
-                <h2>View Purchases</h2>
-                <div className="purchasesSearchTools">
-                    <div>
-                        <label htmlFor="purchaseSearchBar">Search:</label>
-                        <input type="text" 
-                                name="purchaseSearchBar" 
-                                onChange={(e)=>{this.setState({searchQuery: e.target.value})}}
-                                value={this.state.searchQuery}
-                                placeholder="user or purchase date"
-                        />
-                        <div className="dateFilters">
-                            <label htmlFor="startDate">Start Date</label>
-                            <input type="date" 
-                                value={this.state.filterStartDate}
-                                onChange={(e)=>{this.setState({filterStartDate: e.target.value})}}
-                            />
+<div className="purchases-section">
+    <h2 className="purchases-header">View Purchases</h2>
+    {console.log(this.state.allPurchases)}
 
-                            <label htmlFor="endDate">End Date</label>
-                            <input type="date" 
-                                max={new Date().toISOString().split("T")[0]}
-                                value={this.state.filterEndDate}
-                                onChange={(e)=>{this.setState({filterEndDate: e.target.value})}}    
-                            />
-                            
-                        </div>
-                    </div>
-                    <div>
-                        <label htmlFor="purchasesSortInput">Sort By:</label>
-                        <select onChange={(e)=>{this.updateSort(e.target.value)}}>
-                            <option value="total_l_h">Total (Low to High)</option>
-                            <option value="total_h_l">Total (High to Low)</option>
-                        </select>
-                    </div>
-                    
-                 
-                </div>
 
-                <div className="adminPurchaseResults">
-                    {/*console.log(this.sortPurchases(this.determineSelectedPurchases()))*/}
-                    {this.sortPurchases(this.determineSelectedPurchases())
-                    .map(purchase => <PurchaseCard purchase={purchase} showUser={true}/>)}
-                </div>
+    <div className="purchases-search-container">
+    <div className="purchases-search-tools">
+        <div className="purchases-search-box">
+            <label htmlFor="purchaseSearchBar">Search:</label>
+            <input 
+                type="text" 
+                name="purchaseSearchBar" 
+                className="purchases-search-input"
+                onChange={(e) => this.setState({ searchQuery: e.target.value })}
+                value={this.state.searchQuery}
+                placeholder="User or purchase date"
+            />
 
+            <div className="purchases-date-filters">
+                <label htmlFor="startDate">Start Date</label>
+                <input 
+                    type="date" 
+                    className="purchases-date-input"
+                    value={this.state.filterStartDate}
+                    onChange={(e) => this.setState({ filterStartDate: e.target.value })}
+                />
+
+                <label htmlFor="endDate">End Date</label>
+                <input 
+                    type="date" 
+                    className="purchases-date-input"
+                    max={new Date().toISOString().split("T")[0]}
+                    value={this.state.filterEndDate}
+                    onChange={(e) => this.setState({ filterEndDate: e.target.value })}    
+                />
             </div>
-            
+        </div>
+
+        <div className="purchases-sort-box">
+            <label htmlFor="purchasesSortInput">Sort By:</label>
+            <select 
+                className="purchases-sort-select"
+                onChange={(e) => this.updateSort(e.target.value)}
+            >
+                <option value="total_l_h">Total (Low to High)</option>
+                <option value="total_h_l">Total (High to Low)</option>
+            </select>
+        </div>
+    </div>
+    </div>
+
+
+    {this.state.loading ? (
+        <div className="purchases-loading">Loading purchases...</div>
+    ) : (
+        <div className="purchases-results">
+            {this.sortPurchases(this.determineSelectedPurchases()).map(purchase => (
+                <PurchaseCard key={purchase._id} purchase={purchase} showUser={true} />
+            ))}
+        </div>
+    )}
+</div>
+
         )
     }
 }

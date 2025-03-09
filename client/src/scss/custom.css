@@ -1,5 +1,6 @@
 /** BASE COLORS */
 /** GENERAL STYLING FOR SEARCH TOOLS */
+
 /** RGB COLORS */
 @keyframes fadeOut {
   from {
@@ -558,6 +559,301 @@ button:hover {
     gap: 20px;
   }
 }
+/* AVATAR DROPDOWN */
+.profile-menu {
+  position: relative;
+  display: inline-block;
+}
+.profile-menu .icon-wrapper {
+  cursor: pointer;
+}
+.profile-menu .icon-wrapper img {
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+.profile-menu .icon-wrapper img:hover {
+  transform: scale(1.05);
+}
+.profile-menu .dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  min-width: 180px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1000;
+}
+.profile-menu .dropdown-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+}
+.profile-menu .dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+.profile-menu .dropdown-menu ul li {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1.3em;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  white-space: nowrap;
+  text-align: left;
+}
+.profile-menu .dropdown-menu ul li a, .profile-menu .dropdown-menu ul li span {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  font-size: inherit;
+}
+.profile-menu .dropdown-menu ul li .logoutspan {
+  font-family: Arial, sans-serif;
+}
+.profile-menu .dropdown-menu ul li:hover {
+  background: #cccccc;
+  color: #fff;
+  border-radius: 8px;
+}
+@media (max-width: 500px) {
+  .profile-menu .dropdown-menu {
+    right: auto;
+    left: 0;
+    transform: translateX(0%);
+  }
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+  background: #f8f9fc;
+}
+.profile-section .profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.profile-section .container {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+}
+.profile-section .card-profile-info {
+  flex: 2;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+}
+.profile-section .card-profile-info form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.profile-section .card-profile-info .form-row {
+  display: flex;
+  gap: 20px;
+}
+.profile-section .card-profile-info .form-row .form-group {
+  flex: 1;
+}
+.profile-section .card-profile-info .form-group {
+  display: flex;
+  flex-direction: column;
+}
+.profile-section .card-profile-info .form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+.profile-section .card-profile-info .form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.profile-section .card-profile-info .form-group:focus {
+  border-color: #333;
+  outline: none;
+  box-shadow: 0 0 5px rgba(110, 142, 251, 0.4);
+}
+.profile-section .card-profile-info button {
+  background: #333;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.profile-section .card-profile-info button:hover {
+  background: #5b5b66;
+}
+.profile-section .card-profile-user {
+  flex: 1;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-left: 10px;
+}
+.profile-section .card-profile-user .profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-bottom: 15px;
+}
+.profile-section .card-profile-user .user-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.profile-section .card-profile-user .user-role {
+  font-size: 0.9rem;
+  color: #666;
+}
+.profile-section .card-profile-user .profile-actions {
+  margin-top: 15px;
+}
+.profile-section .card-profile-user .profile-actions button {
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.profile-section .card-profile-user .profile-actions button:hover {
+  background: #5b5b66;
+}
+.profile-section .card-profile-user .profile-actions button:first-child {
+  margin-right: 10px;
+  background: #5b5b66;
+}
+
+/** TOAST ALERT */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 2.5s;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toast.success {
+  background-color: #3A7D44;
+}
+
+.toast.error {
+  background-color: #B82132;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/*--------payment sys*/
+#paypalButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  justify-content: center;
+  max-width: auto;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  padding-bottom: 2%;
+  padding-top: 2%;
+  padding-left: 33%;
+  padding-right: 33%;
+  border-radius: 2px;
+  border: 1px solid #d1d1d1;
+}
+#paypalButtonContainer h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+#paypalButtonContainer p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+#paypalButtonContainer #payPalPaymentID {
+  font-weight: bold;
+  color: #0070ba;
+}
+#paypalButtonContainer .paypal-button,
+#paypalButtonContainer .paypal-button-tagline,
+#paypalButtonContainer .paypal-button-container {
+  width: 80%;
+  max-width: 200px;
+  max-height: 50%;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+#paypalButtonContainer #payPalPaymentIDButton {
+  margin-top: 10px;
+}
+#paypalButtonContainer #payPalPaymentIDButton .red-button,
+#paypalButtonContainer #payPalPaymentIDButton .green-button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+#paypalButtonContainer #payPalPaymentIDButton .red-button {
+  background-color: red;
+}
+#paypalButtonContainer #payPalPaymentIDButton .green-button {
+  background-color: green;
+}
+
 /*  ----- ADMIN PAGES ------- */
 #adminPageContainer {
   width: 100%;
@@ -699,6 +995,29 @@ button:hover {
   transform: translate(-50%, -50%);
   z-index: 100000;
   padding: 50px;
+}
+
+/*   deleteable image */
+.deletableImageContainer {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  display: flex;
+}
+.deletableImageContainer button {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+  color: black;
+  position: absolute;
+  top: -40px;
+  right: -20px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.deletableImageContainer img {
+  width: 100%;
+  height: 100%;
 }
 
 /*   -------- users panel -------- */
@@ -859,4 +1178,4 @@ button:hover {
   width: min-content;
   border-bottom: 1px solid black;
   border-top: 1px solid black;
-}/*# sourceMappingURL=custom.css.map */
+}

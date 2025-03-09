@@ -1,47 +1,63 @@
-import react, {Component} from "react"
-import PurchaseCardTableRow from "./PurchaseCardTableRow"
+import React, {Component} from "react"
 
 export default class PurchaseCard extends Component {
-    constructor(props){
-        super(props)
-        console.log(this.props.purchase)
+    formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-EU', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2
+        }).format(amount);
     }
 
-    render(){
+    calculateTotal = (items) => {
+        return items.reduce((total, item) =>
+            total + (item.qty * item.price), 0);
+    }
+
+    render() {
+        const { purchase } = this.props;
+        const total = this.calculateTotal(purchase.items);
+
         return (
             <div className="purchaseCard">
                 <div className="purchaseInfo">
                     <div className="purchaserName">
-                        <p>{this.props.showUser ? <p>Purchased by: {this.props.purchase.purchaserName}</p> : null}</p>
+                        {this.props.showUser && (
+                            <p>Purchased by: {purchase.purchaserName}</p>
+                        )}
                     </div>
-                    <div className="purchaseTimeTotal"> 
-                        <p>Purchased on: {this.props.purchase.purchaseDate.toLocaleString() || "null"}</p>
-                        <p>Total: {Object.keys(this.props.purchase.items).reduce((total, item)=>
-                            total + (this.props.purchase.items[item].qty * this.props.purchase.items[item].price), 0)}</p> 
+                    <div className="purchaseTimeTotal">
+                        <p>Purchased on: {new Date(purchase.sale_date).toLocaleDateString()}</p>
+                        <p>Total: {this.formatCurrency(total)}</p>
                     </div>
                 </div>
 
                 <div className="purchaseItems">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Item</th>   
-                                <th>Total</th>
-                            </tr>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Item</th>
+                            <th>Total</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {this.props.purchase.items.map(item => <PurchaseCardTableRow item={item}/>)}
+                        {purchase.items.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.qty}</td>
+                                <td>{this.formatCurrency(item.price)}</td>
+                                <td>{item.product_name}</td>
+                                <td>{this.formatCurrency(item.qty * item.price)}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
-                
+
                     <div className="purchaseTotalPrice">
-                        €{Object.keys(this.props.purchase.items).reduce((total, item)=>
-                            total + (this.props.purchase.items[item].qty * this.props.purchase.items[item].price), 0)}
+                        Grand Total: {this.formatCurrency(total)}
                     </div>
                 </div>
-
             </div>
         )
     }

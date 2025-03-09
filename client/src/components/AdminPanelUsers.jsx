@@ -1,4 +1,4 @@
-import react, { Component} from "react"
+import React, {Component} from "react"
 import {SERVER_HOST} from "../config/global_constants"
 import axios from "axios"
 import UserSearchResult from "./UserSearchResult"
@@ -24,8 +24,10 @@ export default class AdminPanelUsers extends Component {
 
     determineSelectedUsers = () =>{
         let selectedUsers = [...this.state.allUsers]
+        //setTimeout(()=>console.log(selectedUsers), 1000)
 
 
+        /*
         //search query
         if (this.state.searchQuery!==""){
             selectedUsers = selectedUsers.filter(user => `${user.first_name.toLowerCase()} ${user.last_name.toLowerCase()}`.includes(this.state.searchQuery))
@@ -51,14 +53,10 @@ export default class AdminPanelUsers extends Component {
             //selectedUsers = selectedUsers.filter(user)
         }
 
-        
 
-
-
-
+        */
 
         return selectedUsers
-
     }
 
     updateSort = val => {
@@ -81,11 +79,10 @@ export default class AdminPanelUsers extends Component {
             case "total_spent_h_l":
                 this.setState({sortField: "total_spent", sortDirection: -1})
                 break
-                    
+
 
         }
     }
-
 
     sortUsers = users => {
         let sortedUsers = []
@@ -98,7 +95,6 @@ export default class AdminPanelUsers extends Component {
                 -this.state.sortDirection
             )
         }
-
         //purchases made
         else {
             sortedUsers = [...users].sort((a, b) => 
@@ -125,90 +121,116 @@ export default class AdminPanelUsers extends Component {
         }
     }
 
-    refreshUsers = () => {
-        axios.get(`${SERVER_HOST}/allUsers`)
-        .then(res => {
-            if (res.data){
-                res.data[0].purchases_made = 3
-                res.data[0].total_spent = 115.20
+    refreshUsers = async () => {
+        try {
+            const res = await axios.get(`${SERVER_HOST}/allUsers`);
+            if (res.data) {
+                const updatedUsers = await Promise.all(res.data.map(async (user) => {
+                    const userPurchases = await this.getUserPurchases(user._id);
 
-                res.data[1].purchases_made = 5
-                res.data[1].total_spent = 80.15
-                this.setState({allUsers: res.data})
-            } else {
-                console.log(res.error)
+                    /** Calculate purchases made (count) */
+                    user.purchases_made = userPurchases?.length || 0;
+
+                    /** Calculate total spent */
+                    user.total_spent = userPurchases?.reduce((totalAccumulator, purchase) => {
+                        const purchaseTotal = purchase.products?.reduce((productAccumulator, product) => {
+                            return productAccumulator +
+                                (Number(product.quantity) || 0) *
+                                (Number(product.price) || 0);
+                        }, 0) || 0;
+                        return totalAccumulator + purchaseTotal;
+                    }, 0) || 0;
+
+                    return user;
+                }));
+
+                this.setState({ allUsers: updatedUsers });
             }
-        })
+        } catch (error) {
+            console.error("Error refreshing users:", error);
+        }
     }
 
-    componentDidMount(){
+    getUserPurchases = async (id) => {
+        try {
+            const res = await axios.get(`${SERVER_HOST}/purchasesByUserID/${id}`);
+            return res.data || [];
+        } catch (error) {
+            console.error("Error fetching purchases:", error);
+            return [];
+        }
+    }
+
+    componentDidMount() {
         this.refreshUsers()
     }
 
-
-    render(){
+    render() {
         return (
             <div id="adminPanelUsers">
-                {this.state.showingSummary ? 
+                {this.state.showingSummary ?
                     <UserSummary user={this.state.selectedUser}
-                        toggleUserSummary={this.toggleUserSummary} 
-                        userID={this.state.summaryID} 
-                        refreshUsers={this.refreshUsers}
+                                 toggleUserSummary={this.toggleUserSummary}
+                                 userID={this.state.summaryID}
+                                 refreshUsers={this.refreshUsers}
                     />
                     : null
                 }
-                <h2 id="usersHeader">View Users</h2>
-                <div id="usersMain">
-                <div>
-                    <div>
-                        <div>
-                            <label htmlFor="usersInput">Search Users:</label>
-                            <input type="text"
-                                value={this.state.searchQuery}
-                                onChange={e=>{this.setState({searchQuery: e.target.value})}}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="userSortInput">Sort By:</label>
-                            <select onChange={(e)=>{this.updateSort(e.target.value)}}>
-                                <option value="name_a_z">Name (A-Z)</option>
-                                <option value="name_z_a">Name (Z-A)</option>
-                                <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
-                                <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
-                                <option value="total_spent_l_h">Total Spent (Low to High)</option>
-                                <option value="total_spent_h_l">Total Spent (High to Low)</option>
-                            </select>
-                        </div>
+<div id="adminPanelUsers">
+    <h2 id="usersHeader">View Users</h2>
+    <div id="usersMain">
+        {console.log(this.state.allUsers)}
+        <div id="usersSearchTools">
+            <div className="filters-column-adm">
+                <div className="filters-section">
+                    {/* <label htmlFor="usersInput">Search Users:</label> */}
+                    <input
+                        type="text"
+                        value={this.state.searchQuery}
+                        placeholder="Search Users"
+                        onChange={e => this.setState({ searchQuery: e.target.value })}
+                    />
+                    <div className="sort-header">
+                        <label htmlFor="userSortInput">Sort:</label>
+                        <select onChange={(e) => this.updateSort(e.target.value)}>
+                            <option value="name_a_z">Name (A-Z)</option>
+                            <option value="name_z_a">Name (Z-A)</option>
+                            <option value="purchases_made_l_h">Purchases Made (Low to High)</option>
+                            <option value="purchases_made_h_l">Purchases Made (High to Low)</option>
+                            <option value="total_spent_l_h">Total Spent (Low to High)</option>
+                            <option value="total_spent_h_l">Total Spent (High to Low)</option>
+                        </select>
                     </div>
-                    <div>
-                        <h3>Filter Users By:</h3>
-                        <div>
-                            {this.userFilterTags.map(tag => <TagCheckBox 
-                                                                key={tag}
-                                                                tagName={tag} 
-                                                                name={tag} 
-                                                                toggleTag={this.toggleTag}
-                                                                />)}
-                        </div>
-                    </div>
-                    
                 </div>
+
+                <div className="productFilters">
+                    <p classname="h3-adm">Filter Users By:</p>
+                    <div>
+                        {this.userFilterTags.map(tag => (
+                            <TagCheckBox
+                                key={tag}
+                                tagName={tag}
+                                name={tag}
+                                toggleTag={this.toggleTag}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
                     <div id="usersSearchResults">
                         {this.sortUsers(this.determineSelectedUsers())
-                            .map(user => <UserSearchResult 
-                                            id={user._id} 
-                                            user={user}
-                                            toggleUserSummary={this.toggleUserSummary}
-                                        />)}
-                    </div>  
-                
+                            .map(user => <UserSearchResult
+                                id={user._id}
+                                user={user}
+                                toggleUserSummary={this.toggleUserSummary}
+                            />)}
+                    </div>
                 </div>
-                
             </div>
-
-
         )
     }
 }

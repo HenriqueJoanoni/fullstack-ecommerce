@@ -2,7 +2,8 @@ import react, { Component} from "react"
 import axios from "axios"
 import { SERVER_HOST } from "../config/global_constants"
 import TagCheckBox from "./TagCheckBox"
-
+import DeletableImageContainer from "./DeletableImageContainer"
+import {MAX_PRODUCT_IMAGES} from "../config/global_constants"   
 
 export default class EditProductModal extends Component {
     constructor(props){
@@ -10,11 +11,11 @@ export default class EditProductModal extends Component {
         this.state = {
             formValues: {
                 product_deal: {
-                    is_deal: false,
+                is_deal: false,
                     discount_price: 1800,
                     deal_deadline: "2025-06-01T00:00:00.000+00:00"
                 },
-                product_picture: [],
+                product_images: [],
                 is_available: true,
                 product_sku: "",
                 product_name: "",
@@ -33,8 +34,10 @@ export default class EditProductModal extends Component {
                 product_description: "",
                 product_brand: "",
                 product_price: "",
-                product_tags: ""
-            }
+                product_tags: "",
+                product_images: ""
+            },
+            selectedFile: null
         }
 
         this.allTags = ["Acoustic", "Electric", "Bass", "Electroacoustic", "Accessory", "Amplifier", "Product", "Strings", "Picks", "New", "Other"]
@@ -61,9 +64,36 @@ export default class EditProductModal extends Component {
         this.setState({formValues: newObj})
     }
 
+
+    setSelectedFile = e => {
+        this.setState({selectedFile: e.target.files[0]})
+    }
+
+    uploadImage = ()=>{
+        let formData = new FormData()
+        formData.append("product_photo", this.state.selectedFile)
+        axios.post(`${SERVER_HOST}/products/imageUpload`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        .then(res => {
+            if (res.data){
+                if (res.data.errorMessage){
+                    this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: res.data.errorMessage}})
+                    document.getElementById("addProductFileInput").value = ""
+                } else {
+                    setTimeout(()=>{}, 100)
+                    this.setState({formValues: {...this.state.formValues, ["product_images"]: [...this.state.formValues.product_images, res.data.url]}})
+                    document.getElementById("addProductFileInput").value = ""
+                }   
+            } else {
+                this.setState({errorMessages: {...this.state.errorMessages, ["product_images"]: "An occurred uploading file"}})
+                document.getElementById("addProductFileInput").value = ""
+            }
+        })
+        
+    }
+
     addProduct =()=>{
-        this.validateFormValues()
-        let allValid = Object.keys(this.state.errorMessages).every(key => this.state.errorMessages[key] === "")
+        let errorMessages = this.validateFormValues()
+        let allValid = Object.keys(errorMessages).every(key => errorMessages[key] === "")
         console.log(allValid)
 
         if (allValid){
@@ -77,6 +107,25 @@ export default class EditProductModal extends Component {
         } 
     }
 
+    deleteImage = url => {
+        axios.delete(`${SERVER_HOST}/products/image/${url}`)
+        .then(res => {
+            if (res.data){
+                this.setState({formValues: {...this.state.formValues, ["product_images"]: this.state.formValues.product_images.filter(img => img !== url)}})
+            } else {
+                window.alert("Could not delete photo.")
+            }
+        })
+    }
+
+    cancelAdd = async () => {
+        //delete images if user cancels adding
+        await this.state.formValues.product_images.forEach(img => {
+            this.deleteImage(img)
+        })
+        this.props.setAddingState(false)
+    }
+
 
     validateFormValues = () => {
         let newErrorMessages  = {
@@ -86,7 +135,8 @@ export default class EditProductModal extends Component {
             product_brand: "",
             product_price: "",
             product_tags: "",
-            product_sku: ""
+            product_sku: "",
+            product_images: ""
         }
 
         //product sku
@@ -97,11 +147,12 @@ export default class EditProductModal extends Component {
         } 
 
         //product_name
-        if (this.state.formValues.product_name.length === 0){
-            newErrorMessages.productName = "Product Name is mandatory"
+        
+        if (this.state.formValues.product_name.length === 0 || this.state.formValues.product_name === ""){
+            newErrorMessages.product_name = "Product Name is mandatory"
         }
         else if (this.state.formValues.product_name.length < 8){
-            newErrorMessages.productName = "Product Name must be at least eight characters"
+            newErrorMessages.product_name = "Product Name must be at least eight characters"
         } 
 
 
@@ -136,15 +187,21 @@ export default class EditProductModal extends Component {
 
 
         //product tags
-        console.log(this.state.formValues.product_tags)
+        //console.log(this.state.formValues.product_tags)
         if (this.state.formValues.product_tags.length === 0){
             newErrorMessages.product_tags = "Product must have at least one tag."
+        }
+
+        //images
+        if (this.state.formValues.product_images.length === 0){
+            newErrorMessages.product_images = "Product must have at least one image"
         }
 
 
 
         //update all
         this.setState({errorMessages: newErrorMessages})
+        return newErrorMessages
     }
 
 
@@ -172,7 +229,7 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_sku">Product SKU:</label>
-                                <input type="text" name="product_sku" value={this.state.formValues["product_sku"]}/>
+                                <input type="text" className="inputnam" name="product_sku" value={this.state.formValues["product_sku"]}/>
                                 <p class="errorMessage">{this.state.errorMessages.product_sku}</p>
                             </div>
                         </span>
@@ -180,20 +237,21 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_name">Name:</label>
-                                <input type="text" name="product_name" value={this.state.formValues["product_name"]}/>
+                                <input type="text" name="product_name" className="inputnam" value={this.state.formValues["product_name"]}/>
+                                {console.log("product error: " + this.state.errorMessages.product_name)}
                                 <p className="errorMessage">{this.state.errorMessages.product_name}</p>
                             </div>
 
                             <div className="formItem">
                                 <label htmlFor="qty_in_stock">Quantity In Stock:</label>
-                                <input type="text" name="qty_in_stock" value={this.state.formValues["qty_in_stock"]}/>
+                                <input type="text" name="qty_in_stock" className="inputnam" value={this.state.formValues["qty_in_stock"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.qty_in_stock}</p>
                             </div>
                         </span>
 
                         <span className="formRow">
                             <label htmlFor="product_description">Product Description</label>
-                            <textarea name="product_description" value={this.state.formValues["product_description"]}></textarea>
+                            <textarea name="product_description" className="inputnam" value={this.state.formValues["product_description"]}></textarea>
                             <p className="errorMessage">{this.state.errorMessages.product_description}</p>
 
                         </span>
@@ -201,14 +259,14 @@ export default class EditProductModal extends Component {
                         <span className="formRow">
                             <div className="formItem">
                                 <label htmlFor="product_brand">Product Brand:</label>
-                                <input type="text" name="product_brand" value={this.state.formValues["product_brand"]} />
+                                <input type="text" name="product_brand" className="inputnam" value={this.state.formValues["product_brand"]} />
                                 <p className="errorMessage">{this.state.errorMessages.product_brand}</p>
 
                             </div>
 
                             <div className="formItem">
                                 <label htmlFor="product_price">Product Price:</label>
-                                <input type="text" name="product_price" value={this.state.formValues["product_price"]}/>
+                                <input type="text" name="product_price" className="inputnam"  value={this.state.formValues["product_price"]}/>
                                 <p className="errorMessage">{this.state.errorMessages.product_price}</p>
 
                             </div>
@@ -227,14 +285,32 @@ export default class EditProductModal extends Component {
                             </div>
                         </span>
 
+
+                        <span className="formRow">
+                            <p>Product Images:</p>
+                            <div className="imagesContainer">
+                                {this.state.formValues.product_images.map(url => <DeletableImageContainer key={url}
+                                                                                            imageURL={url}
+                                                                                            deleteImage={this.deleteImage}
+                                                                                            productID={null}/>)}
+
+                            </div>
+                            <p className="errorMessage">{this.state.errorMessages.product_images}</p>
+                            <input type="file" 
+                                name="fileInput"
+                                id="addProductFileInput" 
+                                onChange={(e)=>this.setSelectedFile(e)}
+                                disabled={this.state.formValues.product_images.length >= MAX_PRODUCT_IMAGES} />
+                            <button type="button" className="buttonnam" onClick={this.uploadImage}>Upload Image</button>
+                        </span>
+
                         <div>
-                            <button type="button" onClick={()=>{this.props.setAddingState(false)}}>Cancel</button>
-                            <button type="button" onClick={this.addProduct}>Add Product</button>
+                            <button type="button" className="buttonnam" onClick={this.cancelAdd}>Cancel</button>
+                            <button type="button" className="buttonnam" onClick={this.addProduct}>Add Product</button>
                         </div>
-
-                        
-
                     </form>
+
+
                 </div>
             </div>
         )

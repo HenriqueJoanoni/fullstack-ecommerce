@@ -9,6 +9,16 @@ $second-footer-color: #343438;
 $profile-page-bg: #f8f9fc;
 $button-hover-color: #5b5b66;
 
+/** PAYPAL COLORS */
+$success-color: #4CAF50;
+$error-color: #f44336;
+$cancel-color: #ff9800;
+$text-color: #333;
+$secondary-text: #666;
+$background-light: #f8f9fa;
+$border-radius: 10px;
+$transition-time: 0.3s;
+
 /** GENERAL STYLING FOR SEARCH TOOLS */
 $background-color: #2d2d2d;
 $text-color: #fff;
@@ -144,45 +154,74 @@ $rgba3: rgba(0, 0, 0, 0.3);
 
 /* product info page */
 
+.productInfoWrapper {
+  background-color: white;
+  padding: 20px;
+}
+
+.closeButton {
+  display:flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color:black;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  width:45px;
+  height:45px;
+  justify-content:center;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  z-index: 1000; 
+}
+
+.closeButton:hover {
+  background-color: fade-out($default-background-color, 0.5);
+  @include transition-effect(background-color, 0.5s);
+}
+
 .productInfoContainer {
   width: 80%;
   margin: 50px auto;
-  background-color: rgba(31, 31, 31, 0.8);
+  background-color: #fff;
   min-height: 500px;
   padding: 20px;
-  color: #eee;
+  color: #333;
   border-radius: 10px;
 
   span {
     width: 50%;
-    display: flex;
+    // display: flex;
     align-items: center;
 
     .returnArrow {
       width: 25px;
       height: 25px;
-      margin-inline: 50px;
+      margin-inline:18px;
 
     }
   }
 
   .productInfo {
-    display: flex;
-    flex-direction: row;
-    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 135px;
+    width: 85%;
     margin: auto;
 
     .slideshow {
-      width: 70%;
       display: flex;
       align-items: center;
       justify-content: center;
 
       .slideshowImage {
-        width: 450px;
+        max-width:100%;
         aspect-ratio: 1;
         margin-inline: 10px;
-
       }
 
       .slideshowArrow {
@@ -198,6 +237,19 @@ $rgba3: rgba(0, 0, 0, 0.3);
       }
     }
   }
+}
+
+.slideshow button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dedede;
+  border: none;
+  cursor: pointer;
+  width: 20px;
+  height: 35px;
+  margin-inline: 10px;
+  border-radius: 50%;
 }
 
 /* login page */
@@ -623,7 +675,6 @@ button:hover {
 }
 
 
-
 /*  ----- ADMIN PAGES ------- */
 #adminPageContainer {
   width: 100%;
@@ -637,8 +688,10 @@ button:hover {
 
   #adminControlPanel {
     width: 80%;
-    box-shadow: 5px 11px 40px 13px rgba(0,0,0,0.75);
+    border:1px solid #bcbcbc;
     margin: auto;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    box-shadow: 0 4px 8px rgba(209, 209, 209, 0.1);
 
     #adminControlPanelHeader {
       width: 100%;
@@ -682,6 +735,7 @@ button:hover {
     #productsMain {
       width: 90%;
       margin: auto;
+
       span {
         display: flex;
         justify-content: flex-start;
@@ -716,7 +770,6 @@ button:hover {
         justify-content: space-between;
         padding: 10px 20px;
         border: 1px solid white;
-
 
 
         div {
@@ -759,7 +812,6 @@ button:hover {
 }
 
 
-
 /* ----------- edit modal ---------- */
 .modal {
   position: absolute;
@@ -780,7 +832,6 @@ button:hover {
 }
 
 
-
 /*   ---------- CONFIRM DELETE ------------- */
 .confirmDeleteModal {
   width: 60%;
@@ -792,6 +843,31 @@ button:hover {
   transform: translate(-50%, -50%);
   z-index: 100000;
   padding: 50px;
+}
+
+/*   deleteable image */
+.deletableImageContainer {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  display: flex;
+
+  button {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    color: black;
+    position: absolute;
+    top: -40px;
+    right: -20px;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 
@@ -813,8 +889,10 @@ button:hover {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
     .userInfo {
       display: block;
+
       p {
         margin: 5px 20px;
       }
@@ -839,7 +917,6 @@ button:hover {
 
 }
 
-
 .userPurchaseSummaryContainer {
   position: absolute;
   top: 0;
@@ -848,9 +925,6 @@ button:hover {
   width: 100%;
   min-height: 100%;
   background-color: white;
-
-
-
 
   .userSummaryUserInfo {
     width: 70%;
@@ -873,7 +947,7 @@ button:hover {
       img {
         width: 25px;
       }
-  }
+    }
 
 
     div {
@@ -920,10 +994,23 @@ button:hover {
         width: 50px;
         height: 50px;
       }
+
+      .closeButton {
+        opacity: 0;
+        animation: fadeIn 0.5s forwards, fadeOut 0.5s forwards 2.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
     }
 
   }
-
 
   .purchaseSearchTools {
     h3 {
@@ -931,11 +1018,7 @@ button:hover {
       text-align: center;
     }
   }
-
-
 }
-
-
 
 .purchaseCard {
   width: 60%;
@@ -951,7 +1034,7 @@ button:hover {
     justify-content: space-between;
     margin: auto;
 
-    .purchaseTimeTotal{
+    .purchaseTimeTotal {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -1002,9 +1085,6 @@ button:hover {
 }
 
 
-
-
-
 /* AVATAR DROPDOWN */
 .profile-menu {
   position: relative;
@@ -1014,8 +1094,6 @@ button:hover {
     cursor: pointer;
 
     img {
-      // width: 40px;
-      // height: 40px;
       border-radius: 50%;
       object-fit: cover;
       transition: transform 0.2s ease-in-out;
@@ -1069,8 +1147,8 @@ button:hover {
           color: inherit;
           font-size: inherit;
         }
-        
-        .logoutspan{
+
+        .logoutspan {
           font-family: Arial, sans-serif;
         }
 
@@ -1320,3 +1398,624 @@ button:hover {
     border-radius: 4px;
   }
 }
+
+/*----------responsive header*/
+@media (max-width: 1300px) {
+  .header-links-container {
+    display: none;
+  }
+  .hamburger-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+  .links-menu {
+    display: flex;
+  }
+  .ham-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1301px) {
+  .links-menu {
+    display: none;
+  }
+}
+
+.hamburg-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 15px;
+  width: 140px;
+  background-color: #CCCCCC;
+  border-radius: 5px;
+  z-index: 10;
+  padding: 16px 16px;
+  font-size: 1.3em;
+  color: #1d1d1d;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+  display: block;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  a {
+    color: $default-text-color;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #9a9a9a;
+    }
+  }
+}
+
+.hamburg-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    list-style: none;
+  }
+
+  li::marker {
+    content: none;
+  }
+}
+
+.card-section {
+  display: flex;
+  justify-content: center;
+  background-color: #848484;
+  width: 100%;
+}
+
+.products-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: start;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 45px 0px 0px;
+  }
+
+  @media (max-width: 1199px) and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/*--------payment sys*/
+#paypalButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  justify-content: center;
+  max-width: auto;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  padding-bottom: 2%;
+  padding-top: 2%;
+  padding-left: 33%;
+  padding-right: 33%;
+  border-radius: 2px;
+  border: 1px solid #d1d1d1;
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #payPalPaymentID {
+    font-weight: bold;
+    color: #0070ba;
+  }
+
+  .paypal-button,
+  .paypal-button-tagline,
+  .paypal-button-container {
+    width: 80%;
+    max-width: 200px;
+    max-height: 50%;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  #payPalPaymentIDButton {
+    margin-top: 10px;
+
+    .red-button,
+    .green-button {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+
+    .red-button {
+      background-color: red;
+    }
+
+    .green-button {
+      background-color: green;
+    }
+  }
+}
+
+//----------paypal message
+.payPalMessage {
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &Card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: $border-radius;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    border-top: 5px solid;
+
+    &.message-success {
+      border-color: $success-color;
+
+      .status-icon {
+        color: $success-color;
+      }
+    }
+
+    &.message-error {
+      border-color: $error-color;
+
+      .status-icon {
+        color: $error-color;
+      }
+    }
+
+    &.message-cancel {
+      border-color: $cancel-color;
+
+      .status-icon {
+        color: $cancel-color;
+      }
+    }
+  }
+
+  .status-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+  }
+
+  h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+    color: $text-color;
+  }
+
+  .message-content {
+    color: $secondary-text;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .payment-id {
+    background: $background-light;
+    padding: 1rem;
+    border-radius: $border-radius;
+    font-size: 0.9rem;
+
+    span {
+      font-weight: bold;
+      color: darken($secondary-text, 20%);
+      word-break: break-all;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .button-container {
+    margin-top: 1.5rem;
+  }
+}
+
+@mixin payment-button($color) {
+  background: $color;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: $border-radius;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity $transition-time;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.red-button {
+  @include payment-button($error-color);
+}
+
+.green-button {
+  @include payment-button($success-color);
+}
+
+#prodcount
+{
+  padding:2px;
+  margin-top:10px;
+  margin-bottom:10px;
+  border-radius:5px;
+  background-color: #f9f9f9; 
+  border: 1px solid #d1d1d1;
+  width: 100px;
+  text-align: center;
+
+}
+
+/* ---------searchtools */
+#productsMain {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#productsSearchTools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filters-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filters-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filters-section h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  padding-bottom: 5px;
+}
+
+.filters-section input {
+  width: 100%;
+  padding: 10px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  
+  &:focus {
+      outline: none;
+      border-color: #c2c2c2;
+  }
+}
+
+.sort-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 0;
+}
+
+.sort-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .sort-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #515151;
+    font-size: 1.1rem;
+    padding-bottom: 5px;
+  }
+}
+
+.sort-header label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.sort-dropdown {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  background-color: white;
+  font-size: 0.9rem;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  
+  &:hover {
+      border-color: #c2c2c2;
+  }
+  
+  &:focus {
+      outline: none;
+      border-color: #a0a0a0;
+  }
+
+  }
+
+
+.unique-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+
+.filters-column-adm {
+  width: 270px;
+  position: sticky;
+  top: 125px;
+  height: fit-content;
+  border-radius: 2px;
+  padding: 18px;
+  z-index: 50;
+  align-self: flex-start;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.filters-section-adm h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.h3-adm{
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+
+.purchases-search-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f8f8;
+  border:1px solid rgb(208, 208, 208);
+
+  .purchases-search-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-end;
+  }
+
+  .purchases-search-box {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 250px;
+
+      label {
+          font-size: 1rem;
+          font-weight: bold;
+          margin-bottom: 5px;
+      }
+
+      .purchases-search-input {
+          padding: 10px;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          width: 100%;
+          transition: border 0.3s ease;
+
+          &:focus {
+              border-color: #007bff;
+              outline: none;
+          }
+      }
+
+      .purchases-date-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 10px;
+
+          label {
+              font-size: 0.9rem;
+              font-weight: 600;
+          }
+
+          .purchases-date-input {
+              flex: 1;
+              min-width: 120px;
+              padding: 8px;
+              font-size: 1rem;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              transition: border 0.3s ease;
+
+              &:focus {
+                  border-color: #007bff;
+                  outline: none;
+              }
+          }
+      }
+  }
+
+  .purchases-sort-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 0.3;
+
+      label {
+          font-size: 1rem;
+          font-weight: bold;
+          margin-bottom: 5px;
+      }
+
+      .purchases-sort-select {
+          padding: 10px;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          transition: border 0.3s ease;
+          width: 100%;
+
+          &:focus {
+              border-color: #007bff;
+              outline: none;
+          }
+      }
+  }
+
+  @media (max-width: 768px) {
+      .purchases-search-tools {
+          flex-direction: column;
+      }
+
+      .purchases-sort-box {
+          width: 100%;
+      }
+  }
+}
+
+.modalin {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  width: 80%;
+  margin-bottom: 0;
+  padding: 6px;
+}
+
+.modalin .formrow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+
+  span {
+      padding: 0;
+      margin: 0;
+  }
+
+  p {
+      padding: 0;
+      margin: 0;
+      font-size: 0.6rem;
+  }
+
+  .formItem {
+      margin-bottom: 4px;
+  }
+
+  input, textarea {
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      height: 24px;
+  }
+
+  textarea {
+      min-height: 20px;
+      resize: none;
+  }
+}
+
+.modalin button {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  margin-top: 6px;
+}
+
+.modalin .errorMessage {
+  font-size: 0.6rem;
+  color: red;
+  margin-top: 2px;
+}
+
+  p{
+    margin-bottom:2px;
+    margin-top:5px;
+  }
+
+  .inputnam{
+    margin-bottom:0px;
+    display:flex;
+    justify-content: center;
+    padding:0px;
+    height:15px;
+  }
+
+  .buttonnam{
+    font-size:14px;
+    padding:5px;
+    margin-bottom:1px;
+    margin-top:5px;
+  }
+
+
+  //error messages
+
+  #addProductModal .errorMessage, #editProductModal .errorMessage{
+   color: #dc3545;
+   font-weight: bold;
+   margin-bottom:20px;
+    
+  }
+
+  

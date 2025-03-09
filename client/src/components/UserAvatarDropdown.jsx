@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import {userIcon, loggedUser} from '../images'
 import {ACCESS_NORMAL_USER_LEVEL} from "../config/global_constants"
+import { ACCESS_GUEST_LEVEL } from "../config/global_constants"
 
 export default class UserAvatarDropdown extends Component {
     constructor(props) {
@@ -37,19 +38,21 @@ export default class UserAvatarDropdown extends Component {
 
     handleLogout = () => {
         sessionStorage.clear()
+        localStorage.clear()
         window.location.reload()
+        window.location.href="/"
     }
 
     render() {
         const {isOpen, positionLeft} = this.state
-        // const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
+        const isLoggedIn = sessionStorage.accessLevel > ACCESS_GUEST_LEVEL
         const isAdmin = sessionStorage.accessLevel > ACCESS_NORMAL_USER_LEVEL
 
         return (
             <div className="profile-menu">
                 <div className="icon-wrapper" onClick={this.toggleDropdown}>
-                    {this.props.logged ? (
-                        <img className="header-icon" src={loggedUser} alt="User profile icon"/>
+                    {isLoggedIn ? (
+                        <img className="header-icon" id="headerProfileImg" src={localStorage.profilePhoto} alt=""/>
                     ) : (
                         <Link to="/login">
                             <img className="header-icon" src={userIcon} alt="Default profile icon"/>
@@ -70,11 +73,11 @@ export default class UserAvatarDropdown extends Component {
                             <li><Link to="/profile">Profile</Link></li>
                             {isAdmin && (
                                 <li>
-                                    <Link to="/settings">Settings</Link>
+                                    <Link to="/admin">Admin Page</Link>
                                 </li>
                             )}
                             <li onClick={this.handleLogout}>
-                                <span class="logoutspan">Logout</span>
+                                <span className="logoutspan">Logout</span>
                             </li>
                         </ul>
                     </div>

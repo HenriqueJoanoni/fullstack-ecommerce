@@ -1,11 +1,34 @@
 import React, {Component} from "react";
+import {Route} from "react-router-dom";
 import Header from "./Header";
 import CartItem from "./CartItem";
+import BuyItem from "./BuyItem";
+import PayPalMessage from "./PayPalMessage";
 
 export default class ShoppingCart extends Component {
+    calculateTotal() {
+        return Object.keys(this.props.cart)
+            .reduce(
+                (sum, key) =>
+                    sum + parseFloat(this.props.cart[key].price) * parseInt(this.props.cart[key].qty),
+                0
+            );
+    }
+
+    resetCart = () => {
+        this.props.updateCart({});
+        sessionStorage.removeItem('cart');
+    };
+
+    updateCart = (newCart) => {
+        this.setState({cart: newCart});
+        sessionStorage.setItem('cart', JSON.stringify(newCart));
+    };
 
     render() {
-        const isCartEmpty = Object.keys(this.props.cart).length === 0;
+        const {cart} = this.props;
+        const isCartEmpty = Object.keys(cart).length === 0;
+        const total = this.calculateTotal();
 
         return (
             <>
@@ -29,43 +52,45 @@ export default class ShoppingCart extends Component {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {Object.keys(this.props.cart).map((itemID) => (
+                                {Object.keys(cart).map((itemID) => (
                                     <CartItem
                                         key={itemID}
                                         productID={itemID}
-                                        product={this.props.cart[itemID]}
+                                        product={cart[itemID]}
                                         removeFromCart={this.props.removeFromCart}
                                         updateCart={this.props.updateCart}
                                     />
                                 ))}
                                 </tbody>
                             </table>
-
                             <div id="cartTotalContainer">
-                                <p>
-                                    <strong>Total: </strong>
-                                    €{Object.keys(this.props.cart)
-                                    .reduce(
-                                        (sum, key) => sum + parseFloat(this.props.cart[key].price) * parseInt(this.props.cart[key].qty), 0
-                                    )
-                                    .toFixed(2)}
-                                </p>
+                                <p><strong>Total: </strong>€{this.calculateTotal().toFixed(2)}</p>
+                            </div>
+                            <div id="paypalButtonContainer">
+                                {!isCartEmpty &&
+                                    <BuyItem
+                                        cart={cart}
+                                        total={total}
+                                        resetCart={this.resetCart}
+                                    />
+                                }
                             </div>
                         </>
                     )}
-
-                    <button
-                        type="button"
-                        id="checkoutButton"
-                        disabled={isCartEmpty}
-                        style={{
-                            backgroundColor: isCartEmpty ? "#d3d3d3" : "#2b2b2b",
-                            cursor: isCartEmpty ? "not-allowed" : "pointer",
-                        }}
-                    >
-                        Proceed To Checkout
-                    </button>
                 </div>
+                <Route
+                    path="/PayPalMessage/:messageType/:payPalPaymentID"
+                    render={(routeProps) => (
+                        <div className="paypalMessageContainer">
+                            <div className="paypalMessageBox">
+                                <PayPalMessage
+                                    {...routeProps}
+                                    resetCart={this.resetCart}
+                                />
+                            </div>
+                        </div>
+                    )}
+                />
             </>
         );
     }
