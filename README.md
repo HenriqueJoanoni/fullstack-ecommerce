@@ -48,3 +48,36 @@ On your tabs previously opened in `server` and `client` folders type:
 >npm start
 
 This will start both your server and client compilers, your webpage should pop up automatically.
+
+## Features
+Our application featues three levels of access
+- Guest
+- Logged in user
+- Admin
+
+  ![image](https://github.com/user-attachments/assets/f2bae39d-28d9-4733-8516-557a1a1cf836)
+
+All users can:
+- Edit their profile
+- Browse Products
+- Make Purchases
+
+  ![image](https://github.com/user-attachments/assets/4f21f26b-8d0e-4875-87da-77b9fe02f35f)
+
+  Admin Users can:
+  - Edit, add, and delete products
+  - Update stock levels
+  - View Purchase history
+ 
+  ![image](https://github.com/user-attachments/assets/b21ed9f7-38a8-4f67-9a2b-fc2344d83144)
+
+  ## Payments
+  Our site has PayPal integration for easy and secure payment processing
+  ![image](https://github.com/user-attachments/assets/43dea365-e661-4916-b511-daa590ec3368)
+
+
+
+  
+
+
+
